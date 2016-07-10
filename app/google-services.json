@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "796652435358",
+    "firebase_url": "https://chat-25eed.firebaseio.com",
+    "project_id": "chat-25eed",
+    "storage_bucket": "chat-25eed.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:796652435358:android:0119816e9e24a884",
+        "android_client_info": {
+          "package_name": "com.rus.chat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "796652435358-kdn7l4kis4kqj7npqt1n3gp68qe4qcgc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCj9r-UWeSgWRpG6YO835ZD1pXlpwmEoJw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
