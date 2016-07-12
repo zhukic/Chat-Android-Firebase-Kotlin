@@ -21,7 +21,8 @@ class LoginActivity : AppCompatActivity(), LoginView {
 
         loginPresenter = LoginPresenterImpl(this)
 
-        signInButton.setOnClickListener { loginPresenter.doLogin(email.text.toString(), password.text.toString()) }
+        signInButton.setOnClickListener { loginPresenter.signIn(email.text.toString(), password.text.toString()) }
+        registerButton.setOnClickListener { loginPresenter.register(email.text.toString(), password.text.toString()) }
     }
 
     override fun openConversationsActivity() {
@@ -31,5 +32,9 @@ class LoginActivity : AppCompatActivity(), LoginView {
 
     override fun onLoginError(t: Throwable) {
         toast(t.message ?: "Error")
+    }
+
+    override fun showToast(message: String) {
+        toast(message)
     }
 }

@@ -9,4 +9,6 @@ interface LoginView {
 
     fun onLoginError(t: Throwable)
 
+    fun showToast(message: String)
+
 }

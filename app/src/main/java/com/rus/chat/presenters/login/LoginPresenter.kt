@@ -5,6 +5,10 @@ package com.rus.chat.presenters.login
  */
 interface LoginPresenter {
 
-    fun doLogin(email: String, password: String)
+    fun signIn(email: String, password: String)
+
+    fun register(email: String, password: String)
+
+    fun onDestroy()
 
 }
