@@ -1,5 +1,6 @@
 package com.rus.chat.interactors.session
 
+import com.rus.chat.App
 import com.rus.chat.entity.session.SessionQuery
 import com.rus.chat.interactors.UseCase
 import com.rus.chat.repositories.login.SessionRepository
@@ -14,7 +15,7 @@ import rx.schedulers.Schedulers
 class Register {
 
     fun execute(email: String, password: String, subscriber: Subscriber<Unit>) {
-        SessionRepository()
+        App.sessionRepository
                 .query(SessionQuery.Register(email, password))
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())

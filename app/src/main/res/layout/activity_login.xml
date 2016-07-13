@@ -64,23 +64,53 @@
 
             </android.support.design.widget.TextInputLayout>
 
-            <Button
-                android:id="@+id/signInButton"
-                style="?android:textAppearanceSmall"
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="@string/action_sign_in"
-                android:textStyle="bold" />
+                android:background="?attr/selectableItemBackground">
 
-            <Button
-                android:id="@+id/registerButton"
-                style="?android:textAppearanceSmall"
+                <ProgressBar
+                    android:id="@+id/signInProgress"
+                    style="?android:attr/progressBarStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:visibility="gone"/>
+
+                <Button
+                    android:id="@+id/signInButton"
+                    style="?android:textAppearanceSmall"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/action_sign_in"
+                    android:textStyle="bold" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="@string/action_register"
-                android:textStyle="bold" />
+                android:background="?attr/selectableItemBackground">
+
+                <ProgressBar
+                    android:id="@+id/registerProgress"
+                    style="?android:attr/progressBarStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:visibility="gone"/>
+
+                <Button
+                    android:id="@+id/registerButton"
+                    style="?android:textAppearanceSmall"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/action_register"
+                    android:textStyle="bold" />
+
+            </RelativeLayout>
 
         </LinearLayout>
     </ScrollView>

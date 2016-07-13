@@ -3,6 +3,7 @@ package com.rus.chat.ui.login
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import com.rus.chat.R
 import com.rus.chat.presenters.login.LoginPresenter
 import com.rus.chat.presenters.login.LoginPresenterImpl
@@ -30,11 +31,28 @@ class LoginActivity : AppCompatActivity(), LoginView {
         startActivity(intent)
     }
 
-    override fun onLoginError(t: Throwable) {
-        toast(t.message ?: "Error")
+    override fun onLoginError(t: Throwable) = toast(t.message ?: "Error")
+
+    override fun showToast(message: String) = toast(message)
+
+    override fun showSignInProgress() {
+        signInButton.visibility = View.GONE
+        signInProgress.visibility = View.VISIBLE
     }
 
-    override fun showToast(message: String) {
-        toast(message)
+    override fun hideSignInProgress() {
+        signInButton.visibility = View.VISIBLE
+        signInProgress.visibility = View.GONE
     }
+
+    override fun showRegisterProgress() {
+        registerButton.visibility = View.GONE
+        registerProgress.visibility = View.VISIBLE
+    }
+
+    override fun hideRegisterProgress() {
+        registerButton.visibility = View.VISIBLE
+        registerProgress.visibility = View.GONE
+    }
+
 }

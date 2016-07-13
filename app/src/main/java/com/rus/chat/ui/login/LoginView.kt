@@ -11,4 +11,12 @@ interface LoginView {
 
     fun showToast(message: String)
 
+    fun showSignInProgress()
+
+    fun hideSignInProgress()
+
+    fun showRegisterProgress()
+
+    fun hideRegisterProgress()
+
 }

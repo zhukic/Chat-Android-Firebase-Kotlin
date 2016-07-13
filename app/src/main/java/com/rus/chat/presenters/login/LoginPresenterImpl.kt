@@ -20,10 +20,12 @@ class LoginPresenterImpl(var loginView: LoginView?) : LoginPresenter {
     }
 
     override fun signIn(email: String, password: String) {
+        loginView?.showSignInProgress()
         signIn.execute(email, password, SignInSubscriber())
     }
 
     override fun register(email: String, password: String) {
+        loginView?.showRegisterProgress()
         register.execute(email, password, RegisterSubscriber())
     }
 
@@ -36,10 +38,12 @@ class LoginPresenterImpl(var loginView: LoginView?) : LoginPresenter {
         override fun onNext(t: Unit?) {}
 
         override fun onError(e: Throwable) {
+            loginView?.hideSignInProgress()
             loginView?.onLoginError(e)
         }
 
         override fun onCompleted() {
+            loginView?.hideSignInProgress()
             loginView?.openConversationsActivity()
         }
     }
@@ -49,10 +53,12 @@ class LoginPresenterImpl(var loginView: LoginView?) : LoginPresenter {
         override fun onNext(t: Unit?) {}
 
         override fun onError(e: Throwable) {
+            loginView?.hideRegisterProgress()
             loginView?.onLoginError(e)
         }
 
         override fun onCompleted() {
+            loginView?.hideRegisterProgress()
             loginView?.showToast(COMPLETED_REGISTRATION)
         }
     }

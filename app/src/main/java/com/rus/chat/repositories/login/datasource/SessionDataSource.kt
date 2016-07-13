@@ -1,7 +1,7 @@
 package com.rus.chat.repositories.login.datasource
 
 import com.rus.chat.entity.session.SessionQuery
-import com.rus.chat.interactors.session.Handle
+import com.rus.chat.entity.session.Handle
 import rx.Observable
 
 /**
