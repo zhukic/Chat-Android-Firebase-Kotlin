@@ -1,5 +1,6 @@
 package com.rus.chat.utils
 
+import com.google.firebase.auth.FirebaseUser
 import com.rus.chat.entity.session.Query
 import com.rus.chat.entity.session.Handle
 import com.rus.chat.entity.session.SessionQuery
@@ -20,7 +21,7 @@ class HandleUtils {
                 for(method in clazz.declaredMethods) {
                     val handle = method.getAnnotation(Handle::class.java)
                     repository.queryHandlers.put(handle.value.java, object : SessionRepository.QueryHandler {
-                        override fun handleQuery(query: Query): Observable<Unit> = method.invoke(dataSource, query) as Observable<Unit>
+                        override fun handleQuery(query: Query): Observable<FirebaseUser> = method.invoke(dataSource, query) as Observable<FirebaseUser>
                     })
                 }
             }

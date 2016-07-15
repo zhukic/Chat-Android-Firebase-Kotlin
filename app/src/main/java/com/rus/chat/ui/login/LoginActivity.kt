@@ -4,6 +4,7 @@ import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import com.google.firebase.auth.FirebaseAuth
 import com.rus.chat.R
 import com.rus.chat.presenters.login.LoginPresenter
 import com.rus.chat.presenters.login.LoginPresenterImpl
@@ -24,14 +25,22 @@ class LoginActivity : AppCompatActivity(), LoginView {
 
         signInButton.setOnClickListener { loginPresenter.signIn(email.text.toString(), password.text.toString()) }
         registerButton.setOnClickListener { loginPresenter.register(email.text.toString(), password.text.toString()) }
+
+        if(intent.extras?.getBoolean(ConversationsActivity.EXTRA_SIGN_OUT) ?: false) loginPresenter.signOut()
+        else loginPresenter.initialize()
+    }
+
+    override fun onStart() {
+        super.onStart()
     }
 
     override fun openConversationsActivity() {
         val intent = Intent(this, ConversationsActivity::class.java)
         startActivity(intent)
+        finish()
     }
 
-    override fun onLoginError(t: Throwable) = toast(t.message ?: "Error")
+    override fun onLoginError(t: Throwable) = toast("${t.javaClass.name}: ${t.message}")
 
     override fun showToast(message: String) = toast(message)
 
@@ -53,6 +62,11 @@ class LoginActivity : AppCompatActivity(), LoginView {
     override fun hideRegisterProgress() {
         registerButton.visibility = View.VISIBLE
         registerProgress.visibility = View.GONE
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        this.loginPresenter.onDestroy()
     }
 
 }

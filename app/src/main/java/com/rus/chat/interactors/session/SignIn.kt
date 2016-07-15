@@ -1,5 +1,6 @@
 package com.rus.chat.interactors.session
 
+import com.google.firebase.auth.FirebaseUser
 import com.rus.chat.App
 import com.rus.chat.entity.session.SessionQuery
 import com.rus.chat.interactors.UseCase
@@ -14,10 +15,10 @@ import rx.schedulers.Schedulers
  * Created by RUS on 10.07.2016.
  */
 @UseCase
-class SignIn {
+class SignIn : SessionUseCase() {
 
-    fun execute(email: String, password: String, subscriber: Subscriber<Unit>) {
-        App.sessionRepository
+    override fun execute(email: String, password: String, subscriber: Subscriber<FirebaseUser>) {
+        this.sessionRepository
                 .query(SessionQuery.SignIn(email, password))
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())

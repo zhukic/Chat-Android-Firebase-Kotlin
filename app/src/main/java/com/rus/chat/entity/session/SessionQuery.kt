@@ -5,6 +5,8 @@ package com.rus.chat.entity.session
  */
 class SessionQuery {
 
+    class GetCurrentUser : Query
+
     data class SignIn(val email: String, val password: String) : Query
 
     data class Register(val email: String, val password: String) : Query

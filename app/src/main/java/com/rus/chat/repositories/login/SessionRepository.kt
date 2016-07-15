@@ -1,5 +1,6 @@
 package com.rus.chat.repositories.login
 
+import com.google.firebase.auth.FirebaseUser
 import com.rus.chat.entity.session.Query
 import com.rus.chat.entity.session.SessionQuery
 import com.rus.chat.entity.session.Handle
@@ -10,11 +11,13 @@ import rx.Observable
 import rx.Subscriber
 import java.lang.reflect.Method
 import java.util.*
+import javax.inject.Singleton
 import kotlin.reflect.KClass
 
 /**
  * Created by RUS on 11.07.2016.
  */
+@Singleton
 class SessionRepository() {
 
     lateinit var queryHandlers: HashMap<Class<out Query>, SessionRepository.QueryHandler>
@@ -23,11 +26,11 @@ class SessionRepository() {
        queryHandlers = HashMap()
     }
 
-    fun query(query: Query): Observable<Unit> = queryHandlers[query.javaClass]?.handleQuery(query)
+    fun query(query: Query): Observable<FirebaseUser> = queryHandlers[query.javaClass]?.handleQuery(query)
             ?: throw IllegalArgumentException("No handler is registered for query ${query.javaClass}")
 
     interface QueryHandler {
-        fun handleQuery(query: Query): Observable<Unit>
+        fun handleQuery(query: Query): Observable<FirebaseUser>
     }
 
 }
