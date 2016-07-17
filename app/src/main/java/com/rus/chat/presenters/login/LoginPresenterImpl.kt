@@ -52,7 +52,6 @@ class LoginPresenterImpl(var loginView: LoginView?) : LoginPresenter {
         }
 
         override fun onNext(firebaseUser: FirebaseUser?) {
-            Logger.log(firebaseUser?.email ?: "Null user")
             if(firebaseUser != null) loginView?.openConversationsActivity()
         }
 

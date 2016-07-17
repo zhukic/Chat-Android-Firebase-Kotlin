@@ -17,11 +17,11 @@ abstract class SessionUseCase {
     @Inject
     lateinit var sessionRepository: SessionRepository
 
+    private var subscription: Subscription = Subscriptions.empty()
+
     init {
         App.sessionComponent.inject(this)
     }
-
-    private var subscription: Subscription = Subscriptions.empty()
 
     abstract fun execute(email: String = "", password: String = "", subscriber: Subscriber<FirebaseUser> = Subscribers.empty())
 

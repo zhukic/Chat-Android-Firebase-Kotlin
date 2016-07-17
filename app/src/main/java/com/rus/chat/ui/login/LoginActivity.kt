@@ -30,10 +30,6 @@ class LoginActivity : AppCompatActivity(), LoginView {
         else loginPresenter.initialize()
     }
 
-    override fun onStart() {
-        super.onStart()
-    }
-
     override fun openConversationsActivity() {
         val intent = Intent(this, ConversationsActivity::class.java)
         startActivity(intent)

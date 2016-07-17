@@ -11,7 +11,7 @@ class Logger {
 
         val TAG: String = "TAG"
 
-        fun log(message: String) {
+        fun log(message: String?) {
             Log.d(TAG, message)
         }
     }

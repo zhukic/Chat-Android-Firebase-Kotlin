@@ -5,6 +5,9 @@ import com.google.firebase.auth.FirebaseAuth
 import com.rus.chat.di.AppComponent
 import com.rus.chat.di.AppModule
 import com.rus.chat.di.DaggerAppComponent
+import com.rus.chat.di.net.DaggerNetComponent
+import com.rus.chat.di.net.NetComponent
+import com.rus.chat.di.net.NetModule
 import com.rus.chat.di.session.DaggerSessionComponent
 import com.rus.chat.di.session.SessionComponent
 import com.rus.chat.di.session.SessionModule
@@ -21,14 +24,15 @@ class App : Application() {
     companion object {
         lateinit var appComponent: AppComponent
         lateinit var sessionComponent: SessionComponent
+        lateinit var netComponent: NetComponent
     }
 
     override fun onCreate() {
         super.onCreate()
 
         createAppComponent()
-
         createSessionRepository()
+        createNetComponent()
 
     }
 
@@ -48,6 +52,12 @@ class App : Application() {
     private fun createSessionComponent(sessionRepository: SessionRepository) {
         sessionComponent = DaggerSessionComponent.builder()
                 .sessionModule(SessionModule(sessionRepository))
+                .build()
+    }
+
+    private fun createNetComponent() {
+        netComponent = DaggerNetComponent.builder()
+                .netModule(NetModule())
                 .build()
     }
 
