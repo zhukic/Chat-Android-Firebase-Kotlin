@@ -31,6 +31,7 @@ class ConversationsPresenterImpl(var conversationsView: ConversationsView?) : Co
         override fun onNext(user: List<User>?) {
             user?.forEach { Logger.log(it.toString()) }
             Logger.log("next")
+            
             //conversationsView?.setConversations(conversations!!)
         }
 
