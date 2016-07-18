@@ -27,14 +27,7 @@ class SessionRepository() {
        queryHandlers = HashMap()
     }
 
-    fun <T> query(query: Query): Observable<T> {
-        try {
-            return queryHandlers[query.javaClass]?.handleQuery(query) ?: throw IllegalArgumentException("No handler is registered for query ${query.javaClass}")
-        } catch (e: InvocationTargetException) {
-            Logger.log(e.message)
-        }
-        return null!!
-    }
+    fun <T> query(query: Query): Observable<T> = queryHandlers[query.javaClass]?.handleQuery(query) ?: throw IllegalArgumentException("No handler is registered for query ${query.javaClass}")
 
     interface QueryHandler {
         fun <T> handleQuery(query: Query): Observable<T>

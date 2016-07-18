@@ -1,6 +1,5 @@
 package com.rus.chat.repositories.login.datasource
 
-import android.content.Context
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.rus.chat.App
@@ -8,14 +7,12 @@ import com.rus.chat.entity.conversation.User
 import com.rus.chat.entity.session.SessionQuery
 import com.rus.chat.repositories.BaseDataSource
 import com.rus.chat.repositories.FirebaseAPI
-import com.rus.chat.utils.Logger
 import retrofit2.Retrofit
 import rx.Observable
+import rx.Scheduler
 import rx.Subscriber
 import rx.android.schedulers.AndroidSchedulers
-import rx.lang.kotlin.toSingletonObservable
 import rx.schedulers.Schedulers
-import java.net.Authenticator
 import javax.inject.Inject
 
 /**
@@ -39,6 +36,10 @@ class SessionDataSourceImpl : BaseDataSource(), SessionDataSource {
                     subscriber.onCompleted() }
                 .addOnFailureListener { exception -> subscriber.onError(exception) }
     }
+            .doOnNext { firebaseUser -> addUserNameToDb(firebaseUser.uid, query.name)
+                    .subscribeOn(Schedulers.newThread())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(AddUserToDbSubscriber()) }
 
     override fun signIn(query: SessionQuery.SignIn): Observable<FirebaseUser> = Observable.create { subscriber ->
         FirebaseAuth.getInstance().signInWithEmailAndPassword(query.email, query.password)
@@ -51,6 +52,16 @@ class SessionDataSourceImpl : BaseDataSource(), SessionDataSource {
         subscriber.onCompleted()
     }
 
-    override fun addToDb(query: SessionQuery.AddToDb): Observable<User> = retrofit.create(FirebaseAPI::class.java).addUser(query.uid, User(query.name))
+    private fun addUserNameToDb(uid: String, name: String): Observable<User> = retrofit.create(FirebaseAPI::class.java).addUser(uid, User(uid, name))
+
+    private inner class AddUserToDbSubscriber : Subscriber<User>() {
+
+        override fun onNext(t: User?) {}
+
+        override fun onError(e: Throwable?) = throw RuntimeException(e)
+
+        override fun onCompleted() {}
+
+    }
 
 }

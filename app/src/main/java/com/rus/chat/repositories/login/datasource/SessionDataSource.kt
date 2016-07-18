@@ -24,7 +24,4 @@ interface SessionDataSource {
     @Handle(SessionQuery.SignOut::class)
     fun signOut(query: SessionQuery.SignOut): Observable<FirebaseUser>
 
-    @Handle(SessionQuery.AddToDb::class)
-    fun addToDb(query: SessionQuery.AddToDb): Observable<User>
-
 }

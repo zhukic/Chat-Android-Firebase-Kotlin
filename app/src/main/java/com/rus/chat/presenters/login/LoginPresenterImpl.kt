@@ -1,5 +1,6 @@
 package com.rus.chat.presenters.login
 
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.rus.chat.entity.conversation.User
 import com.rus.chat.entity.session.SessionQuery
@@ -35,6 +36,10 @@ class LoginPresenterImpl(var loginView: LoginView?) : LoginPresenter {
         useCase.execute(SessionQuery.Register(email, name, password), RegisterSubscriber())
     }
 
+    fun addUserToDb() {
+
+    }
+
     override fun signOut() {
         useCase = SignOut()
         useCase.execute(SessionQuery.SignOut(), SignOutSubscriber())
@@ -54,14 +59,16 @@ class LoginPresenterImpl(var loginView: LoginView?) : LoginPresenter {
         }
 
         override fun onNext(firebaseUser: FirebaseUser?) {
-            if(firebaseUser != null) loginView?.openConversationsActivity()
+            if(firebaseUser != null) loginView?.openConversationsActivity(firebaseUser.uid)
         }
 
     }
 
     private inner class SignInSubscriber : Subscriber<FirebaseUser>() {
 
-        override fun onNext(firebaseUser: FirebaseUser?) {}
+        override fun onNext(firebaseUser: FirebaseUser) {
+            loginView?.openConversationsActivity(firebaseUser.uid)
+        }
 
         override fun onError(e: Throwable) {
             loginView?.hideSignInProgress()
@@ -70,49 +77,31 @@ class LoginPresenterImpl(var loginView: LoginView?) : LoginPresenter {
 
         override fun onCompleted() {
             loginView?.hideSignInProgress()
-            loginView?.openConversationsActivity()
         }
     }
 
     private inner class RegisterSubscriber : Subscriber<FirebaseUser>() {
 
         override fun onNext(firebaseUser: FirebaseUser) {
-            useCase = AddUserToDb()
-            useCase.execute(SessionQuery.AddToDb(firebaseUser.uid, "zhukic"), AddUserToDbSubscriber())
+            loginView?.openConversationsActivity(firebaseUser.uid)
         }
 
         override fun onError(e: Throwable) {
             loginView?.hideRegisterProgress()
-            loginView?.onLoginError(e)
-        }
-
-        override fun onCompleted() { }
-    }
-
-    private inner class AddUserToDbSubscriber : Subscriber<User>() {
-
-        override fun onError(e: Throwable) {
             loginView?.onLoginError(e)
         }
 
         override fun onCompleted() {
             loginView?.hideRegisterProgress()
-            loginView?.openConversationsActivity()
         }
-
-        override fun onNext(t: User?) {}
-
     }
 
     private inner class SignOutSubscriber : Subscriber<FirebaseUser>() {
-        override fun onNext(t: FirebaseUser?) {
-        }
+        override fun onNext(t: FirebaseUser?) {}
 
-        override fun onError(e: Throwable?) {
-        }
+        override fun onError(e: Throwable?) {}
 
-        override fun onCompleted() {
-        }
+        override fun onCompleted() {}
 
     }
 

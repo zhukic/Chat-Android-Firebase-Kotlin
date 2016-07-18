@@ -1,11 +1,13 @@
 package com.rus.chat.ui.login
 
+import com.rus.chat.entity.conversation.User
+
 /**
  * Created by RUS on 11.07.2016.
  */
 interface LoginView {
 
-    fun openConversationsActivity()
+    fun openConversationsActivity(uid: String)
 
     fun onLoginError(t: Throwable)
 

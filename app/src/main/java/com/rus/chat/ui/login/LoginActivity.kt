@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.View
 import com.google.firebase.auth.FirebaseAuth
 import com.rus.chat.R
+import com.rus.chat.entity.conversation.User
 import com.rus.chat.presenters.login.LoginPresenter
 import com.rus.chat.presenters.login.LoginPresenterImpl
 import com.rus.chat.ui.conversations.ConversationsActivity
@@ -30,8 +31,9 @@ class LoginActivity : AppCompatActivity(), LoginView {
         else loginPresenter.initialize()
     }
 
-    override fun openConversationsActivity() {
+    override fun openConversationsActivity(uid: String) {
         val intent = Intent(this, ConversationsActivity::class.java)
+        intent.putExtra(UID, uid)
         startActivity(intent)
         finish()
     }
@@ -65,4 +67,7 @@ class LoginActivity : AppCompatActivity(), LoginView {
         this.loginPresenter.onDestroy()
     }
 
+    companion object {
+        val UID: String = "UID"
+    }
 }
