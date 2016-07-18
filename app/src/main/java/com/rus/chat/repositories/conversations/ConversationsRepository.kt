@@ -10,6 +10,6 @@ import rx.Observable
  */
 class ConversationsRepository {
 
-    fun query(): Observable<List<User>> = ConversationsDataSourceImpl().getConversations()
+    fun<T> query(): Observable<User> = ConversationsDataSourceImpl().getConversations()
 
 }

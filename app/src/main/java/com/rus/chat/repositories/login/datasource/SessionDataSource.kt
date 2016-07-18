@@ -2,6 +2,7 @@ package com.rus.chat.repositories.login.datasource
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.rus.chat.entity.conversation.User
 import com.rus.chat.entity.session.SessionQuery
 import com.rus.chat.entity.session.Handle
 import rx.Observable
@@ -22,5 +23,8 @@ interface SessionDataSource {
 
     @Handle(SessionQuery.SignOut::class)
     fun signOut(query: SessionQuery.SignOut): Observable<FirebaseUser>
+
+    @Handle(SessionQuery.AddToDb::class)
+    fun addToDb(query: SessionQuery.AddToDb): Observable<User>
 
 }

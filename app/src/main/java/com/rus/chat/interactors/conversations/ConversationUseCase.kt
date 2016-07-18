@@ -21,7 +21,7 @@ abstract class ConversationUseCase {
         conversationRepository = ConversationsRepository()
     }
 
-    abstract fun execute(subscriber: Subscriber<List<User>>)
+    abstract fun execute(subscriber: Subscriber<User>)
 
     fun unsubscribe() = subscription.unsubscribe()
 

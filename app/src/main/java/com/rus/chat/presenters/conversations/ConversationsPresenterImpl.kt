@@ -21,22 +21,19 @@ class ConversationsPresenterImpl(var conversationsView: ConversationsView?) : Co
         this.conversationsView = null
     }
 
-    private inner class ConversationsSubscriber : Subscriber<List<User>>() {
+    private inner class ConversationsSubscriber : Subscriber<User>() {
 
         override fun onError(e: Throwable?) {
             Logger.log("error")
             conversationsView?.onError(e)
         }
 
-        override fun onNext(user: List<User>?) {
-            user?.forEach { Logger.log(it.toString()) }
-            Logger.log("next")
-            
+        override fun onNext(user: User?) {
+            Logger.log(user.toString())
             //conversationsView?.setConversations(conversations!!)
         }
 
         override fun onCompleted() {
-            Logger.log("completed")
             conversationsView?.hideProgress()
         }
 

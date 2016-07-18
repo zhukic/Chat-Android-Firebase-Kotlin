@@ -4,7 +4,6 @@ import android.app.Application
 import com.google.firebase.auth.FirebaseAuth
 import com.rus.chat.di.AppComponent
 import com.rus.chat.di.AppModule
-import com.rus.chat.di.DaggerAppComponent
 import com.rus.chat.di.net.DaggerNetComponent
 import com.rus.chat.di.net.NetComponent
 import com.rus.chat.di.net.NetModule
@@ -31,22 +30,23 @@ class App : Application() {
         super.onCreate()
 
         createAppComponent()
-        createSessionRepository()
         createNetComponent()
+        createSessionRepository()
 
     }
 
     private fun createSessionRepository() {
         val sessionRepository = SessionRepository()
+
         HandleUtils.registerHandlers(sessionRepository, SessionDataSourceImpl())
 
         createSessionComponent(sessionRepository)
     }
 
     private fun createAppComponent() {
-        appComponent = DaggerAppComponent.builder()
-                .appModule(AppModule(this))
-                .build()
+//        appComponent = DaggerAppComponent.builder()
+//                .appModule(AppModule(this))
+//                .build()
     }
 
     private fun createSessionComponent(sessionRepository: SessionRepository) {

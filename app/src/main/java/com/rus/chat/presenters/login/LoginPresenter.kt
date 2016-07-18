@@ -9,7 +9,7 @@ interface LoginPresenter {
 
     fun signIn(email: String, password: String)
 
-    fun register(email: String, password: String)
+    fun register(email: String, name: String, password: String)
 
     fun signOut()
 

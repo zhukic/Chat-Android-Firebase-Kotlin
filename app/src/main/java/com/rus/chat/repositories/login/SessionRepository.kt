@@ -9,6 +9,7 @@ import com.rus.chat.utils.Logger
 import com.trello.rxlifecycle.kotlin.bindToLifecycle
 import rx.Observable
 import rx.Subscriber
+import java.lang.reflect.InvocationTargetException
 import java.lang.reflect.Method
 import java.util.*
 import javax.inject.Singleton
@@ -26,11 +27,17 @@ class SessionRepository() {
        queryHandlers = HashMap()
     }
 
-    fun query(query: Query): Observable<FirebaseUser> = queryHandlers[query.javaClass]?.handleQuery(query)
-            ?: throw IllegalArgumentException("No handler is registered for query ${query.javaClass}")
+    fun <T> query(query: Query): Observable<T> {
+        try {
+            return queryHandlers[query.javaClass]?.handleQuery(query) ?: throw IllegalArgumentException("No handler is registered for query ${query.javaClass}")
+        } catch (e: InvocationTargetException) {
+            Logger.log(e.message)
+        }
+        return null!!
+    }
 
     interface QueryHandler {
-        fun handleQuery(query: Query): Observable<FirebaseUser>
+        fun <T> handleQuery(query: Query): Observable<T>
     }
 
 }

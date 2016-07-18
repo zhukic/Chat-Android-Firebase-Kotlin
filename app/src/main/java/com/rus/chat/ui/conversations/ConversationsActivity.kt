@@ -41,7 +41,7 @@ class ConversationsActivity : AppCompatActivity(), ConversationsView, Conversati
 
     override fun onStart() {
         super.onStart()
-        conversationsPresenter.getConversations()
+        //conversationsPresenter.getConversations()
     }
 
     override fun showProgress() {

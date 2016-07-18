@@ -24,7 +24,7 @@ class LoginActivity : AppCompatActivity(), LoginView {
         loginPresenter = LoginPresenterImpl(this)
 
         signInButton.setOnClickListener { loginPresenter.signIn(email.text.toString(), password.text.toString()) }
-        registerButton.setOnClickListener { loginPresenter.register(email.text.toString(), password.text.toString()) }
+        registerButton.setOnClickListener { loginPresenter.register(email.text.toString(), name.text.toString(), password.text.toString()) }
 
         if(intent.extras?.getBoolean(ConversationsActivity.EXTRA_SIGN_OUT) ?: false) loginPresenter.signOut()
         else loginPresenter.initialize()

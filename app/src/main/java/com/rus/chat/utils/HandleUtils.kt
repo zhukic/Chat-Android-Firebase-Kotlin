@@ -21,7 +21,7 @@ class HandleUtils {
                 for(method in clazz.declaredMethods) {
                     val handle = method.getAnnotation(Handle::class.java)
                     repository.queryHandlers.put(handle.value.java, object : SessionRepository.QueryHandler {
-                        override fun handleQuery(query: Query): Observable<FirebaseUser> = method.invoke(dataSource, query) as Observable<FirebaseUser>
+                        override fun <T> handleQuery(query: Query): Observable<T> = method.invoke(dataSource, query) as Observable<T>
                     })
                 }
             }

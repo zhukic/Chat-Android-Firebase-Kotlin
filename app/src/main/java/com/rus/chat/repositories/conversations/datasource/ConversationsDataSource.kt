@@ -8,6 +8,6 @@ import rx.Observable
  */
 interface ConversationsDataSource {
 
-    fun getConversations(): Observable<List<User>>
+    fun getConversations(): Observable<User>
 
 }

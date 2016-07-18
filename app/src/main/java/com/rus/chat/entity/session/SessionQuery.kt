@@ -9,7 +9,9 @@ class SessionQuery {
 
     data class SignIn(val email: String, val password: String) : Query
 
-    data class Register(val email: String, val password: String) : Query
+    data class Register(val email: String,val name: String, val password: String) : Query
+
+    data class AddToDb(val uid: String, val name: String) : Query
 
     class SignOut : Query
 

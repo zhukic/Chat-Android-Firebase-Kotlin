@@ -2,6 +2,8 @@ package com.rus.chat.interactors.session
 
 import com.google.firebase.auth.FirebaseUser
 import com.rus.chat.App
+import com.rus.chat.entity.session.Query
+import com.rus.chat.entity.session.SessionQuery
 import com.rus.chat.repositories.login.SessionRepository
 import rx.Subscriber
 import rx.Subscription
@@ -23,7 +25,7 @@ abstract class SessionUseCase {
         App.sessionComponent.inject(this)
     }
 
-    abstract fun execute(email: String = "", password: String = "", subscriber: Subscriber<FirebaseUser> = Subscribers.empty())
+    abstract fun <T> execute(query: Query, subscriber: Subscriber<T> = Subscribers.empty())
 
     fun unsubscribe() = subscription.unsubscribe()
 }

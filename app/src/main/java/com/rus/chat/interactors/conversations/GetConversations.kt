@@ -13,9 +13,9 @@ import rx.schedulers.Schedulers
 @UseCase
 class GetConversations : ConversationUseCase() {
 
-    override fun execute(subscriber: Subscriber<List<User>>) {
+    override fun execute(subscriber: Subscriber<User>) {
         conversationRepository
-                .query()
+                .query<User>()
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(subscriber)

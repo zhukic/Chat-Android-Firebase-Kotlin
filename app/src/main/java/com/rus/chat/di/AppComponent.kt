@@ -1,5 +1,8 @@
 package com.rus.chat.di
 
+import com.rus.chat.di.net.NetModule
+import com.rus.chat.repositories.BaseDataSource
+import com.rus.chat.repositories.conversations.datasource.ConversationsDataSourceImpl
 import com.rus.chat.repositories.login.datasource.SessionDataSourceImpl
 import dagger.Component
 import javax.inject.Singleton
@@ -11,6 +14,6 @@ import javax.inject.Singleton
 @Singleton
 interface AppComponent {
 
-    fun inject(sessionDataSourceImpl: SessionDataSourceImpl)
+    fun inject(baseDataSource: BaseDataSource)
 
 }

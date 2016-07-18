@@ -1,7 +1,10 @@
 package com.rus.chat.di.net
 
+import com.rus.chat.repositories.BaseDataSource
 import com.rus.chat.repositories.conversations.datasource.ConversationsDataSourceImpl
+import com.rus.chat.repositories.login.datasource.SessionDataSourceImpl
 import dagger.Component
+import retrofit2.Retrofit
 import javax.inject.Singleton
 
 /**
@@ -10,5 +13,5 @@ import javax.inject.Singleton
 @Component(modules = arrayOf(NetModule::class))
 @Singleton
 interface NetComponent {
-    fun inject(conversationsDataSourceImpl: ConversationsDataSourceImpl)
+    fun inject(sessionDataSourceImpl: SessionDataSourceImpl)
 }

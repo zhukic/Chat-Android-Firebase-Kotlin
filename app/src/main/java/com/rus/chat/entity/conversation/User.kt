@@ -1,22 +1,7 @@
 package com.rus.chat.entity.conversation
 
+import javax.annotation.Generated
+import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
-/**
- * Created by RUS on 17.07.2016.
- */
-class User {
-    @SerializedName("name")
-    lateinit var name: String
-
-    @SerializedName("id")
-    lateinit var id: String
-
-    constructor() {
-
-    }
-
-    override fun toString(): String {
-        return "$id $name"
-    }
-}
+data class User(@SerializedName("name") val name: String = "")
