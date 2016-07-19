@@ -5,7 +5,7 @@ import dagger.Component
 import javax.inject.Singleton
 
 /**
- * Created by RUS on 14.07.2016.
+ * Created by RUS on 20.07.2016.
  */
 @Component(modules = arrayOf(SessionModule::class))
 @Singleton

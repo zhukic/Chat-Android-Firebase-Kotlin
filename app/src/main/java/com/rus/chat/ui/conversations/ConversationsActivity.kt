@@ -18,9 +18,11 @@ import com.rus.chat.presenters.conversations.ConversationsPresenterImpl
 import com.rus.chat.ui.adapter.ConversationsAdapter
 import com.rus.chat.ui.login.LoginActivity
 import com.rus.chat.utils.Logger
+import com.rus.chat.utils.log
 import com.rus.chat.utils.showSnackBar
 import kotlinx.android.synthetic.main.activity_conversations.*
 import kotlinx.android.synthetic.main.content_conversations.*
+import java.util.*
 
 class ConversationsActivity : AppCompatActivity(), ConversationsView, ConversationsAdapter.OnItemClickListener {
 
@@ -31,17 +33,19 @@ class ConversationsActivity : AppCompatActivity(), ConversationsView, Conversati
         setContentView(R.layout.activity_conversations)
         setSupportActionBar(toolbar)
 
+        val uid = intent.extras.getString(LoginActivity.KEY_UID)
+        log(uid)
+
         conversationsPresenter = ConversationsPresenterImpl(this)
 
         conversations_recyclerView.layoutManager = LinearLayoutManager(this)
-        conversations_recyclerView.adapter = ConversationsAdapter(this, listOf(1,2,3,4,5))
 
         fab.setOnClickListener { conversationsPresenter.getConversations() }
     }
 
     override fun onStart() {
         super.onStart()
-        //conversationsPresenter.getConversations()
+        conversationsPresenter.getConversations()
     }
 
     override fun showProgress() {
@@ -56,8 +60,8 @@ class ConversationsActivity : AppCompatActivity(), ConversationsView, Conversati
     override fun onLongItemClicked(position: Int) {
     }
 
-    override fun setConversations(conversations: List<Conversation>) {
-        conversations_recyclerView.adapter = ConversationsAdapter(this, listOf())
+    override fun setConversations(conversations: List<Conversation>?) {
+        conversations_recyclerView.adapter = ConversationsAdapter(this, conversations ?: Collections.emptyList<Conversation>())
     }
 
     override fun onError(throwable: Throwable?) {

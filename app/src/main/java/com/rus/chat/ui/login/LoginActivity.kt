@@ -33,7 +33,7 @@ class LoginActivity : AppCompatActivity(), LoginView {
 
     override fun openConversationsActivity(uid: String) {
         val intent = Intent(this, ConversationsActivity::class.java)
-        intent.putExtra(UID, uid)
+        intent.putExtra(KEY_UID, uid)
         startActivity(intent)
         finish()
     }
@@ -68,6 +68,6 @@ class LoginActivity : AppCompatActivity(), LoginView {
     }
 
     companion object {
-        val UID: String = "UID"
+        val KEY_UID: String = "UID"
     }
 }

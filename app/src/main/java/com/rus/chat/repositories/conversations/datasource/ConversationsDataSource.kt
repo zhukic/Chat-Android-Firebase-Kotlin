@@ -1,6 +1,10 @@
 package com.rus.chat.repositories.conversations.datasource
 
+import com.rus.chat.entity.conversation.Conversation
 import com.rus.chat.entity.conversation.User
+import com.rus.chat.entity.query.Handle
+import com.rus.chat.entity.query.BaseQuery
+import com.rus.chat.entity.query.conversation.ConversationsQuery
 import rx.Observable
 
 /**
@@ -8,6 +12,7 @@ import rx.Observable
  */
 interface ConversationsDataSource {
 
-    fun getConversations(): Observable<User>
+    @Handle(ConversationsQuery.GetConversations::class)
+    fun getConversations(query: BaseQuery): Observable<List<Conversation>>
 
 }

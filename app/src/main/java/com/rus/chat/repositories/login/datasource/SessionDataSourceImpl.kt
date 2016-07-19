@@ -4,9 +4,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.rus.chat.App
 import com.rus.chat.entity.conversation.User
-import com.rus.chat.entity.session.SessionQuery
-import com.rus.chat.repositories.BaseDataSource
-import com.rus.chat.repositories.FirebaseAPI
+import com.rus.chat.entity.query.session.SessionQuery
+import com.rus.chat.net.FirebaseAPI
 import retrofit2.Retrofit
 import rx.Observable
 import rx.Scheduler
@@ -18,7 +17,7 @@ import javax.inject.Inject
 /**
  * Created by RUS on 11.07.2016.
  */
-class SessionDataSourceImpl : BaseDataSource(), SessionDataSource {
+class SessionDataSourceImpl : SessionDataSource {
 
     @Inject
     lateinit var retrofit: Retrofit
@@ -43,7 +42,9 @@ class SessionDataSourceImpl : BaseDataSource(), SessionDataSource {
 
     override fun signIn(query: SessionQuery.SignIn): Observable<FirebaseUser> = Observable.create { subscriber ->
         FirebaseAuth.getInstance().signInWithEmailAndPassword(query.email, query.password)
-                .addOnSuccessListener { task -> subscriber.onCompleted() }
+                .addOnSuccessListener { task ->
+                    subscriber.onNext(task.user)
+                    subscriber.onCompleted() }
                 .addOnFailureListener { exception -> subscriber.onError(exception) }
     }
 

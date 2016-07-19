@@ -1,6 +1,7 @@
-package com.rus.chat.entity.session
+package com.rus.chat.entity.query.session
 
 import com.rus.chat.entity.conversation.User
+import com.rus.chat.entity.query.BaseQuery
 
 /**
  * Created by RUS on 12.07.2016.
@@ -15,4 +16,5 @@ class SessionQuery {
 
     class SignOut : Query
 
+    interface Query : BaseQuery
 }

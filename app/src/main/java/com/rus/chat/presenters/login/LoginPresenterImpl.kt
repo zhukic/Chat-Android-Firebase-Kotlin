@@ -3,7 +3,7 @@ package com.rus.chat.presenters.login
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.rus.chat.entity.conversation.User
-import com.rus.chat.entity.session.SessionQuery
+import com.rus.chat.entity.query.session.SessionQuery
 import com.rus.chat.interactors.session.*
 import com.rus.chat.ui.login.LoginView
 import com.rus.chat.utils.Logger
@@ -17,31 +17,23 @@ import rx.subscriptions.Subscriptions
  */
 class LoginPresenterImpl(var loginView: LoginView?) : LoginPresenter {
 
-    lateinit var useCase: SessionUseCase
+    var useCase: SessionUseCase = SessionUseCase()
 
     override fun initialize() {
-        useCase = GetCurrentUser()
         useCase.execute(SessionQuery.GetCurrentUser(), UserSubscriber())
     }
 
     override fun signIn(email: String, password: String) {
         loginView?.showSignInProgress()
-        useCase = SignIn()
         useCase.execute(SessionQuery.SignIn(email, password), SignInSubscriber())
     }
 
     override fun register(email: String, name: String, password: String) {
         loginView?.showRegisterProgress()
-        useCase = Register()
         useCase.execute(SessionQuery.Register(email, name, password), RegisterSubscriber())
     }
 
-    fun addUserToDb() {
-
-    }
-
     override fun signOut() {
-        useCase = SignOut()
         useCase.execute(SessionQuery.SignOut(), SignOutSubscriber())
     }
 

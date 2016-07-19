@@ -1,5 +1,6 @@
-package com.rus.chat.repositories
+package com.rus.chat.net
 
+import com.rus.chat.entity.conversation.Conversation
 import com.rus.chat.entity.conversation.User
 import retrofit2.Call
 import retrofit2.http.*
@@ -10,13 +11,13 @@ import rx.Observable
  */
 interface FirebaseAPI {
 
-    @GET("users/{id}.json")
-    fun getConversations(@Path("id") id: String): Observable<User>
-
     @PUT("users/{id}.json")
     fun addUser(@Path("id") id: String, @Body user: User): Observable<User>
 
     @GET("users/{id}.json")
     fun getUserById(@Path("id") uid: String): Observable<User>
+
+    @GET("conversations.json")
+    fun getConversations(): Observable<List<Conversation>>
 
 }

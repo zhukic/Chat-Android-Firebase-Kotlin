@@ -2,7 +2,6 @@ package com.rus.chat.di.net
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import com.rus.chat.utils.Logger
 import dagger.Module
 import dagger.Provides
 import retrofit2.Retrofit
@@ -11,7 +10,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
 /**
- * Created by RUS on 17.07.2016.
+ * Created by RUS on 20.07.2016.
  */
 @Module
 class NetModule {

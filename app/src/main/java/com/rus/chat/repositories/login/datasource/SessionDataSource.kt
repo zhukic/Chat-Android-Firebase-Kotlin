@@ -3,8 +3,8 @@ package com.rus.chat.repositories.login.datasource
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.rus.chat.entity.conversation.User
-import com.rus.chat.entity.session.SessionQuery
-import com.rus.chat.entity.session.Handle
+import com.rus.chat.entity.query.session.SessionQuery
+import com.rus.chat.entity.query.Handle
 import rx.Observable
 
 /**

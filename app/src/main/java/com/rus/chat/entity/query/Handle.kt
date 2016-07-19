@@ -1,6 +1,6 @@
-package com.rus.chat.entity.session
+package com.rus.chat.entity.query
 
-import com.rus.chat.entity.session.Query
+import com.rus.chat.entity.query.BaseQuery
 import java.lang.annotation.Retention
 import java.lang.annotation.RetentionPolicy
 import kotlin.reflect.KClass
@@ -10,4 +10,4 @@ import kotlin.reflect.KClass
  */
 @kotlin.annotation.Retention(AnnotationRetention.RUNTIME)
 @Target(AnnotationTarget.FUNCTION)
-annotation class Handle(val value: KClass<out Query>)
+annotation class Handle(val value: KClass<out BaseQuery>)

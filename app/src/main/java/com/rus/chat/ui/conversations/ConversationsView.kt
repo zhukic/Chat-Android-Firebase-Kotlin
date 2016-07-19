@@ -7,7 +7,7 @@ import com.rus.chat.entity.conversation.Conversation
  */
 interface ConversationsView {
 
-    fun setConversations(conversations: List<Conversation>)
+    fun setConversations(conversations: List<Conversation>?)
 
     fun showProgress()
 
