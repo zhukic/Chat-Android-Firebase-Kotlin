@@ -17,19 +17,12 @@ import javax.inject.Inject
 /**
  * Created by RUS on 11.07.2016.
  */
-class SessionDataSourceImpl : SessionDataSource {
+class SessionDataSourceImpl(val retrofit: Retrofit, val firebaseAuth: FirebaseAuth) : SessionDataSource {
 
-    @Inject
-    lateinit var retrofit: Retrofit
-
-    init {
-        App.netComponent.inject(this)
-    }
-
-    override fun getCurrentUser(query: SessionQuery.GetCurrentUser): Observable<FirebaseUser> = Observable.just(FirebaseAuth.getInstance().currentUser)
+    override fun getCurrentUser(query: SessionQuery.GetCurrentUser): Observable<FirebaseUser> = Observable.just(firebaseAuth.currentUser)
 
     override fun register(query: SessionQuery.Register): Observable<FirebaseUser> = Observable.create<FirebaseUser> { subscriber ->
-        FirebaseAuth.getInstance().createUserWithEmailAndPassword(query.email, query.password)
+        firebaseAuth.createUserWithEmailAndPassword(query.email, query.password)
                 .addOnSuccessListener { task ->
                     subscriber.onNext(task.user)
                     subscriber.onCompleted() }
@@ -41,7 +34,7 @@ class SessionDataSourceImpl : SessionDataSource {
                     .subscribe(AddUserToDbSubscriber()) }
 
     override fun signIn(query: SessionQuery.SignIn): Observable<FirebaseUser> = Observable.create { subscriber ->
-        FirebaseAuth.getInstance().signInWithEmailAndPassword(query.email, query.password)
+        firebaseAuth.signInWithEmailAndPassword(query.email, query.password)
                 .addOnSuccessListener { task ->
                     subscriber.onNext(task.user)
                     subscriber.onCompleted() }
@@ -49,7 +42,7 @@ class SessionDataSourceImpl : SessionDataSource {
     }
 
     override fun signOut(query: SessionQuery.SignOut): Observable<FirebaseUser> = Observable.create { subscriber ->
-        FirebaseAuth.getInstance().signOut()
+        firebaseAuth.signOut()
         subscriber.onCompleted()
     }
 

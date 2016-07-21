@@ -5,6 +5,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.rus.chat.di.conversations.ConversationsComponent
 import com.rus.chat.di.conversations.ConversationsModule
 import com.rus.chat.di.conversations.DaggerConversationsComponent
+import com.rus.chat.di.firebase.FirebaseModule
 import com.rus.chat.di.net.DaggerNetComponent
 import com.rus.chat.di.net.NetComponent
 import com.rus.chat.di.net.NetModule
@@ -24,6 +25,7 @@ import com.rus.chat.utils.Logger
 class App : Application() {
 
     companion object {
+        //lateinit var appComponent: AppComponent
         lateinit var netComponent: NetComponent
         lateinit var sessionComponent: SessionComponent
         lateinit var conversationsComponent: ConversationsComponent
@@ -34,47 +36,31 @@ class App : Application() {
 
         createAppComponent()
         createNetComponent()
-        createSessionRepository()
-        createConversationsRepository()
-    }
-
-    private fun createSessionRepository() {
-        val sessionRepository = SessionRepository()
-
-        HandleUtils.registerHandlers(sessionRepository, SessionDataSourceImpl())
-
-        createSessionComponent(sessionRepository)
-    }
-
-    private fun createConversationsRepository() {
-        val conversationsRepository = ConversationsRepository()
-
-        HandleUtils.registerHandlers(conversationsRepository, ConversationsDataSourceImpl())
-
-        createConversationsComponent(conversationsRepository)
+        createSessionComponent()
+        createConversationsComponent()
     }
 
     private fun createAppComponent() {
-//        appComponent = DaggerAppComponent.builder()
-//                .appModule(AppModule(this))
-//                .build()
-    }
-
-    private fun createSessionComponent(sessionRepository: SessionRepository) {
-        sessionComponent = DaggerSessionComponent.builder()
-                .sessionModule(SessionModule(sessionRepository))
-                .build()
-    }
-
-    private fun createConversationsComponent(conversationsRepository: ConversationsRepository) {
-        conversationsComponent = DaggerConversationsComponent.builder()
-                .conversationsModule(ConversationsModule(conversationsRepository))
-                .build()
+        /*appComponent = DaggerAppComponent.builder()
+                .appModule(AppModule(this))
+                .build()*/
     }
 
     private fun createNetComponent() {
         netComponent = DaggerNetComponent.builder()
                 .netModule(NetModule())
+                .build()
+    }
+
+    private fun createSessionComponent() {
+        sessionComponent = DaggerSessionComponent.builder()
+                .sessionModule(SessionModule())
+                .build()
+    }
+
+    private fun createConversationsComponent() {
+        conversationsComponent = DaggerConversationsComponent.builder()
+                .conversationsModule(ConversationsModule())
                 .build()
     }
 

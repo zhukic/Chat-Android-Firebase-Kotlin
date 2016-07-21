@@ -24,5 +24,5 @@ class ConversationsUseCase : BaseUseCase() {
         App.conversationsComponent.inject(this)
     }
 
-    fun <T> execute(query: ConversationsQuery.Query, subscriber: Subscriber<T>) = super.execute(query, subscriber)
+    fun <T> execute(query: ConversationsQuery.Query, subscriber: Subscriber<T> = Subscribers.empty()) = super.execute(query, subscriber)
 }

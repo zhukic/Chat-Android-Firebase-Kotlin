@@ -6,6 +6,7 @@ import com.rus.chat.entity.query.session.SessionQuery
 import com.rus.chat.entity.query.Handle
 import com.rus.chat.repositories.BaseRepository
 import com.rus.chat.repositories.login.datasource.SessionDataSourceImpl
+import com.rus.chat.utils.HandleUtils
 import com.rus.chat.utils.Logger
 import com.trello.rxlifecycle.kotlin.bindToLifecycle
 import rx.Observable
@@ -20,7 +21,11 @@ import kotlin.reflect.KClass
  * Created by RUS on 11.07.2016.
  */
 @Singleton
-class SessionRepository : BaseRepository() {
+class SessionRepository(sessionDataSourceImpl: SessionDataSourceImpl) : BaseRepository() {
+
+    init {
+        HandleUtils.registerHandlers(this, sessionDataSourceImpl)
+    }
 
     override fun <T> query(baseQuery: BaseQuery): Observable<T> = getObservable(baseQuery)
 

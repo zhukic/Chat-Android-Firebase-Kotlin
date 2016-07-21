@@ -24,25 +24,16 @@ import javax.inject.Inject
 /**
  * Created by RUS on 17.07.2016.
  */
-class ConversationsDataSourceImpl : ConversationsDataSource {
-
-    @Inject
-    lateinit var retrofit: Retrofit
-
-    init {
-        App.netComponent.inject(this)
-    }
+class ConversationsDataSourceImpl(val retrofit: Retrofit, val firebaseDatabase: FirebaseDatabase) : ConversationsDataSource {
 
     override fun initializeEventListener(query: ConversationsQuery.Initialize): Observable<ConversationResponse.Response> = Observable.create { subscriber ->
-        FirebaseDatabase.getInstance()
-                .reference
+        firebaseDatabase.reference
                 .child("conversations")
                 .addChildEventListener(object : ChildEventListener {
                     override fun onChildMoved(dataSnapshot: DataSnapshot?, previousChildName: String?) {
                     }
 
                     override fun onChildChanged(dataSnapshot: DataSnapshot?, previousChildName: String?) {
-                        Logger.log("changed")
                         if(dataSnapshot != null) {
                             val conversation = dataSnapshot.getValue(Conversation::class.java)
                             conversation.id = dataSnapshot.key
@@ -51,7 +42,6 @@ class ConversationsDataSourceImpl : ConversationsDataSource {
                     }
 
                     override fun onChildAdded(dataSnapshot: DataSnapshot?, previousChildName: String?) {
-                        Logger.log("added")
                         if(dataSnapshot != null) {
                             val conversation = dataSnapshot.getValue(Conversation::class.java)
                             Logger.log(conversation.toString())
@@ -61,7 +51,6 @@ class ConversationsDataSourceImpl : ConversationsDataSource {
                     }
 
                     override fun onChildRemoved(dataSnapshot: DataSnapshot?) {
-                        Logger.log("removed")
                         if(dataSnapshot != null) {
                             val conversation = dataSnapshot.getValue(Conversation::class.java)
                             Logger.log(conversation.toString())
@@ -76,24 +65,6 @@ class ConversationsDataSourceImpl : ConversationsDataSource {
 
                 })
 
-    }
-
-    override fun getConversations(query: ConversationsQuery.GetConversations): Observable<List<Conversation>> = Observable.create { subscriber ->
-        FirebaseDatabase.getInstance()
-                .reference
-                .child("conversations")
-                .addListenerForSingleValueEvent(object : ValueEventListener{
-                    override fun onCancelled(databaseError: DatabaseError?) {
-                        subscriber.onError(databaseError?.toException())
-                    }
-
-                    override fun onDataChange(dataSnapshot: DataSnapshot?) {
-                        val conversations = mutableListOf<Conversation>()
-                        dataSnapshot?.children?.forEach { conversations.add(it.getValue(Conversation::class.java)) }
-                        subscriber.onNext(conversations)
-                        subscriber.onCompleted()
-                    }
-                })
     }
 
     override fun createConversation(query: ConversationsQuery.CreateConversation): Observable<Conversation> = retrofit.create(FirebaseAPI::class.java)

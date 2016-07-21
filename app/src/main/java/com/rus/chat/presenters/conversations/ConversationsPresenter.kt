@@ -11,8 +11,6 @@ interface ConversationsPresenter {
 
     fun createConversation(conversationName: String)
 
-    fun getConversations()
-
     fun onDestroy()
 
 }

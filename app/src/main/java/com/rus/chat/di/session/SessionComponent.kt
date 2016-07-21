@@ -1,6 +1,7 @@
 package com.rus.chat.di.session
 
 import com.rus.chat.interactors.session.SessionUseCase
+import com.rus.chat.repositories.login.datasource.SessionDataSourceImpl
 import dagger.Component
 import javax.inject.Singleton
 

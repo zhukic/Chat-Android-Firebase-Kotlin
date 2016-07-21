@@ -32,31 +32,9 @@ class ConversationsPresenterImpl(var conversationsView: ConversationsView?) : Co
         useCase.execute(ConversationsQuery.CreateConversation(Conversation(name = conversationName)), CreateConversationSubscriber())
     }
 
-    override fun getConversations() {
-        this.conversationsView?.showProgress()
-        useCase.execute(ConversationsQuery.GetConversations(), ConversationsSubscriber())
-    }
-
     override fun onDestroy() {
         this.conversationsView = null
         this.useCase.unsubscribe()
-    }
-
-    private inner class ConversationsSubscriber : Subscriber<List<Conversation>>() {
-
-        override fun onError(e: Throwable?) {
-            Logger.log("error")
-            conversationsView?.onError(e)
-        }
-
-        override fun onNext(conversations: List<Conversation>?) {
-            conversationsView?.setConversations(conversations)
-        }
-
-        override fun onCompleted() {
-            conversationsView?.hideProgress()
-        }
-
     }
 
     private inner class CreateConversationSubscriber : Subscriber<Conversation>() {

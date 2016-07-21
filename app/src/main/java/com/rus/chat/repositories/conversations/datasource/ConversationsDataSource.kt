@@ -13,13 +13,10 @@ import rx.Observable
  */
 interface ConversationsDataSource {
 
-    @Handle(ConversationsQuery.GetConversations::class)
-    fun getConversations(query: ConversationsQuery.GetConversations): Observable<List<Conversation>>
+    @Handle(ConversationsQuery.Initialize::class)
+    fun initializeEventListener(query: ConversationsQuery.Initialize): Observable<ConversationResponse.Response>
 
     @Handle(ConversationsQuery.CreateConversation::class)
     fun createConversation(query: ConversationsQuery.CreateConversation): Observable<Conversation>
-
-    @Handle(ConversationsQuery.Initialize::class)
-    fun initializeEventListener(query: ConversationsQuery.Initialize): Observable<ConversationResponse.Response>
 
 }

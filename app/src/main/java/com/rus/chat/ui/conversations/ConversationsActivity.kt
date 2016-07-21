@@ -55,7 +55,6 @@ class ConversationsActivity : AppCompatActivity(), ConversationsView, Conversati
     override fun onStart() {
         super.onStart()
         conversationsPresenter.initialize()
-        //conversationsPresenter.getConversations()
     }
 
     override fun showCreateConversationFragment() {
