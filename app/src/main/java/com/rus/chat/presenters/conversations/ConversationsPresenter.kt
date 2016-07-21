@@ -5,6 +5,12 @@ package com.rus.chat.presenters.conversations
  */
 interface ConversationsPresenter {
 
+    fun initialize()
+
+    fun onCreateConversationButtonClicked()
+
+    fun createConversation(conversationName: String)
+
     fun getConversations()
 
     fun onDestroy()

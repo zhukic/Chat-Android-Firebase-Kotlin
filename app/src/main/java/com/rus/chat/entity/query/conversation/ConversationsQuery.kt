@@ -1,5 +1,6 @@
 package com.rus.chat.entity.query.conversation
 
+import com.rus.chat.entity.conversation.Conversation
 import com.rus.chat.entity.query.BaseQuery
 
 /**
@@ -8,6 +9,10 @@ import com.rus.chat.entity.query.BaseQuery
 class ConversationsQuery {
 
     class GetConversations : Query
+
+    class CreateConversation(val conversation: Conversation) : Query
+
+    class Initialize : Query
 
     interface Query: BaseQuery
 

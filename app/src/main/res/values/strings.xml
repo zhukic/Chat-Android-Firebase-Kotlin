@@ -1,8 +1,7 @@
 <resources>
     <string name="app_name">Chat</string>
     <string name="title_activity_login1">Sign in</string>
-
-    <!-- Strings related to login -->
+    
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
     <string name="prompt_name">Name</string>
@@ -17,4 +16,9 @@
         completions."
     </string>
     <string name="title_activity_conversations">ConversationsActivity</string>
+    <string name="create_conversation">Создать беседу</string>
+    <string name="input_conversation_name">Введите название беседы</string>
+    <string name="conversation_name">Название беседы</string>
+    <string name="conversations_loading">Загрузка бесед</string>
+    <string name="wait">Подождите, пожалуйста</string>
 </resources>

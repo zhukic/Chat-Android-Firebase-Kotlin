@@ -12,7 +12,7 @@ class Logger {
         val TAG: String = "TAG"
 
         fun log(message: String?) {
-            Log.d(TAG, message)
+            Log.d(TAG, message ?: "Error")
         }
     }
 

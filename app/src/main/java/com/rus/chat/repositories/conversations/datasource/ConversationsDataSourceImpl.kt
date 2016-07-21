@@ -1,19 +1,23 @@
 package com.rus.chat.repositories.conversations.datasource
 
+import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.*
 import com.rus.chat.App
 import com.rus.chat.entity.conversation.Conversation
 import com.rus.chat.entity.conversation.User
 import com.rus.chat.entity.query.BaseQuery
+import com.rus.chat.entity.query.conversation.ConversationsQuery
+import com.rus.chat.entity.response.ConversationResponse
 import com.rus.chat.net.FirebaseAPI
 import com.rus.chat.utils.Logger
-import com.rus.chat.utils.log
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import rx.Observable
+import rx.Subscriber
+import rx.lang.kotlin.subscriber
 import java.util.*
 import javax.inject.Inject
 
@@ -29,6 +33,76 @@ class ConversationsDataSourceImpl : ConversationsDataSource {
         App.netComponent.inject(this)
     }
 
-    override fun getConversations(query: BaseQuery): Observable<List<Conversation>> = retrofit.create(FirebaseAPI::class.java).getConversations()
+    override fun initializeEventListener(query: ConversationsQuery.Initialize): Observable<ConversationResponse.Response> = Observable.create { subscriber ->
+        FirebaseDatabase.getInstance()
+                .reference
+                .child("conversations")
+                .addChildEventListener(object : ChildEventListener {
+                    override fun onChildMoved(dataSnapshot: DataSnapshot?, previousChildName: String?) {
+                    }
+
+                    override fun onChildChanged(dataSnapshot: DataSnapshot?, previousChildName: String?) {
+                        Logger.log("changed")
+                        if(dataSnapshot != null) {
+                            val conversation = dataSnapshot.getValue(Conversation::class.java)
+                            conversation.id = dataSnapshot.key
+                            subscriber.onNext(ConversationResponse.ConversationChanged(conversation))
+                        }
+                    }
+
+                    override fun onChildAdded(dataSnapshot: DataSnapshot?, previousChildName: String?) {
+                        Logger.log("added")
+                        if(dataSnapshot != null) {
+                            val conversation = dataSnapshot.getValue(Conversation::class.java)
+                            Logger.log(conversation.toString())
+                            conversation.id = dataSnapshot.key
+                            subscriber.onNext(ConversationResponse.ConversationAdded(conversation))
+                        }
+                    }
+
+                    override fun onChildRemoved(dataSnapshot: DataSnapshot?) {
+                        Logger.log("removed")
+                        if(dataSnapshot != null) {
+                            val conversation = dataSnapshot.getValue(Conversation::class.java)
+                            Logger.log(conversation.toString())
+                            conversation.id = dataSnapshot.key
+                            subscriber.onNext(ConversationResponse.ConversationRemoved(conversation))
+                        }
+                    }
+
+                    override fun onCancelled(error: DatabaseError?) {
+                        subscriber.onError(error?.toException())
+                    }
+
+                })
+
+    }
+
+    override fun getConversations(query: ConversationsQuery.GetConversations): Observable<List<Conversation>> = Observable.create { subscriber ->
+        FirebaseDatabase.getInstance()
+                .reference
+                .child("conversations")
+                .addListenerForSingleValueEvent(object : ValueEventListener{
+                    override fun onCancelled(databaseError: DatabaseError?) {
+                        subscriber.onError(databaseError?.toException())
+                    }
+
+                    override fun onDataChange(dataSnapshot: DataSnapshot?) {
+                        val conversations = mutableListOf<Conversation>()
+                        dataSnapshot?.children?.forEach { conversations.add(it.getValue(Conversation::class.java)) }
+                        subscriber.onNext(conversations)
+                        subscriber.onCompleted()
+                    }
+                })
+    }
+
+    override fun createConversation(query: ConversationsQuery.CreateConversation): Observable<Conversation> = retrofit.create(FirebaseAPI::class.java)
+            .createConversation(query.conversation)
+            .map { setIdToConversation(query.conversation, it.name) }
+
+    private fun setIdToConversation(conversation: Conversation, id: String): Conversation {
+        conversation.id = id
+        return conversation
+    }
 
 }

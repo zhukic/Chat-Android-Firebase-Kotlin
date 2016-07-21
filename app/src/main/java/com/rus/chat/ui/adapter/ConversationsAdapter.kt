@@ -12,24 +12,28 @@ import kotlinx.android.synthetic.main.conversation_item.view.*
 /**
  * Created by RUS on 17.07.2016.
  */
-class ConversationsAdapter(val onItemClickListener: OnItemClickListener, val items: List<Conversation>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class ConversationsAdapter(val onItemClickListener: OnItemClickListener, val items: MutableList<Conversation>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     interface OnItemClickListener {
         fun onItemClicked(position: Int)
         fun onLongItemClicked(position: Int)
     }
 
-    class ItemViewHolder(val v: View,
-                         val conversationName: TextView = v.conversation_name,
-                         val conversationLastMessageTime: TextView = v.conversation_last_message_time,
-                         val conversationLastMessage: TextView = v.conversation_last_message,
-                         val conversationUnreadMessagesCount: TextView = v.conversation_unread_count) : RecyclerView.ViewHolder(v) {
+    inner class ItemViewHolder(val v: View,
+                               val conversationName: TextView = v.conversation_name,
+                               val conversationLastMessageTime: TextView = v.conversation_last_message_time,
+                               val conversationLastMessage: TextView = v.conversation_last_message,
+                               val conversationUnreadMessagesCount: TextView = v.conversation_unread_count) : RecyclerView.ViewHolder(v) {
 
         fun bind(conversation: Conversation) {
             this.conversationLastMessage.text = conversation.lastMessage
             this.conversationName.text = conversation.name
-            this.conversationLastMessage.text = conversation.lastMessage
-            this.conversationUnreadMessagesCount.text = conversation.countOfUnreadMessages.toString()
+            this.conversationLastMessageTime.text = conversation.lastMessageTime
+
+            if(conversation.countOfUnreadMessages == 0) this.conversationUnreadMessagesCount.visibility = View.GONE
+            else this.conversationUnreadMessagesCount.text = conversation.countOfUnreadMessages.toString()
+
+            this.itemView.setOnClickListener { onItemClickListener.onItemClicked(this.adapterPosition) }
         }
     }
 

@@ -9,6 +9,14 @@ interface ConversationsView {
 
     fun setConversations(conversations: List<Conversation>?)
 
+    fun showCreateConversationFragment()
+
+    fun addConversation(conversation: Conversation?)
+
+    fun changeConversation(conversation: Conversation?)
+
+    fun removeConversation(conversation: Conversation?)
+
     fun showProgress()
 
     fun hideProgress()
