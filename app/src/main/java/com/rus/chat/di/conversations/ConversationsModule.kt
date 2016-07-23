@@ -3,6 +3,8 @@ package com.rus.chat.di.conversations
 import com.google.firebase.database.FirebaseDatabase
 import com.rus.chat.di.firebase.FirebaseModule
 import com.rus.chat.di.net.NetModule
+import com.rus.chat.entity.conversation.Conversation
+import com.rus.chat.interactors.conversations.ConversationsUseCase
 import com.rus.chat.repositories.BaseRepository
 import com.rus.chat.repositories.conversations.ConversationsRepository
 import com.rus.chat.repositories.conversations.datasource.ConversationsDataSourceImpl
@@ -16,6 +18,10 @@ import javax.inject.Singleton
  */
 @Module(includes = arrayOf(NetModule::class, FirebaseModule::class))
 class ConversationsModule() {
+
+    @Provides
+    @Singleton
+    fun getConversationUseCase(conversationsRepository: ConversationsRepository): ConversationsUseCase = ConversationsUseCase(conversationsRepository)
 
     @Provides
     @Singleton

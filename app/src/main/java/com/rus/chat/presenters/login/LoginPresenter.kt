@@ -1,9 +1,14 @@
 package com.rus.chat.presenters.login
 
+import com.rus.chat.presenters.BasePresenter
+import com.rus.chat.ui.login.LoginView
+
 /**
  * Created by RUS on 11.07.2016.
  */
-interface LoginPresenter {
+interface LoginPresenter : BasePresenter {
+
+    fun attachView(loginView: LoginView)
 
     fun initialize()
 
@@ -12,7 +17,5 @@ interface LoginPresenter {
     fun register(email: String, name: String, password: String)
 
     fun signOut()
-
-    fun onDestroy()
 
 }

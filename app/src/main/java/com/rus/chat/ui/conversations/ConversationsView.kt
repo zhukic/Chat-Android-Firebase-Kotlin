@@ -1,11 +1,12 @@
 package com.rus.chat.ui.conversations
 
 import com.rus.chat.entity.conversation.Conversation
+import com.rus.chat.ui.BaseView
 
 /**
  * Created by RUS on 17.07.2016.
  */
-interface ConversationsView {
+interface ConversationsView : BaseView {
 
     fun setConversations(conversations: List<Conversation>?)
 
@@ -17,12 +18,10 @@ interface ConversationsView {
 
     fun removeConversation(conversation: Conversation?)
 
+    fun openChatActivity(chatId: String)
+
     fun showProgress()
 
     fun hideProgress()
-
-    fun onError(throwable: Throwable?)
-
-    fun showSnackbar(message: String?)
 
 }

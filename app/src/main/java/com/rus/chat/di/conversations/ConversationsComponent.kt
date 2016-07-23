@@ -3,6 +3,7 @@ package com.rus.chat.di.conversations
 import com.rus.chat.di.session.SessionModule
 import com.rus.chat.interactors.conversations.ConversationsUseCase
 import com.rus.chat.interactors.session.SessionUseCase
+import com.rus.chat.ui.conversations.ConversationsActivity
 import dagger.Component
 import javax.inject.Singleton
 
@@ -13,6 +14,6 @@ import javax.inject.Singleton
 @Singleton
 interface ConversationsComponent {
 
-    fun inject(conversationsUseCase: ConversationsUseCase)
+    fun inject(conversationsActivity: ConversationsActivity)
 
 }

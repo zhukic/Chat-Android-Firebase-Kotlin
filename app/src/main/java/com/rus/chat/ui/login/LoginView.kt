@@ -1,17 +1,14 @@
 package com.rus.chat.ui.login
 
 import com.rus.chat.entity.conversation.User
+import com.rus.chat.ui.BaseView
 
 /**
  * Created by RUS on 11.07.2016.
  */
-interface LoginView {
+interface LoginView : BaseView {
 
     fun openConversationsActivity(uid: String)
-
-    fun onLoginError(t: Throwable)
-
-    fun showToast(message: String)
 
     fun showSignInProgress()
 

@@ -5,19 +5,27 @@ import com.google.firebase.auth.FirebaseUser
 import com.rus.chat.entity.conversation.User
 import com.rus.chat.entity.query.session.SessionQuery
 import com.rus.chat.interactors.session.*
+import com.rus.chat.repositories.BaseRepository
+import com.rus.chat.repositories.login.SessionRepository
 import com.rus.chat.ui.login.LoginView
 import com.rus.chat.utils.Logger
 import rx.Subscriber
 import rx.Subscription
 import rx.observers.Subscribers
 import rx.subscriptions.Subscriptions
+import javax.inject.Inject
 
 /**
  * Created by RUS on 10.07.2016.
  */
-class LoginPresenterImpl(var loginView: LoginView?) : LoginPresenter {
 
-    var useCase: SessionUseCase = SessionUseCase()
+class LoginPresenterImpl @Inject constructor(val useCase: SessionUseCase) : LoginPresenter {
+
+    var loginView: LoginView? = null
+
+    override fun attachView(loginView: LoginView) {
+        this.loginView = loginView
+    }
 
     override fun initialize() {
         useCase.execute(SessionQuery.GetCurrentUser(), UserSubscriber())
@@ -64,7 +72,7 @@ class LoginPresenterImpl(var loginView: LoginView?) : LoginPresenter {
 
         override fun onError(e: Throwable) {
             loginView?.hideSignInProgress()
-            loginView?.onLoginError(e)
+            loginView?.onError(e)
         }
 
         override fun onCompleted() {
@@ -80,7 +88,7 @@ class LoginPresenterImpl(var loginView: LoginView?) : LoginPresenter {
 
         override fun onError(e: Throwable) {
             loginView?.hideRegisterProgress()
-            loginView?.onLoginError(e)
+            loginView?.onError(e)
         }
 
         override fun onCompleted() {

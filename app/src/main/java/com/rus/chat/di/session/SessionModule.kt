@@ -3,6 +3,7 @@ package com.rus.chat.di.session
 import com.google.firebase.auth.FirebaseAuth
 import com.rus.chat.di.firebase.FirebaseModule
 import com.rus.chat.di.net.NetModule
+import com.rus.chat.interactors.session.SessionUseCase
 import com.rus.chat.repositories.BaseRepository
 import com.rus.chat.repositories.login.SessionRepository
 import com.rus.chat.repositories.login.datasource.SessionDataSourceImpl
@@ -16,6 +17,10 @@ import javax.inject.Singleton
  */
 @Module(includes = arrayOf(FirebaseModule::class, NetModule::class))
 class SessionModule() {
+
+    @Provides
+    @Singleton
+    fun getSessionUseCase(baseRepository: BaseRepository): SessionUseCase = SessionUseCase(baseRepository)
 
     @Provides
     @Singleton

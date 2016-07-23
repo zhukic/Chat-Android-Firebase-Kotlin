@@ -15,8 +15,8 @@ import kotlinx.android.synthetic.main.conversation_item.view.*
 class ConversationsAdapter(val onItemClickListener: OnItemClickListener, val items: MutableList<Conversation>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     interface OnItemClickListener {
-        fun onItemClicked(position: Int)
-        fun onLongItemClicked(position: Int)
+        fun onItemClicked(item: Conversation)
+        fun onLongItemClicked(item: Conversation)
     }
 
     inner class ItemViewHolder(val v: View,
@@ -33,7 +33,7 @@ class ConversationsAdapter(val onItemClickListener: OnItemClickListener, val ite
             if(conversation.countOfUnreadMessages == 0) this.conversationUnreadMessagesCount.visibility = View.GONE
             else this.conversationUnreadMessagesCount.text = conversation.countOfUnreadMessages.toString()
 
-            this.itemView.setOnClickListener { onItemClickListener.onItemClicked(this.adapterPosition) }
+            this.itemView.setOnClickListener { onItemClickListener.onItemClicked(conversation) }
         }
     }
 

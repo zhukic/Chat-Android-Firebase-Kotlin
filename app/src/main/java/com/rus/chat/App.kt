@@ -2,6 +2,9 @@ package com.rus.chat
 
 import android.app.Application
 import com.google.firebase.auth.FirebaseAuth
+import com.rus.chat.di.chat.ChatComponent
+import com.rus.chat.di.chat.ChatModule
+import com.rus.chat.di.chat.DaggerChatComponent
 import com.rus.chat.di.conversations.ConversationsComponent
 import com.rus.chat.di.conversations.ConversationsModule
 import com.rus.chat.di.conversations.DaggerConversationsComponent
@@ -24,12 +27,10 @@ import com.rus.chat.utils.Logger
  */
 class App : Application() {
 
-    companion object {
-        //lateinit var appComponent: AppComponent
-        lateinit var netComponent: NetComponent
-        lateinit var sessionComponent: SessionComponent
-        lateinit var conversationsComponent: ConversationsComponent
-    }
+    lateinit var netComponent: NetComponent
+    lateinit var sessionComponent: SessionComponent
+    lateinit var conversationsComponent: ConversationsComponent
+    lateinit var chatComponent: ChatComponent
 
     override fun onCreate() {
         super.onCreate()
@@ -38,6 +39,7 @@ class App : Application() {
         createNetComponent()
         createSessionComponent()
         createConversationsComponent()
+        createChatComponent()
     }
 
     private fun createAppComponent() {
@@ -61,6 +63,12 @@ class App : Application() {
     private fun createConversationsComponent() {
         conversationsComponent = DaggerConversationsComponent.builder()
                 .conversationsModule(ConversationsModule())
+                .build()
+    }
+
+    private fun createChatComponent() {
+        chatComponent = DaggerChatComponent.builder()
+                .chatModule(ChatModule())
                 .build()
     }
 

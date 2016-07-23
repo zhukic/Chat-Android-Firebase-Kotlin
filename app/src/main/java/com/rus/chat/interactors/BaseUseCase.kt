@@ -14,10 +14,8 @@ import javax.inject.Inject
 /**
  * Created by RUS on 20.07.2016.
  */
-abstract class BaseUseCase {
+abstract class BaseUseCase(val baseRepository: BaseRepository) {
 
-    @Inject
-    lateinit var baseRepository: BaseRepository
     private var subscription: Subscription = Subscriptions.empty()
 
     open protected fun <T> execute(baseQuery: BaseQuery, subscriber: Subscriber<T>) {

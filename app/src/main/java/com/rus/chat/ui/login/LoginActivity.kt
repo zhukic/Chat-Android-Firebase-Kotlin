@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import com.google.firebase.auth.FirebaseAuth
+import com.rus.chat.App
 import com.rus.chat.R
 import com.rus.chat.entity.conversation.User
 import com.rus.chat.presenters.login.LoginPresenter
@@ -13,16 +14,20 @@ import com.rus.chat.ui.conversations.ConversationsActivity
 import com.rus.chat.utils.Logger
 import com.rus.chat.utils.toast
 import kotlinx.android.synthetic.main.activity_login.*
+import javax.inject.Inject
 
 class LoginActivity : AppCompatActivity(), LoginView {
 
-    lateinit var loginPresenter: LoginPresenter
+    @Inject
+    lateinit var loginPresenter: LoginPresenterImpl
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        loginPresenter = LoginPresenterImpl(this)
+        (application as App).sessionComponent.inject(this)
+
+        loginPresenter.attachView(this)
 
         signInButton.setOnClickListener { loginPresenter.signIn(email.text.toString(), password.text.toString()) }
         registerButton.setOnClickListener { loginPresenter.register(email.text.toString(), name.text.toString(), password.text.toString()) }
@@ -38,9 +43,11 @@ class LoginActivity : AppCompatActivity(), LoginView {
         finish()
     }
 
-    override fun onLoginError(t: Throwable) = toast("${t.javaClass.name}: ${t.message}")
+    override fun onError(t: Throwable) = toast("${t.javaClass.name}: ${t.message}")
 
     override fun showToast(message: String) = toast(message)
+
+    override fun showSnackbar(message: String) {}
 
     override fun showSignInProgress() {
         signInButton.visibility = View.GONE

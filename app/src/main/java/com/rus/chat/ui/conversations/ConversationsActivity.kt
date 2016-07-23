@@ -13,22 +13,27 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import com.afollestad.materialdialogs.MaterialDialog
+import com.rus.chat.App
 
 import com.rus.chat.R
 import com.rus.chat.entity.conversation.Conversation
 import com.rus.chat.presenters.conversations.ConversationsPresenter
 import com.rus.chat.presenters.conversations.ConversationsPresenterImpl
 import com.rus.chat.ui.adapter.ConversationsAdapter
+import com.rus.chat.ui.chat.ChatActivity
 import com.rus.chat.ui.login.LoginActivity
 import com.rus.chat.utils.Logger
 import com.rus.chat.utils.showSnackBar
+import com.rus.chat.utils.toast
 import kotlinx.android.synthetic.main.activity_conversations.*
 import kotlinx.android.synthetic.main.content_conversations.*
 import java.util.*
+import javax.inject.Inject
 
 class ConversationsActivity : AppCompatActivity(), ConversationsView, ConversationsAdapter.OnItemClickListener {
 
-    lateinit var conversationsPresenter: ConversationsPresenter
+    @Inject
+    lateinit var conversationsPresenter: ConversationsPresenterImpl
     lateinit var conversationsAdapter: ConversationsAdapter
     private val progressDialog: MaterialDialog by lazy {
         MaterialDialog.Builder(this)
@@ -42,7 +47,7 @@ class ConversationsActivity : AppCompatActivity(), ConversationsView, Conversati
         setContentView(R.layout.activity_conversations)
         setSupportActionBar(toolbar)
 
-        conversationsPresenter = ConversationsPresenterImpl(this)
+        (application as App).conversationsComponent.inject(this)
         conversationsAdapter = ConversationsAdapter(this, mutableListOf<Conversation>())
         conversations_recyclerView.adapter = conversationsAdapter
 
@@ -50,10 +55,13 @@ class ConversationsActivity : AppCompatActivity(), ConversationsView, Conversati
 
         fab.setOnClickListener { conversationsPresenter.onCreateConversationButtonClicked() }
 
+        conversationsPresenter.attachView(this)
+
     }
 
     override fun onStart() {
         super.onStart()
+        setProgressBarIndeterminateVisibility(true)
         conversationsPresenter.initialize()
     }
 
@@ -97,23 +105,34 @@ class ConversationsActivity : AppCompatActivity(), ConversationsView, Conversati
         progressDialog.hide()
     }
 
-    override fun onItemClicked(position: Int) {
+    override fun onItemClicked(item: Conversation) {
+        openChatActivity(item.id)
     }
 
-    override fun onLongItemClicked(position: Int) {
+    override fun onLongItemClicked(item: Conversation) {
     }
 
     override fun setConversations(conversations: List<Conversation>?) {
         conversations_recyclerView.adapter = ConversationsAdapter(this, conversations!!.toMutableList())
     }
 
-    override fun onError(throwable: Throwable?) {
+    override fun openChatActivity(chatId: String) {
+        val intent = Intent(this, ChatActivity::class.java)
+        intent.putExtra(EXTRA_CHAT_ID, chatId)
+        startActivity(intent)
+    }
+
+    override fun onError(throwable: Throwable) {
         Logger.log(throwable?.message)
         conversations_recyclerView.showSnackBar(throwable?.message)
     }
 
-    override fun showSnackbar(message: String?) {
+    override fun showSnackbar(message: String) {
         conversations_recyclerView.showSnackBar(message)
+    }
+
+    override fun showToast(message: String) {
+        toast(message)
     }
 
     private fun openLoginActivity() {
@@ -137,6 +156,7 @@ class ConversationsActivity : AppCompatActivity(), ConversationsView, Conversati
 
     companion object {
         val EXTRA_SIGN_OUT: String = "SIGN_OUT"
+        val EXTRA_CHAT_ID: String = "CHAT_ID"
     }
 
 }

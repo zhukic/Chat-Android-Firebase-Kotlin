@@ -10,13 +10,14 @@ import com.rus.chat.repositories.login.SessionRepository
 import com.rus.chat.utils.HandleUtils
 import rx.Observable
 import java.util.*
+import javax.inject.Inject
 import javax.inject.Singleton
 
 /**
  * Created by RUS on 17.07.2016.
  */
 @Singleton
-class ConversationsRepository(conversationsDataSourceImpl: ConversationsDataSourceImpl) : BaseRepository() {
+class ConversationsRepository @Inject constructor(conversationsDataSourceImpl: ConversationsDataSourceImpl) : BaseRepository() {
 
     init {
         HandleUtils.registerHandlers(this, conversationsDataSourceImpl)

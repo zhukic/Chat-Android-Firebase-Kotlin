@@ -11,13 +11,18 @@ import com.rus.chat.interactors.conversations.ConversationsUseCase
 import com.rus.chat.ui.conversations.ConversationsView
 import com.rus.chat.utils.Logger
 import rx.Subscriber
+import javax.inject.Inject
 
 /**
  * Created by RUS on 17.07.2016.
  */
-class ConversationsPresenterImpl(var conversationsView: ConversationsView?) : ConversationsPresenter {
+class ConversationsPresenterImpl @Inject constructor(val useCase: ConversationsUseCase) : ConversationsPresenter {
 
-    val useCase: ConversationsUseCase = ConversationsUseCase()
+    var conversationsView: ConversationsView? = null
+
+    override fun attachView(conversationsView: ConversationsView) {
+        this.conversationsView = conversationsView
+    }
 
     override fun initialize() {
         useCase.execute(ConversationsQuery.Initialize(), ResponseSubscriber())
@@ -39,8 +44,8 @@ class ConversationsPresenterImpl(var conversationsView: ConversationsView?) : Co
 
     private inner class CreateConversationSubscriber : Subscriber<Conversation>() {
 
-        override fun onError(e: Throwable?) {
-            conversationsView?.onError(e)
+        override fun onError(throwable: Throwable?) {
+            if(throwable != null) conversationsView?.onError(throwable)
         }
 
         override fun onNext(conversation: Conversation?) {
@@ -57,7 +62,7 @@ class ConversationsPresenterImpl(var conversationsView: ConversationsView?) : Co
 
         override fun onError(throwable: Throwable?) {
             Logger.log("response: Error")
-            conversationsView?.onError(throwable)
+            if(throwable != null)conversationsView?.onError(throwable)
         }
 
         override fun onCompleted() {}

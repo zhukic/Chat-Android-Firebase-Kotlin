@@ -6,6 +6,7 @@ import com.rus.chat.entity.query.BaseQuery
 import com.rus.chat.entity.query.conversation.ConversationsQuery
 import com.rus.chat.interactors.BaseUseCase
 import com.rus.chat.interactors.UseCase
+import com.rus.chat.repositories.BaseRepository
 import com.rus.chat.repositories.conversations.ConversationsRepository
 import com.rus.chat.repositories.login.SessionRepository
 import rx.Observable
@@ -18,11 +19,7 @@ import javax.inject.Inject
 /**
  * Created by RUS on 17.07.2016.
  */
-class ConversationsUseCase : BaseUseCase() {
-
-    init {
-        App.conversationsComponent.inject(this)
-    }
+class ConversationsUseCase @Inject constructor(repository: BaseRepository) : BaseUseCase(repository) {
 
     fun <T> execute(query: ConversationsQuery.Query, subscriber: Subscriber<T> = Subscribers.empty()) = super.execute(query, subscriber)
 }

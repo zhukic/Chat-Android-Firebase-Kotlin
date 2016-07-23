@@ -1,7 +1,10 @@
 package com.rus.chat.di.session
 
 import com.rus.chat.interactors.session.SessionUseCase
+import com.rus.chat.repositories.BaseRepository
+import com.rus.chat.repositories.login.SessionRepository
 import com.rus.chat.repositories.login.datasource.SessionDataSourceImpl
+import com.rus.chat.ui.login.LoginActivity
 import dagger.Component
 import javax.inject.Singleton
 
@@ -12,6 +15,8 @@ import javax.inject.Singleton
 @Singleton
 interface SessionComponent {
 
-    fun inject(sessionUseCase: SessionUseCase)
+    fun inject(loginActivity: LoginActivity)
+
+    fun sessionUseCase() : SessionUseCase
 
 }
