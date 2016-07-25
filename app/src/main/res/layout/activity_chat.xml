@@ -10,7 +10,7 @@
     tools:context="com.rus.chat.ui.chat.ChatActivity">
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_view"
+        android:id="@+id/messages_recycler"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingBottom="20dp"
@@ -24,7 +24,7 @@
         android:orientation="horizontal"
         android:weightSum="4">
 
-    <EditText android:id="@+id/message"
+    <EditText android:id="@+id/edit_message"
         android:layout_width="0dp"
         android:hint="Enter message"
         android:paddingLeft="10dp"
@@ -35,7 +35,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="3" />
 
-    <Button android:id="@+id/btn_send"
+    <Button android:id="@+id/button_send"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"

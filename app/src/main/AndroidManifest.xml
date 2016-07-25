@@ -25,7 +25,9 @@
             android:label="@string/title_activity_conversations"
             android:launchMode="singleTop"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".ui.chat.ChatActivity"></activity>
+        <activity
+            android:name=".ui.chat.ChatActivity"
+            android:parentActivityName=".ui.conversations.ConversationsActivity" />
     </application>
 
 </manifest>

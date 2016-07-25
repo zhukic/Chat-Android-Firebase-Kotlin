@@ -4,7 +4,7 @@ import com.rus.chat.entity.conversation.Conversation
 import com.rus.chat.entity.conversation.User
 import com.rus.chat.entity.query.Handle
 import com.rus.chat.entity.query.BaseQuery
-import com.rus.chat.entity.query.conversation.ConversationsQuery
+import com.rus.chat.entity.query.conversations.ConversationsQuery
 import com.rus.chat.entity.response.ConversationResponse
 import rx.Observable
 

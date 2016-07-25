@@ -1,4 +1,4 @@
-package com.rus.chat.entity.conversation
+package com.rus.chat.entity.response
 
 import com.google.gson.annotations.SerializedName
 

@@ -5,7 +5,7 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.rus.chat.entity.conversation.Conversation
 import com.rus.chat.entity.conversation.User
-import com.rus.chat.entity.query.conversation.ConversationsQuery
+import com.rus.chat.entity.query.conversations.ConversationsQuery
 import com.rus.chat.entity.response.ConversationResponse
 import com.rus.chat.interactors.conversations.ConversationsUseCase
 import com.rus.chat.ui.conversations.ConversationsView
@@ -68,7 +68,6 @@ class ConversationsPresenterImpl @Inject constructor(val useCase: ConversationsU
         override fun onCompleted() {}
 
         override fun onNext(response: ConversationResponse.Response?) {
-            Logger.log("response: next")
             when(response) {
                 is ConversationResponse.ConversationAdded -> conversationsView?.addConversation(response.body)
                 is ConversationResponse.ConversationChanged -> conversationsView?.changeConversation(response.body)

@@ -9,9 +9,9 @@ interface ChatPresenter {
 
     fun attachView(chatView: ChatView)
 
-    fun initialize()
+    fun initialize(conversationId: String)
 
-    fun sendMessage()
+    fun sendMessage(messageText: String)
 
     fun onDestroy()
 

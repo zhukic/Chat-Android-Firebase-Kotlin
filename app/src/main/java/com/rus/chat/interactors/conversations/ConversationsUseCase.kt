@@ -3,7 +3,7 @@ package com.rus.chat.interactors.conversations
 import com.rus.chat.App
 import com.rus.chat.entity.conversation.User
 import com.rus.chat.entity.query.BaseQuery
-import com.rus.chat.entity.query.conversation.ConversationsQuery
+import com.rus.chat.entity.query.conversations.ConversationsQuery
 import com.rus.chat.interactors.BaseUseCase
 import com.rus.chat.interactors.UseCase
 import com.rus.chat.repositories.BaseRepository

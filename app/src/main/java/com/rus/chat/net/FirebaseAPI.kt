@@ -1,7 +1,7 @@
 package com.rus.chat.net
 
 import com.rus.chat.entity.conversation.Conversation
-import com.rus.chat.entity.conversation.FirebaseResponse
+import com.rus.chat.entity.response.FirebaseResponse
 import com.rus.chat.entity.conversation.User
 import retrofit2.Call
 import retrofit2.http.*

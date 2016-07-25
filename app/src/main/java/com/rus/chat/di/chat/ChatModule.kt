@@ -1,6 +1,8 @@
 package com.rus.chat.di.chat
 
 import com.google.firebase.database.FirebaseDatabase
+import com.rus.chat.di.firebase.FirebaseModule
+import com.rus.chat.di.net.NetModule
 import com.rus.chat.interactors.chat.ChatUseCase
 import com.rus.chat.interactors.conversations.ConversationsUseCase
 import com.rus.chat.repositories.BaseRepository
@@ -16,7 +18,7 @@ import javax.inject.Singleton
 /**
  * Created by RUS on 23.07.2016.
  */
-@Module
+@Module(includes = arrayOf(NetModule::class, FirebaseModule::class))
 class ChatModule {
 
     @Provides

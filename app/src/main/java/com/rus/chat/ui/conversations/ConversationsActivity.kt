@@ -56,13 +56,8 @@ class ConversationsActivity : AppCompatActivity(), ConversationsView, Conversati
         fab.setOnClickListener { conversationsPresenter.onCreateConversationButtonClicked() }
 
         conversationsPresenter.attachView(this)
-
-    }
-
-    override fun onStart() {
-        super.onStart()
-        setProgressBarIndeterminateVisibility(true)
         conversationsPresenter.initialize()
+
     }
 
     override fun showCreateConversationFragment() {
@@ -72,6 +67,10 @@ class ConversationsActivity : AppCompatActivity(), ConversationsView, Conversati
                 .inputType(InputType.TYPE_CLASS_TEXT)
                 .positiveText(R.string.create_conversation)
                 .input("", "", false) { dialog, input -> conversationsPresenter.createConversation(input.toString()) }.show()
+    }
+
+    override fun setConversations(conversations: List<Conversation>?) {
+        conversations_recyclerView.adapter = ConversationsAdapter(this, conversations!!.toMutableList())
     }
 
     override fun addConversation(conversation: Conversation?) {
@@ -110,10 +109,6 @@ class ConversationsActivity : AppCompatActivity(), ConversationsView, Conversati
     }
 
     override fun onLongItemClicked(item: Conversation) {
-    }
-
-    override fun setConversations(conversations: List<Conversation>?) {
-        conversations_recyclerView.adapter = ConversationsAdapter(this, conversations!!.toMutableList())
     }
 
     override fun openChatActivity(chatId: String) {

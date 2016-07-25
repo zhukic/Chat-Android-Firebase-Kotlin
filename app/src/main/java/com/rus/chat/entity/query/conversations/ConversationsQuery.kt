@@ -1,4 +1,4 @@
-package com.rus.chat.entity.query.conversation
+package com.rus.chat.entity.query.conversations
 
 import com.rus.chat.entity.conversation.Conversation
 import com.rus.chat.entity.query.BaseQuery
