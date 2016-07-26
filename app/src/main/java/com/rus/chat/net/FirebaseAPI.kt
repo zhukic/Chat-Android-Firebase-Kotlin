@@ -1,5 +1,6 @@
 package com.rus.chat.net
 
+import com.rus.chat.entity.chat.Message
 import com.rus.chat.entity.conversation.Conversation
 import com.rus.chat.entity.response.FirebaseResponse
 import com.rus.chat.entity.conversation.User
@@ -20,5 +21,8 @@ interface FirebaseAPI {
 
     @POST("conversations.json")
     fun createConversation(@Body conversation: Conversation): Observable<FirebaseResponse>
+
+    @POST("messages.json")
+    fun sendMessage(@Body message: Message): Observable<FirebaseResponse>
 
 }

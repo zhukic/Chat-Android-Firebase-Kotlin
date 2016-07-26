@@ -1,5 +1,6 @@
 package com.rus.chat.di.chat
 
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.rus.chat.di.firebase.FirebaseModule
 import com.rus.chat.di.net.NetModule
@@ -31,6 +32,7 @@ class ChatModule {
 
     @Provides
     @Singleton
-    fun getChatDataSourceImplementation(retrofit: Retrofit, firebaseDatabase: FirebaseDatabase): ChatDataSourceImpl = ChatDataSourceImpl(retrofit, firebaseDatabase)
+    fun getChatDataSourceImpl(retrofit: Retrofit, firebaseDatabase: FirebaseDatabase, firebaseAuth: FirebaseAuth): ChatDataSourceImpl
+            = ChatDataSourceImpl(retrofit, firebaseDatabase, firebaseAuth)
 
 }

@@ -14,9 +14,11 @@ import com.rus.chat.ui.adapter.ChatAdapter
 import com.rus.chat.ui.adapter.ConversationsAdapter
 import com.rus.chat.ui.conversations.ConversationsActivity
 import com.rus.chat.utils.Logger
+import com.rus.chat.utils.showSnackBar
 import com.rus.chat.utils.toast
 import kotlinx.android.synthetic.main.activity_chat.*
 import kotlinx.android.synthetic.main.content_conversations.*
+import java.util.*
 import javax.inject.Inject
 
 class ChatActivity : AppCompatActivity(), ChatView, ChatAdapter.OnItemClickListener {
@@ -24,28 +26,42 @@ class ChatActivity : AppCompatActivity(), ChatView, ChatAdapter.OnItemClickListe
     @Inject
     lateinit var chatPresenter: ChatPresenterImpl
     lateinit var chatAdapter: ChatAdapter
-    lateinit var conversationId: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat)
 
-        conversationId = intent.extras.getString(ConversationsActivity.EXTRA_CHAT_ID)
-
         (application as App).chatComponent.inject(this)
 
         chatAdapter = ChatAdapter(this, mutableListOf<Message>())
+        messages_recycler.adapter = chatAdapter
 
         messages_recycler.layoutManager = LinearLayoutManager(this)
         button_send.setOnClickListener { chatPresenter.sendMessage(edit_message.text.toString()) }
 
         chatPresenter.attachView(this)
-        chatPresenter.initialize(conversationId)
+        chatPresenter.initialize(intent.extras.getString(ConversationsActivity.EXTRA_CHAT_ID))
 
     }
 
     override fun setMessages(messages: List<Message>) {
-        messages_recycler.adapter = ChatAdapter(this, messages.toMutableList())
+    }
+
+    override fun addMessage(message: Message) {
+        chatAdapter.items.add(message)
+        chatAdapter.notifyItemInserted(chatAdapter.itemCount)
+    }
+
+    override fun changeMessage(message: Message) {
+        val position = chatAdapter.items.indexOfFirst { it.messageId.equals(message.messageId) }
+        chatAdapter.items[position] = message
+        chatAdapter.notifyItemChanged(position)
+    }
+
+    override fun removeMessage(message: Message) {
+        val position = chatAdapter.items.indexOfFirst { it.messageId.equals(message) }
+        chatAdapter.items.removeAt(position)
+        chatAdapter.notifyItemRemoved(position)
     }
 
     override fun onItemClicked(item: Message) {
@@ -55,7 +71,7 @@ class ChatActivity : AppCompatActivity(), ChatView, ChatAdapter.OnItemClickListe
     }
 
     override fun onError(throwable: Throwable) {
-        showSnackbar(throwable.message.toString())
+        showToast(throwable.toString())
     }
 
     override fun showToast(message: String) {
@@ -63,5 +79,11 @@ class ChatActivity : AppCompatActivity(), ChatView, ChatAdapter.OnItemClickListe
     }
 
     override fun showSnackbar(message: String) {
+        messages_recycler.showSnackBar(message)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        chatPresenter.onDestroy()
     }
 }

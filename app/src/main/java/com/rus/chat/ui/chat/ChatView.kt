@@ -10,4 +10,10 @@ interface ChatView : BaseView {
 
     fun setMessages(messages: List<Message>)
 
+    fun addMessage(message: Message)
+
+    fun changeMessage(message: Message)
+
+    fun removeMessage(message: Message)
+
 }

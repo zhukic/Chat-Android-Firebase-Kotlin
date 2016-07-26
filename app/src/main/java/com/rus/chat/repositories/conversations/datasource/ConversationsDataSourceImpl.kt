@@ -44,7 +44,6 @@ class ConversationsDataSourceImpl(val retrofit: Retrofit, val firebaseDatabase: 
                     override fun onChildAdded(dataSnapshot: DataSnapshot?, previousChildName: String?) {
                         if(dataSnapshot != null) {
                             val conversation = dataSnapshot.getValue(Conversation::class.java)
-                            Logger.log(conversation.toString())
                             conversation.id = dataSnapshot.key
                             subscriber.onNext(ConversationResponse.ConversationAdded(conversation))
                         }
@@ -53,7 +52,6 @@ class ConversationsDataSourceImpl(val retrofit: Retrofit, val firebaseDatabase: 
                     override fun onChildRemoved(dataSnapshot: DataSnapshot?) {
                         if(dataSnapshot != null) {
                             val conversation = dataSnapshot.getValue(Conversation::class.java)
-                            Logger.log(conversation.toString())
                             conversation.id = dataSnapshot.key
                             subscriber.onNext(ConversationResponse.ConversationRemoved(conversation))
                         }

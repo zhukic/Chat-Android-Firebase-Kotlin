@@ -21,6 +21,7 @@ abstract class BaseUseCase(val baseRepository: BaseRepository) {
     open protected fun <T> execute(baseQuery: BaseQuery, subscriber: Subscriber<T>) {
         this.subscription = this.baseRepository
                 .query<T>(baseQuery)
+                .onBackpressureBuffer(10000)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(subscriber)

@@ -5,6 +5,7 @@ import com.rus.chat.entity.response.FirebaseResponse
 import com.rus.chat.entity.query.BaseQuery
 import com.rus.chat.entity.query.Handle
 import com.rus.chat.entity.query.chat.ChatQuery
+import com.rus.chat.entity.response.MessageResponse
 import rx.Observable
 
 /**
@@ -13,7 +14,7 @@ import rx.Observable
 interface ChatDataSource {
 
     @Handle(ChatQuery.GetChatMessages::class)
-    fun getChatMessages(query: ChatQuery.GetChatMessages): Observable<Message>
+    fun getChatMessages(query: ChatQuery.GetChatMessages): Observable<MessageResponse.Response>
 
     @Handle(ChatQuery.SendMessage::class)
     fun sendMessage(query: ChatQuery.SendMessage): Observable<FirebaseResponse>
