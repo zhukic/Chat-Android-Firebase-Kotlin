@@ -23,6 +23,9 @@ android {
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
     }
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
 }
 
 kapt {
@@ -58,6 +61,8 @@ dependencies {
     compile 'com.squareup.retrofit2:retrofit:2.0.2'
     compile 'com.squareup.retrofit2:converter-gson:2.0.2'
     compile 'com.squareup.retrofit2:adapter-rxjava:2.0.2'
+
+    compile 'joda-time:joda-time:2.9.4'
 
     compile('com.github.afollestad.material-dialogs:core:0.8.5.5@aar') { transitive = true }
 }

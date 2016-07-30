@@ -6,34 +6,41 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.rus.chat.R
-import com.rus.chat.entity.conversation.Conversation
+import com.rus.chat.entity.conversation.ConversationModel
+import com.rus.chat.utils.isToday
+import com.rus.chat.utils.isYesterday
 import kotlinx.android.synthetic.main.conversation_item.view.*
+import org.joda.time.DateTime
 
 /**
  * Created by RUS on 17.07.2016.
  */
-class ConversationsAdapter(val onItemClickListener: OnItemClickListener, val items: MutableList<Conversation>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class ConversationsAdapter(val onItemClickListener: OnItemClickListener, val items: MutableList<ConversationModel>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     interface OnItemClickListener {
-        fun onItemClicked(item: Conversation)
-        fun onLongItemClicked(item: Conversation)
+        fun onItemClicked(item: ConversationModel)
+        fun onLongItemClicked(item: ConversationModel)
     }
 
     inner class ItemViewHolder(val v: View,
                                val conversationName: TextView = v.conversation_name,
                                val conversationLastMessageTime: TextView = v.conversation_last_message_time,
                                val conversationLastMessage: TextView = v.conversation_last_message,
-                               val conversationUnreadMessagesCount: TextView = v.conversation_unread_count) : RecyclerView.ViewHolder(v) {
+                               val conversationLastMessageUser: TextView = v.conversation_last_message_user) : RecyclerView.ViewHolder(v) {
 
-        fun bind(conversation: Conversation) {
-            this.conversationLastMessage.text = conversation.lastMessage
-            this.conversationName.text = conversation.name
-            this.conversationLastMessageTime.text = conversation.lastMessageTime
+        fun bind(conversationModel: ConversationModel) {
+            this.conversationLastMessage.text = conversationModel.lastMessage
+            this.conversationName.text = conversationModel.name
+            this.conversationLastMessageUser.text = conversationModel.lastMessageUser
 
-            if(conversation.countOfUnreadMessages == 0) this.conversationUnreadMessagesCount.visibility = View.GONE
-            else this.conversationUnreadMessagesCount.text = conversation.countOfUnreadMessages.toString()
+            val dateTime = DateTime.parse(conversationModel.lastMessageTime)
+            if(dateTime.isToday())
+                this.conversationLastMessageTime.text = dateTime.toString("HH:mm")
+            else if(dateTime.isYesterday())
+                this.conversationLastMessageTime.text = "Вчера"
+            else this.conversationLastMessageTime.text = dateTime.toString("dd mmm")
 
-            this.itemView.setOnClickListener { onItemClickListener.onItemClicked(conversation) }
+            this.itemView.setOnClickListener { onItemClickListener.onItemClicked(conversationModel) }
         }
     }
 

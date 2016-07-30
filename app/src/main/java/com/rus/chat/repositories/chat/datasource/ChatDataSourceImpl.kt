@@ -61,7 +61,15 @@ class ChatDataSourceImpl(val retrofit: Retrofit, val firebaseDatabase: FirebaseD
     override fun sendMessage(query: ChatQuery.SendMessage): Observable<FirebaseResponse> {
         val message = query.message
         message.userId = firebaseAuth.currentUser?.uid.toString()
-        return retrofit.create(FirebaseAPI::class.java).sendMessage(message)
+        return retrofit.create(FirebaseAPI::class.java).sendMessage(message).doOnNext { updateConversation(query.message) }
+    }
+
+    private fun updateConversation(message: Message) {
+        val map = mutableMapOf<String, Any>(("lastMessage" to message.text), ("lastMessageTime" to message.time))
+        firebaseDatabase.reference
+                .child("conversations")
+                .child(message.conversationId)
+                .updateChildren(map)
     }
 
 }

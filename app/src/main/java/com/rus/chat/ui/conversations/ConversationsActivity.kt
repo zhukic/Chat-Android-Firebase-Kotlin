@@ -16,7 +16,8 @@ import com.afollestad.materialdialogs.MaterialDialog
 import com.rus.chat.App
 
 import com.rus.chat.R
-import com.rus.chat.entity.conversation.Conversation
+import com.rus.chat.entity.conversation.ConversationEntity
+import com.rus.chat.entity.conversation.ConversationModel
 import com.rus.chat.presenters.conversations.ConversationsPresenter
 import com.rus.chat.presenters.conversations.ConversationsPresenterImpl
 import com.rus.chat.ui.adapter.ConversationsAdapter
@@ -48,7 +49,7 @@ class ConversationsActivity : AppCompatActivity(), ConversationsView, Conversati
         setSupportActionBar(toolbar)
 
         (application as App).conversationsComponent.inject(this)
-        conversationsAdapter = ConversationsAdapter(this, mutableListOf<Conversation>())
+        conversationsAdapter = ConversationsAdapter(this, mutableListOf<ConversationModel>())
         conversations_recyclerView.adapter = conversationsAdapter
 
         conversations_recyclerView.layoutManager = LinearLayoutManager(this)
@@ -69,31 +70,25 @@ class ConversationsActivity : AppCompatActivity(), ConversationsView, Conversati
                 .input("", "", false) { dialog, input -> conversationsPresenter.createConversation(input.toString()) }.show()
     }
 
-    override fun setConversations(conversations: List<Conversation>?) {
-        conversations_recyclerView.adapter = ConversationsAdapter(this, conversations!!.toMutableList())
+    override fun setConversations(conversationEntities: List<ConversationModel>?) {
+        conversations_recyclerView.adapter = ConversationsAdapter(this, conversationEntities!!.toMutableList())
     }
 
-    override fun addConversation(conversation: Conversation?) {
-        if(conversation != null) {
-            conversationsAdapter.items.add(conversation)
-            conversationsAdapter.notifyItemInserted(conversationsAdapter.itemCount - 1)
-        }
+    override fun addConversation(conversationEntity: ConversationModel) {
+        conversationsAdapter.items.add(conversationEntity)
+        conversationsAdapter.notifyItemInserted(conversationsAdapter.itemCount - 1)
     }
 
-    override fun changeConversation(conversation: Conversation?) {
-        if(conversation != null) {
-            val index = (conversations_recyclerView.adapter as ConversationsAdapter).items.indexOfFirst { it.id.equals(conversation.id) }
-            (conversations_recyclerView.adapter as ConversationsAdapter).items[index] = conversation
-            conversations_recyclerView.adapter.notifyDataSetChanged()
-        }
+    override fun changeConversation(conversationEntity: ConversationModel) {
+        val index = (conversations_recyclerView.adapter as ConversationsAdapter).items.indexOfFirst { it.id.equals(conversationEntity.id) }
+        (conversations_recyclerView.adapter as ConversationsAdapter).items[index] = conversationEntity
+        conversations_recyclerView.adapter.notifyDataSetChanged()
     }
 
-    override fun removeConversation(conversation: Conversation?) {
+    override fun removeConversation(conversationEntity: ConversationModel) {
         Logger.log("removed")
-        if(conversation != null) {
-            (conversations_recyclerView.adapter as ConversationsAdapter).items.removeAll { it.id.equals(conversation.id) }
-            conversations_recyclerView.adapter.notifyDataSetChanged()
-        }
+        (conversations_recyclerView.adapter as ConversationsAdapter).items.removeAll { it.id.equals(conversationEntity.id) }
+        conversations_recyclerView.adapter.notifyDataSetChanged()
     }
 
     override fun showProgress() {
@@ -104,11 +99,11 @@ class ConversationsActivity : AppCompatActivity(), ConversationsView, Conversati
         progressDialog.hide()
     }
 
-    override fun onItemClicked(item: Conversation) {
+    override fun onItemClicked(item: ConversationModel) {
         openChatActivity(item.id)
     }
 
-    override fun onLongItemClicked(item: Conversation) {
+    override fun onLongItemClicked(item: ConversationModel) {
     }
 
     override fun openChatActivity(chatId: String) {
@@ -118,8 +113,8 @@ class ConversationsActivity : AppCompatActivity(), ConversationsView, Conversati
     }
 
     override fun onError(throwable: Throwable) {
-        Logger.log(throwable?.message)
-        conversations_recyclerView.showSnackBar(throwable?.message)
+        Logger.log("${throwable.javaClass.name} ${throwable.message}")
+        conversations_recyclerView.showSnackBar(throwable.message)
     }
 
     override fun showSnackbar(message: String) {

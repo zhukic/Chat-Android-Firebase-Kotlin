@@ -2,7 +2,7 @@ package com.rus.chat.presenters.login
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.rus.chat.entity.conversation.User
+import com.rus.chat.entity.session.User
 import com.rus.chat.entity.query.session.SessionQuery
 import com.rus.chat.interactors.session.*
 import com.rus.chat.repositories.BaseRepository
@@ -31,14 +31,16 @@ class LoginPresenterImpl @Inject constructor(val useCase: SessionUseCase) : Logi
         useCase.execute(SessionQuery.GetCurrentUser(), UserSubscriber())
     }
 
-    override fun signIn(email: String, password: String) {
+    override fun signIn(name: String, password: String) {
         loginView?.showSignInProgress()
+        val email = name + "@gmail.com"
         useCase.execute(SessionQuery.SignIn(email, password), SignInSubscriber())
     }
 
-    override fun register(email: String, name: String, password: String) {
+    override fun register(name: String, password: String) {
         loginView?.showRegisterProgress()
-        useCase.execute(SessionQuery.Register(email, name, password), RegisterSubscriber())
+        val email = name + "@gmail.com"
+        useCase.execute(SessionQuery.Register(email,name, password), RegisterSubscriber())
     }
 
     override fun signOut() {
@@ -50,7 +52,7 @@ class LoginPresenterImpl @Inject constructor(val useCase: SessionUseCase) : Logi
         this.useCase.unsubscribe()
     }
 
-    private inner class UserSubscriber : Subscriber<FirebaseUser>() {
+    private inner class UserSubscriber : Subscriber<User>() {
 
         override fun onError(e: Throwable?) {
         }
@@ -58,16 +60,16 @@ class LoginPresenterImpl @Inject constructor(val useCase: SessionUseCase) : Logi
         override fun onCompleted() {
         }
 
-        override fun onNext(firebaseUser: FirebaseUser?) {
-            if(firebaseUser != null) loginView?.openConversationsActivity(firebaseUser.uid)
+        override fun onNext(user: User?) {
+            if(user != null) loginView?.openConversationsActivity(user.uid)
         }
 
     }
 
-    private inner class SignInSubscriber : Subscriber<FirebaseUser>() {
+    private inner class SignInSubscriber : Subscriber<User>() {
 
-        override fun onNext(firebaseUser: FirebaseUser) {
-            loginView?.openConversationsActivity(firebaseUser.uid)
+        override fun onNext(user: User) {
+            loginView?.openConversationsActivity(user.uid)
         }
 
         override fun onError(e: Throwable) {
@@ -80,10 +82,10 @@ class LoginPresenterImpl @Inject constructor(val useCase: SessionUseCase) : Logi
         }
     }
 
-    private inner class RegisterSubscriber : Subscriber<FirebaseUser>() {
+    private inner class RegisterSubscriber : Subscriber<User>() {
 
-        override fun onNext(firebaseUser: FirebaseUser) {
-            loginView?.openConversationsActivity(firebaseUser.uid)
+        override fun onNext(user: User) {
+            loginView?.openConversationsActivity(user.uid)
         }
 
         override fun onError(e: Throwable) {
@@ -96,10 +98,12 @@ class LoginPresenterImpl @Inject constructor(val useCase: SessionUseCase) : Logi
         }
     }
 
-    private inner class SignOutSubscriber : Subscriber<FirebaseUser>() {
-        override fun onNext(t: FirebaseUser?) {}
+    private inner class SignOutSubscriber : Subscriber<User>() {
+        override fun onNext(user: User?) {}
 
-        override fun onError(e: Throwable?) {}
+        override fun onError(throwable: Throwable) {
+            loginView?.onError(throwable)
+        }
 
         override fun onCompleted() {}
 

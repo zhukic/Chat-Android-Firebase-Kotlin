@@ -1,6 +1,6 @@
 package com.rus.chat.entity.query.session
 
-import com.rus.chat.entity.conversation.User
+import com.rus.chat.entity.session.User
 import com.rus.chat.entity.query.BaseQuery
 
 /**

@@ -1,15 +1,16 @@
 package com.rus.chat.entity.response
 
-import com.rus.chat.entity.conversation.Conversation
+import com.rus.chat.entity.conversation.BaseConversation
+import com.rus.chat.entity.conversation.ConversationEntity
+import com.rus.chat.entity.conversation.ConversationModel
 
 /**
  * Created by RUS on 21.07.2016.
  */
-class ConversationResponse {
-
-    class ConversationAdded(body: Conversation) : BaseResponse<Conversation>(body), Response
-    class ConversationChanged(body: Conversation) : BaseResponse<Conversation>(body), Response
-    class ConversationRemoved(body: Conversation) : BaseResponse<Conversation>(body), Response
-
-    interface Response
+data class ConversationResponse(var conversation: BaseConversation, val type: Type) {
+    enum class Type {
+        ADDED,
+        CHANGED,
+        REMOVED
+    }
 }

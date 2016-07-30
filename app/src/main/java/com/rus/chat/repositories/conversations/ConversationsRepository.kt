@@ -1,7 +1,7 @@
 package com.rus.chat.repositories.conversations
 
-import com.rus.chat.entity.conversation.Conversation
-import com.rus.chat.entity.conversation.User
+import com.rus.chat.entity.conversation.ConversationEntity
+import com.rus.chat.entity.session.User
 import com.rus.chat.entity.query.BaseQuery
 import com.rus.chat.repositories.BaseRepository
 import com.rus.chat.repositories.conversations.datasource.ConversationsDataSource

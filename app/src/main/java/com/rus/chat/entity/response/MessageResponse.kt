@@ -1,7 +1,7 @@
 package com.rus.chat.entity.response
 
 import com.rus.chat.entity.chat.Message
-import com.rus.chat.entity.conversation.Conversation
+import com.rus.chat.entity.conversation.ConversationEntity
 
 /**
  * Created by RUS on 26.07.2016.

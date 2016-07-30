@@ -7,7 +7,7 @@ import android.view.View
 import com.google.firebase.auth.FirebaseAuth
 import com.rus.chat.App
 import com.rus.chat.R
-import com.rus.chat.entity.conversation.User
+import com.rus.chat.entity.session.User
 import com.rus.chat.presenters.login.LoginPresenter
 import com.rus.chat.presenters.login.LoginPresenterImpl
 import com.rus.chat.ui.conversations.ConversationsActivity
@@ -29,8 +29,8 @@ class LoginActivity : AppCompatActivity(), LoginView {
 
         loginPresenter.attachView(this)
 
-        signInButton.setOnClickListener { loginPresenter.signIn(email.text.toString(), password.text.toString()) }
-        registerButton.setOnClickListener { loginPresenter.register(email.text.toString(), name.text.toString(), password.text.toString()) }
+        signInButton.setOnClickListener { loginPresenter.signIn(name.text.toString(), password.text.toString()) }
+        registerButton.setOnClickListener { loginPresenter.register(name.text.toString(), password.text.toString()) }
 
         if(intent.extras?.getBoolean(ConversationsActivity.EXTRA_SIGN_OUT) ?: false) loginPresenter.signOut()
         else loginPresenter.initialize()
@@ -43,7 +43,7 @@ class LoginActivity : AppCompatActivity(), LoginView {
         finish()
     }
 
-    override fun onError(t: Throwable) = toast("${t.javaClass.name}: ${t.message}")
+    override fun onError(throwable: Throwable) = toast("${throwable.javaClass.name}: ${throwable.message}")
 
     override fun showToast(message: String) = toast(message)
 

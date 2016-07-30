@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import com.rus.chat.R
 import com.rus.chat.entity.chat.Message
-import com.rus.chat.entity.conversation.Conversation
+import com.rus.chat.entity.conversation.ConversationEntity
 import com.rus.chat.utils.Logger
 import kotlinx.android.synthetic.main.conversation_item.view.*
 import kotlinx.android.synthetic.main.message_item.view.*

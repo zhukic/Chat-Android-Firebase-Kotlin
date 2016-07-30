@@ -6,6 +6,8 @@ import com.rus.chat.entity.response.MessageResponse
 import com.rus.chat.interactors.chat.ChatUseCase
 import com.rus.chat.ui.chat.ChatView
 import com.rus.chat.utils.Logger
+import org.joda.time.DateTime
+import org.joda.time.DateTimeZone
 import rx.Subscriber
 import rx.observers.Subscribers
 import javax.inject.Inject
@@ -29,7 +31,10 @@ class ChatPresenterImpl @Inject constructor(val chatUseCase: ChatUseCase) : Chat
     }
 
     override fun sendMessage(messageText: String) {
-        chatUseCase.execute<Any>(ChatQuery.SendMessage(Message(conversationId = conversationId, text = messageText)))
+        val message = Message(conversationId = conversationId,
+                text = messageText,
+                time = DateTime.now(DateTimeZone.getDefault()).toString())
+        chatUseCase.execute<Any>(ChatQuery.SendMessage(message))
     }
 
     override fun onDestroy() {
@@ -47,7 +52,6 @@ class ChatPresenterImpl @Inject constructor(val chatUseCase: ChatUseCase) : Chat
         }
 
         override fun onNext(messageResponse: MessageResponse.Response?) {
-            Logger.log("response")
             when(messageResponse) {
                 is MessageResponse.MessageAdded -> chatView?.addMessage(messageResponse.body)
                 is MessageResponse.MessageChanged -> chatView?.changeMessage(messageResponse.body)

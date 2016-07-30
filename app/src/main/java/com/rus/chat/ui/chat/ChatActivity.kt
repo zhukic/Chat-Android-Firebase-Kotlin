@@ -6,7 +6,7 @@ import android.support.v7.widget.LinearLayoutManager
 import com.rus.chat.App
 import com.rus.chat.R
 import com.rus.chat.entity.chat.Message
-import com.rus.chat.entity.conversation.Conversation
+import com.rus.chat.entity.conversation.ConversationEntity
 import com.rus.chat.presenters.chat.ChatPresenter
 import com.rus.chat.presenters.chat.ChatPresenterImpl
 import com.rus.chat.presenters.chat.ChatPresenterImpl_Factory

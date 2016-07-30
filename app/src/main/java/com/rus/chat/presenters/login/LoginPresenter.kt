@@ -14,7 +14,7 @@ interface LoginPresenter : BasePresenter {
 
     fun signIn(email: String, password: String)
 
-    fun register(email: String, name: String, password: String)
+    fun register(name: String, password: String)
 
     fun signOut()
 

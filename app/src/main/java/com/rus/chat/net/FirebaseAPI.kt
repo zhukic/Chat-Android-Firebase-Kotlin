@@ -1,9 +1,9 @@
 package com.rus.chat.net
 
 import com.rus.chat.entity.chat.Message
-import com.rus.chat.entity.conversation.Conversation
+import com.rus.chat.entity.conversation.ConversationEntity
 import com.rus.chat.entity.response.FirebaseResponse
-import com.rus.chat.entity.conversation.User
+import com.rus.chat.entity.session.User
 import retrofit2.Call
 import retrofit2.http.*
 import rx.Observable
@@ -20,9 +20,12 @@ interface FirebaseAPI {
     fun getUserById(@Path("id") uid: String): Observable<User>
 
     @POST("conversations.json")
-    fun createConversation(@Body conversation: Conversation): Observable<FirebaseResponse>
+    fun createConversation(@Body conversationEntity: ConversationEntity): Observable<FirebaseResponse>
 
     @POST("messages.json")
     fun sendMessage(@Body message: Message): Observable<FirebaseResponse>
+
+    @GET("messages/{id}.json")
+    fun getMessageById(@Path("id") id: String): Observable<Message>
 
 }

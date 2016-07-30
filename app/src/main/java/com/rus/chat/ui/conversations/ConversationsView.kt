@@ -1,6 +1,7 @@
 package com.rus.chat.ui.conversations
 
-import com.rus.chat.entity.conversation.Conversation
+import com.rus.chat.entity.conversation.ConversationEntity
+import com.rus.chat.entity.conversation.ConversationModel
 import com.rus.chat.ui.BaseView
 
 /**
@@ -8,15 +9,15 @@ import com.rus.chat.ui.BaseView
  */
 interface ConversationsView : BaseView {
 
-    fun setConversations(conversations: List<Conversation>?)
+    fun setConversations(conversationEntities: List<ConversationModel>?)
 
     fun showCreateConversationFragment()
 
-    fun addConversation(conversation: Conversation?)
+    fun addConversation(conversationEntity: ConversationModel)
 
-    fun changeConversation(conversation: Conversation?)
+    fun changeConversation(conversationEntity: ConversationModel)
 
-    fun removeConversation(conversation: Conversation?)
+    fun removeConversation(conversationEntity: ConversationModel)
 
     fun openChatActivity(chatId: String)
 

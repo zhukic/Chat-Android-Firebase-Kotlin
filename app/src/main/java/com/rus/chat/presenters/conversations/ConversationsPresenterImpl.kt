@@ -3,8 +3,9 @@ package com.rus.chat.presenters.conversations
 import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
-import com.rus.chat.entity.conversation.Conversation
-import com.rus.chat.entity.conversation.User
+import com.rus.chat.entity.conversation.ConversationEntity
+import com.rus.chat.entity.conversation.ConversationModel
+import com.rus.chat.entity.session.User
 import com.rus.chat.entity.query.conversations.ConversationsQuery
 import com.rus.chat.entity.response.ConversationResponse
 import com.rus.chat.interactors.conversations.ConversationsUseCase
@@ -34,7 +35,7 @@ class ConversationsPresenterImpl @Inject constructor(val useCase: ConversationsU
 
     override fun createConversation(conversationName: String) {
         conversationsView?.showProgress()
-        useCase.execute(ConversationsQuery.CreateConversation(Conversation(name = conversationName)), CreateConversationSubscriber())
+        useCase.execute(ConversationsQuery.CreateConversation(ConversationEntity(name = conversationName)), CreateConversationSubscriber())
     }
 
     override fun onDestroy() {
@@ -42,13 +43,13 @@ class ConversationsPresenterImpl @Inject constructor(val useCase: ConversationsU
         this.useCase.unsubscribe()
     }
 
-    private inner class CreateConversationSubscriber : Subscriber<Conversation>() {
+    private inner class CreateConversationSubscriber : Subscriber<ConversationEntity>() {
 
         override fun onError(throwable: Throwable?) {
             if(throwable != null) conversationsView?.onError(throwable)
         }
 
-        override fun onNext(conversation: Conversation?) {
+        override fun onNext(conversationEntity: ConversationEntity?) {
             //if(conversation != null) conversationsView?.addConversation(conversation)
         }
 
@@ -58,7 +59,7 @@ class ConversationsPresenterImpl @Inject constructor(val useCase: ConversationsU
 
     }
 
-    private inner class ResponseSubscriber : Subscriber<ConversationResponse.Response>() {
+    private inner class ResponseSubscriber : Subscriber<ConversationResponse>() {
 
         override fun onError(throwable: Throwable?) {
             Logger.log("response: Error")
@@ -67,11 +68,11 @@ class ConversationsPresenterImpl @Inject constructor(val useCase: ConversationsU
 
         override fun onCompleted() {}
 
-        override fun onNext(response: ConversationResponse.Response?) {
-            when(response) {
-                is ConversationResponse.ConversationAdded -> conversationsView?.addConversation(response.body)
-                is ConversationResponse.ConversationChanged -> conversationsView?.changeConversation(response.body)
-                is ConversationResponse.ConversationRemoved -> conversationsView?.removeConversation(response.body)
+        override fun onNext(response: ConversationResponse?) {
+            when(response?.type) {
+                ConversationResponse.Type.ADDED -> conversationsView?.addConversation(response?.conversation as ConversationModel)
+                ConversationResponse.Type.CHANGED -> conversationsView?.changeConversation(response?.conversation as ConversationModel)
+                ConversationResponse.Type.REMOVED -> conversationsView?.removeConversation(response?.conversation as ConversationModel)
             }
         }
 

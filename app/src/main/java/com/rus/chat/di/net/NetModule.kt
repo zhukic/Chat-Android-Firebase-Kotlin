@@ -19,18 +19,16 @@ class NetModule {
     @Singleton
     fun provideGson(): Gson = GsonBuilder()
             .setLenient()
+            .excludeFieldsWithoutExposeAnnotation()
             .create()
 
     @Provides
     @Singleton
-    fun provideRetrofit(gson: Gson): Retrofit {
-        val retrofit = Retrofit.Builder()
+    fun provideRetrofit(gson: Gson): Retrofit = Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .baseUrl(BASE_URL)
                 .build()
-        return retrofit
-    }
 
     companion object {
         val BASE_URL: String = "https://chat-25eed.firebaseio.com/"
