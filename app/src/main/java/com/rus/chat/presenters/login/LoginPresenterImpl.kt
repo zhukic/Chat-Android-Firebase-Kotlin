@@ -40,7 +40,7 @@ class LoginPresenterImpl @Inject constructor(val useCase: SessionUseCase) : Logi
     override fun register(name: String, password: String) {
         loginView?.showRegisterProgress()
         val email = name + "@gmail.com"
-        useCase.execute(SessionQuery.Register(email,name, password), RegisterSubscriber())
+        useCase.execute(SessionQuery.Register(email, name, password), RegisterSubscriber())
     }
 
     override fun signOut() {

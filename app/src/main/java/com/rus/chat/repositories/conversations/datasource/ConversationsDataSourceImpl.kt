@@ -7,6 +7,7 @@ import com.rus.chat.App
 import com.rus.chat.entity.chat.Message
 import com.rus.chat.entity.conversation.BaseConversation
 import com.rus.chat.entity.conversation.ConversationEntity
+import com.rus.chat.entity.conversation.ConversationModel
 import com.rus.chat.entity.mapper.ConversationMapper
 import com.rus.chat.entity.session.User
 import com.rus.chat.entity.query.BaseQuery
@@ -21,6 +22,8 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import rx.Observable
 import rx.Subscriber
+import rx.android.schedulers.AndroidSchedulers
+import rx.functions.Func1
 import rx.functions.Func2
 import rx.lang.kotlin.subscriber
 import rx.schedulers.Schedulers
@@ -51,6 +54,7 @@ class ConversationsDataSourceImpl(val retrofit: Retrofit, val firebaseDatabase: 
                         if(dataSnapshot != null) {
                             val conversation = dataSnapshot.getValue(ConversationEntity::class.java)
                             conversation.id = dataSnapshot.key
+                            Logger.log(conversation.name)
                             subscriber.onNext(ConversationResponse(conversation, ConversationResponse.Type.ADDED))
                         }
                     }
@@ -68,22 +72,29 @@ class ConversationsDataSourceImpl(val retrofit: Retrofit, val firebaseDatabase: 
                     }
 
                 })
-    }.flatMap { response -> Observable.zip(getMessage((response.conversation as ConversationEntity).lastMessageId), getUserById((response.conversation as ConversationEntity).lastMessageUserId), Func2<com.rus.chat.entity.chat.Message, com.rus.chat.entity.session.User, com.rus.chat.entity.response.ConversationResponse> { message, user ->
-        response.conversation = ConversationMapper.createConversationWithMessageAndUser(response.conversation, message, user)
-        response
-    }).subscribeOn(Schedulers.newThread()) }
+    }.flatMap { response -> convertToConversationModel(response)  }
     
-    override fun createConversation(query: ConversationsQuery.CreateConversation): Observable<ConversationEntity> = retrofit.create(FirebaseAPI::class.java)
+    override fun createConversation(query: ConversationsQuery.CreateConversation): Observable<ConversationModel> = retrofit.create(FirebaseAPI::class.java)
             .createConversation(query.conversationEntity)
-            .map { setIdToConversation(query.conversationEntity, it.name) }
+            .map { setIdToConversation(query.conversationEntity, it.id) }
+            .map { ConversationMapper.transformFromEntity(it) }
+
+    private fun convertToConversationModel(response: ConversationResponse): Observable<ConversationResponse> {
+        return getMessage((response.conversation as ConversationEntity).lastMessageId).concatMap { message ->
+            Observable.zip(Observable.just(message), getUserById(message?.userId), { message, user ->
+                response.conversation = ConversationMapper.createConversationWithMessageAndUser(response.conversation, message, user)
+                response
+            })
+        }.subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread())
+    }
 
     private fun setIdToConversation(conversationEntity: ConversationEntity, id: String): ConversationEntity {
         conversationEntity.id = id
         return conversationEntity
     }
     
-    private fun getMessage(messageId: String): Observable<Message> = retrofit.create(FirebaseAPI::class.java).getMessageById(messageId)
+    private fun getMessage(messageId: String?): Observable<Message> = retrofit.create(FirebaseAPI::class.java).getMessageById(messageId ?: "")
     
-    private fun getUserById(userId: String): Observable<User> = retrofit.create(FirebaseAPI::class.java).getUserById(userId)
+    private fun getUserById(userId: String?): Observable<User> = retrofit.create(FirebaseAPI::class.java).getUserById(userId ?: "")
 
 }

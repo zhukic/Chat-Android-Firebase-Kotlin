@@ -22,8 +22,16 @@ class ConversationMapper {
                 conversationModel.lastMessageTime = message.time
             }
             if(user != null) {
-                conversationModel.lastMessageUser = user.name
+                if(user.name != null)
+                    conversationModel.lastMessageUser = user.name
             }
+            return conversationModel
+        }
+
+        fun transformFromEntity(conversationEntity: ConversationEntity): ConversationModel {
+            val conversationModel = ConversationModel()
+            conversationModel.id = conversationEntity.id
+            conversationModel.name = conversationEntity.name
             return conversationModel
         }
 

@@ -14,7 +14,7 @@ import rx.Observable
 interface FirebaseAPI {
 
     @PUT("users/{id}.json")
-    fun addUser(@Path("id") id: String, @Body user: User): Observable<User>
+    fun createUser(@Path("id") id: String, @Body user: User): Observable<User>
 
     @GET("users/{id}.json")
     fun getUserById(@Path("id") uid: String): Observable<User>

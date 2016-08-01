@@ -31,7 +31,7 @@ class ChatDataSourceImpl(val retrofit: Retrofit, val firebaseDatabase: FirebaseD
                     override fun onChildChanged(dataSnapshot: DataSnapshot?, p1: String?) {
                         if(dataSnapshot != null) {
                             val message = dataSnapshot.getValue(Message::class.java)
-                            message.messageId = dataSnapshot.key
+                            message.id = dataSnapshot.key
                             subscriber.onNext(MessageResponse.MessageChanged(message))
                         }
                     }
@@ -39,7 +39,7 @@ class ChatDataSourceImpl(val retrofit: Retrofit, val firebaseDatabase: FirebaseD
                     override fun onChildAdded(dataSnapshot: DataSnapshot?, p1: String?) {
                         if(dataSnapshot != null) {
                             val message = dataSnapshot.getValue(Message::class.java)
-                            message.messageId = dataSnapshot.key
+                            message.id = dataSnapshot.key
                             subscriber.onNext(MessageResponse.MessageAdded(message))
                         }
                     }
@@ -47,7 +47,7 @@ class ChatDataSourceImpl(val retrofit: Retrofit, val firebaseDatabase: FirebaseD
                     override fun onChildRemoved(dataSnapshot: DataSnapshot?) {
                         if(dataSnapshot != null) {
                             val message = dataSnapshot.getValue(Message::class.java)
-                            message.messageId = dataSnapshot.key
+                            message.id = dataSnapshot.key
                             subscriber.onNext(MessageResponse.MessageRemoved(message))
                         }
                     }
@@ -61,11 +61,13 @@ class ChatDataSourceImpl(val retrofit: Retrofit, val firebaseDatabase: FirebaseD
     override fun sendMessage(query: ChatQuery.SendMessage): Observable<FirebaseResponse> {
         val message = query.message
         message.userId = firebaseAuth.currentUser?.uid.toString()
-        return retrofit.create(FirebaseAPI::class.java).sendMessage(message).doOnNext { updateConversation(query.message) }
+        return retrofit.create(FirebaseAPI::class.java).sendMessage(message)
+                .doOnNext { response -> query.message.id = response.id }
+                .doOnNext { updateConversation(query.message) }
     }
 
     private fun updateConversation(message: Message) {
-        val map = mutableMapOf<String, Any>(("lastMessage" to message.text), ("lastMessageTime" to message.time))
+        val map = mutableMapOf<String, Any>("lastMessageId" to message.id)
         firebaseDatabase.reference
                 .child("conversations")
                 .child(message.conversationId)

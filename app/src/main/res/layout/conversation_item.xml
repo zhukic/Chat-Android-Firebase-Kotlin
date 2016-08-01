@@ -64,7 +64,7 @@
                 android:maxLines="1"
                 android:text="user"
                 tools:text="Ali Connors"
-                android:layout_alignTop="@+id/conversation_last_message"
+                android:layout_alignParentTop="true"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true" />
 
@@ -90,9 +90,10 @@
                 android:ellipsize="end"
                 android:maxLines="1"
                 tools:text="This is some last message from the chat, there is loads of interesting stuff in here"
-                android:layout_alignParentTop="true"
-                android:layout_toEndOf="@+id/conversation_dash"
-                android:layout_toRightOf="@+id/conversation_dash" />
+                android:layout_alignBaseline="@+id/conversation_dash"
+                android:layout_alignBottom="@+id/conversation_dash"
+                android:layout_toRightOf="@+id/conversation_dash"
+                android:layout_toEndOf="@+id/conversation_dash" />
 
         </RelativeLayout>
     </LinearLayout>

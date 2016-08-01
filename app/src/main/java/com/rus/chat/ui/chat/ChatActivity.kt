@@ -53,13 +53,13 @@ class ChatActivity : AppCompatActivity(), ChatView, ChatAdapter.OnItemClickListe
     }
 
     override fun changeMessage(message: Message) {
-        val position = chatAdapter.items.indexOfFirst { it.messageId.equals(message.messageId) }
+        val position = chatAdapter.items.indexOfFirst { it.id.equals(message.id) }
         chatAdapter.items[position] = message
         chatAdapter.notifyItemChanged(position)
     }
 
     override fun removeMessage(message: Message) {
-        val position = chatAdapter.items.indexOfFirst { it.messageId.equals(message) }
+        val position = chatAdapter.items.indexOfFirst { it.id.equals(message) }
         chatAdapter.items.removeAt(position)
         chatAdapter.notifyItemRemoved(position)
     }

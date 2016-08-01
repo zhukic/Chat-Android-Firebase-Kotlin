@@ -7,7 +7,7 @@ import com.rus.chat.entity.conversation.ConversationEntity
 /**
  * Created by RUS on 23.07.2016.
  */
-data class Message(var messageId: String = "",
+data class Message(var id: String = "",
                    @SerializedName("conversationId") @Expose val conversationId: String = "",
                    @SerializedName("userId") @Expose var userId: String = "",
                    @SerializedName("text") @Expose val text: String = "",

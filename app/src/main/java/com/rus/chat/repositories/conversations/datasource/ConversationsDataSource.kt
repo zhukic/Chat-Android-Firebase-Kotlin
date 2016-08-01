@@ -1,6 +1,8 @@
 package com.rus.chat.repositories.conversations.datasource
 
 import com.rus.chat.entity.conversation.ConversationEntity
+import com.rus.chat.entity.conversation.ConversationModel
+import com.rus.chat.entity.mapper.ConversationMapper
 import com.rus.chat.entity.session.User
 import com.rus.chat.entity.query.Handle
 import com.rus.chat.entity.query.BaseQuery
@@ -17,6 +19,6 @@ interface ConversationsDataSource {
     fun initializeEventListener(query: ConversationsQuery.Initialize): Observable<ConversationResponse>
 
     @Handle(ConversationsQuery.CreateConversation::class)
-    fun createConversation(query: ConversationsQuery.CreateConversation): Observable<ConversationEntity>
+    fun createConversation(query: ConversationsQuery.CreateConversation): Observable<ConversationModel>
 
 }

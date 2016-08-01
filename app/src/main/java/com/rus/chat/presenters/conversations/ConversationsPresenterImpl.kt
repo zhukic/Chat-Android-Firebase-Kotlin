@@ -12,6 +12,7 @@ import com.rus.chat.interactors.conversations.ConversationsUseCase
 import com.rus.chat.ui.conversations.ConversationsView
 import com.rus.chat.utils.Logger
 import rx.Subscriber
+import rx.observers.Subscribers
 import javax.inject.Inject
 
 /**
@@ -26,7 +27,7 @@ class ConversationsPresenterImpl @Inject constructor(val useCase: ConversationsU
     }
 
     override fun initialize() {
-        useCase.execute(ConversationsQuery.Initialize(), ResponseSubscriber())
+        useCase.execute(ConversationsQuery.Initialize(), ConversationsSubscriber())
     }
 
     override fun onCreateConversationButtonClicked() {
@@ -34,8 +35,7 @@ class ConversationsPresenterImpl @Inject constructor(val useCase: ConversationsU
     }
 
     override fun createConversation(conversationName: String) {
-        conversationsView?.showProgress()
-        useCase.execute(ConversationsQuery.CreateConversation(ConversationEntity(name = conversationName)), CreateConversationSubscriber())
+        useCase.execute(ConversationsQuery.CreateConversation(ConversationEntity(name = conversationName)), Subscribers.empty<Any>())
     }
 
     override fun onDestroy() {
@@ -43,23 +43,7 @@ class ConversationsPresenterImpl @Inject constructor(val useCase: ConversationsU
         this.useCase.unsubscribe()
     }
 
-    private inner class CreateConversationSubscriber : Subscriber<ConversationEntity>() {
-
-        override fun onError(throwable: Throwable?) {
-            if(throwable != null) conversationsView?.onError(throwable)
-        }
-
-        override fun onNext(conversationEntity: ConversationEntity?) {
-            //if(conversation != null) conversationsView?.addConversation(conversation)
-        }
-
-        override fun onCompleted() {
-            conversationsView?.hideProgress()
-        }
-
-    }
-
-    private inner class ResponseSubscriber : Subscriber<ConversationResponse>() {
+    private inner class ConversationsSubscriber : Subscriber<ConversationResponse>() {
 
         override fun onError(throwable: Throwable?) {
             Logger.log("response: Error")

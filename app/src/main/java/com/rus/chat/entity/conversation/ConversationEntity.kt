@@ -8,6 +8,5 @@ import java.io.Serializable
  * Created by RUS on 17.07.2016.
  */
 class ConversationEntity(id: String = "",
-                         name: String = "",
-                         @SerializedName("lastMessageId") @Expose val lastMessageId: String = "",
-                         @SerializedName("lastMessageUserId") @Expose val lastMessageUserId: String = "") : BaseConversation(id, name), Serializable
+                         @SerializedName("name") @Expose override var name: String = "",
+                         @SerializedName("lastMessageId") @Expose var lastMessageId: String? = null) : BaseConversation(id, name), Serializable
