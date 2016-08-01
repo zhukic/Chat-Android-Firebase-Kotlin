@@ -5,6 +5,8 @@ import com.google.firebase.database.FirebaseDatabase
 import com.rus.chat.di.firebase.FirebaseModule
 import com.rus.chat.di.net.NetModule
 import com.rus.chat.interactors.chat.ChatUseCase
+import com.rus.chat.interactors.chat.GetConversationMessages
+import com.rus.chat.interactors.chat.SendMessage
 import com.rus.chat.interactors.conversations.ConversationsUseCase
 import com.rus.chat.repositories.BaseRepository
 import com.rus.chat.repositories.chat.ChatRepository
@@ -24,7 +26,11 @@ class ChatModule {
 
     @Provides
     @Singleton
-    fun getChatUseCase(chatRepository: ChatRepository): ChatUseCase = ChatUseCase(chatRepository)
+    fun getGetConversationMessages(chatRepository: ChatRepository): GetConversationMessages = GetConversationMessages(chatRepository)
+
+    @Provides
+    @Singleton
+    fun getSendMessage(chatRepository: ChatRepository): SendMessage = SendMessage(chatRepository)
 
     @Provides
     @Singleton

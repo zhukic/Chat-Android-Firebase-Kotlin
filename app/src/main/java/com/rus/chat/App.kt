@@ -17,8 +17,8 @@ import com.rus.chat.di.session.SessionComponent
 import com.rus.chat.di.session.SessionModule
 import com.rus.chat.repositories.conversations.ConversationsRepository
 import com.rus.chat.repositories.conversations.datasource.ConversationsDataSourceImpl
-import com.rus.chat.repositories.login.SessionRepository
-import com.rus.chat.repositories.login.datasource.SessionDataSourceImpl
+import com.rus.chat.repositories.session.SessionRepository
+import com.rus.chat.repositories.session.datasource.SessionDataSourceImpl
 import com.rus.chat.utils.HandleUtils
 import com.rus.chat.utils.Logger
 

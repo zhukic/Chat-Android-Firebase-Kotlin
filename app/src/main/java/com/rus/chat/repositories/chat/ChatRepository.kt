@@ -16,5 +16,5 @@ class ChatRepository @Inject constructor(dataSourceImpl: ChatDataSourceImpl) : B
         HandleUtils.registerHandlers(this, dataSourceImpl)
     }
 
-    override fun <T> query(baseQuery: BaseQuery): Observable<T> = getObservable(baseQuery)
+    fun <T> query(baseQuery: BaseQuery): Observable<T> = getObservable(baseQuery)
 }

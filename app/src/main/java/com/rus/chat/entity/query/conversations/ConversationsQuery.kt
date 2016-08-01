@@ -10,7 +10,7 @@ class ConversationsQuery {
 
     class GetConversations : Query
 
-    class CreateConversation(val conversationEntity: ConversationEntity) : Query
+    class CreateConversation(val conversationName: String) : Query
 
     class Initialize : Query
 

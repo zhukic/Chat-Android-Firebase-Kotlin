@@ -1,4 +1,4 @@
-package com.rus.chat.entity.mapper
+package com.rus.chat.repositories.conversations.datasource.mapper
 
 import com.rus.chat.entity.chat.Message
 import com.rus.chat.entity.conversation.BaseConversation

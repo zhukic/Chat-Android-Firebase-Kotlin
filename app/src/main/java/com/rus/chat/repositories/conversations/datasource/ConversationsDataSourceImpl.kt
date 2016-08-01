@@ -8,12 +8,13 @@ import com.rus.chat.entity.chat.Message
 import com.rus.chat.entity.conversation.BaseConversation
 import com.rus.chat.entity.conversation.ConversationEntity
 import com.rus.chat.entity.conversation.ConversationModel
-import com.rus.chat.entity.mapper.ConversationMapper
+import com.rus.chat.repositories.conversations.datasource.mapper.ConversationMapper
 import com.rus.chat.entity.session.User
 import com.rus.chat.entity.query.BaseQuery
 import com.rus.chat.entity.query.conversations.ConversationsQuery
 import com.rus.chat.entity.response.BaseResponse
 import com.rus.chat.entity.response.ConversationResponse
+import com.rus.chat.entity.response.FirebaseResponse
 import com.rus.chat.net.FirebaseAPI
 import com.rus.chat.utils.Logger
 import retrofit2.Call
@@ -35,7 +36,7 @@ import javax.inject.Inject
  */
 class ConversationsDataSourceImpl(val retrofit: Retrofit, val firebaseDatabase: FirebaseDatabase) : ConversationsDataSource {
 
-    override fun initializeEventListener(query: ConversationsQuery.Initialize): Observable<ConversationResponse> = Observable.create<ConversationResponse> { subscriber ->
+    override fun initialize(query: ConversationsQuery.GetConversations): Observable<ConversationResponse> = Observable.create<ConversationResponse> { subscriber ->
         firebaseDatabase.reference
                 .child("conversations")
                 .addChildEventListener(object : ChildEventListener {
@@ -74,10 +75,8 @@ class ConversationsDataSourceImpl(val retrofit: Retrofit, val firebaseDatabase: 
                 })
     }.flatMap { response -> convertToConversationModel(response)  }
     
-    override fun createConversation(query: ConversationsQuery.CreateConversation): Observable<ConversationModel> = retrofit.create(FirebaseAPI::class.java)
-            .createConversation(query.conversationEntity)
-            .map { setIdToConversation(query.conversationEntity, it.id) }
-            .map { ConversationMapper.transformFromEntity(it) }
+    override fun createConversation(query: ConversationsQuery.CreateConversation): Observable<FirebaseResponse> = retrofit.create(FirebaseAPI::class.java)
+            .createConversation(ConversationEntity(name = query.conversationName))
 
     private fun convertToConversationModel(response: ConversationResponse): Observable<ConversationResponse> {
         return getMessage((response.conversation as ConversationEntity).lastMessageId).concatMap { message ->

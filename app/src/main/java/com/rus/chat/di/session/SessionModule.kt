@@ -3,10 +3,10 @@ package com.rus.chat.di.session
 import com.google.firebase.auth.FirebaseAuth
 import com.rus.chat.di.firebase.FirebaseModule
 import com.rus.chat.di.net.NetModule
-import com.rus.chat.interactors.session.SessionUseCase
+import com.rus.chat.interactors.session.*
 import com.rus.chat.repositories.BaseRepository
-import com.rus.chat.repositories.login.SessionRepository
-import com.rus.chat.repositories.login.datasource.SessionDataSourceImpl
+import com.rus.chat.repositories.session.SessionRepository
+import com.rus.chat.repositories.session.datasource.SessionDataSourceImpl
 import dagger.Module
 import dagger.Provides
 import retrofit2.Retrofit
@@ -20,11 +20,23 @@ class SessionModule() {
 
     @Provides
     @Singleton
-    fun getSessionUseCase(baseRepository: BaseRepository): SessionUseCase = SessionUseCase(baseRepository)
+    fun getSignIn(sessionRepository: SessionRepository): SignIn = SignIn(sessionRepository)
 
     @Provides
     @Singleton
-    fun getSessionRepository(sessionDataSourceImpl: SessionDataSourceImpl): BaseRepository = SessionRepository(sessionDataSourceImpl)
+    fun getSignOut(sessionRepository: SessionRepository): SignOut = SignOut(sessionRepository)
+
+    @Provides
+    @Singleton
+    fun getRegister(sessionRepository: SessionRepository): Register = Register(sessionRepository)
+
+    @Provides
+    @Singleton
+    fun getCurrentUser(sessionRepository: SessionRepository): GetCurrentUser = GetCurrentUser(sessionRepository)
+
+    @Provides
+    @Singleton
+    fun getSessionRepository(sessionDataSourceImpl: SessionDataSourceImpl): SessionRepository = SessionRepository(sessionDataSourceImpl)
 
     @Provides
     @Singleton

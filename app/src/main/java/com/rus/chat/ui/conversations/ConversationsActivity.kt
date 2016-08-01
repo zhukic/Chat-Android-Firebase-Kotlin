@@ -100,15 +100,15 @@ class ConversationsActivity : AppCompatActivity(), ConversationsView, Conversati
     }
 
     override fun onItemClicked(item: ConversationModel) {
-        openChatActivity(item.id)
+        openChatActivity(item)
     }
 
     override fun onLongItemClicked(item: ConversationModel) {
     }
 
-    override fun openChatActivity(chatId: String) {
+    override fun openChatActivity(conversationModel: ConversationModel) {
         val intent = Intent(this, ChatActivity::class.java)
-        intent.putExtra(EXTRA_CHAT_ID, chatId)
+        intent.putExtra(EXTRA_CONVERSATION, conversationModel)
         startActivity(intent)
     }
 
@@ -146,7 +146,7 @@ class ConversationsActivity : AppCompatActivity(), ConversationsView, Conversati
 
     companion object {
         val EXTRA_SIGN_OUT: String = "SIGN_OUT"
-        val EXTRA_CHAT_ID: String = "CHAT_ID"
+        val EXTRA_CONVERSATION: String = "CONVERSATION"
     }
 
 }

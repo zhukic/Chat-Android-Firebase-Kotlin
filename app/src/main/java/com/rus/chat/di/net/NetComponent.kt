@@ -1,7 +1,7 @@
 package com.rus.chat.di.net
 
 import com.rus.chat.repositories.conversations.datasource.ConversationsDataSourceImpl
-import com.rus.chat.repositories.login.datasource.SessionDataSourceImpl
+import com.rus.chat.repositories.session.datasource.SessionDataSourceImpl
 import dagger.Component
 import javax.inject.Singleton
 

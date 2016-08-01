@@ -14,18 +14,9 @@ import javax.inject.Inject
 /**
  * Created by RUS on 20.07.2016.
  */
-abstract class BaseUseCase(val baseRepository: BaseRepository) {
+abstract class BaseUseCase {
 
-    private var subscription: Subscription = Subscriptions.empty()
-
-    open protected fun <T> execute(baseQuery: BaseQuery, subscriber: Subscriber<T>) {
-        this.subscription = this.baseRepository
-                .query<T>(baseQuery)
-                .onBackpressureBuffer(10000)
-                .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(subscriber)
-    }
+    protected var subscription: Subscription = Subscriptions.empty()
 
     fun unsubscribe() = subscription.unsubscribe()
 }

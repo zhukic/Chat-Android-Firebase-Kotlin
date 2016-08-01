@@ -19,7 +19,7 @@ import java.util.*
  */
 class ChatDataSourceImpl(val retrofit: Retrofit, val firebaseDatabase: FirebaseDatabase, val firebaseAuth: FirebaseAuth) : ChatDataSource {
 
-    override fun getChatMessages(query: ChatQuery.GetChatMessages): Observable<MessageResponse.Response> = Observable.create { subscriber ->
+    override fun getChatMessages(query: ChatQuery.GetConversationMessages): Observable<MessageResponse.Response> = Observable.create { subscriber ->
         firebaseDatabase.reference
                 .child("messages")
                 .orderByChild("conversationId")
@@ -59,11 +59,11 @@ class ChatDataSourceImpl(val retrofit: Retrofit, val firebaseDatabase: FirebaseD
     }
 
     override fun sendMessage(query: ChatQuery.SendMessage): Observable<FirebaseResponse> {
-        val message = query.message
+        val message = Message(conversationId = query.conversationId, text = query.text, time = query.time)
         message.userId = firebaseAuth.currentUser?.uid.toString()
         return retrofit.create(FirebaseAPI::class.java).sendMessage(message)
-                .doOnNext { response -> query.message.id = response.id }
-                .doOnNext { updateConversation(query.message) }
+                .doOnNext { response -> message.id = response.id }
+                .doOnNext { updateConversation(message) }
     }
 
     private fun updateConversation(message: Message) {

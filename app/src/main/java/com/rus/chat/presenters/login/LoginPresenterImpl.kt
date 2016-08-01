@@ -6,7 +6,7 @@ import com.rus.chat.entity.session.User
 import com.rus.chat.entity.query.session.SessionQuery
 import com.rus.chat.interactors.session.*
 import com.rus.chat.repositories.BaseRepository
-import com.rus.chat.repositories.login.SessionRepository
+import com.rus.chat.repositories.session.SessionRepository
 import com.rus.chat.ui.login.LoginView
 import com.rus.chat.utils.Logger
 import rx.Subscriber
@@ -19,7 +19,10 @@ import javax.inject.Inject
  * Created by RUS on 10.07.2016.
  */
 
-class LoginPresenterImpl @Inject constructor(val useCase: SessionUseCase) : LoginPresenter {
+class LoginPresenterImpl @Inject constructor(val signIn: SignIn,
+                                             val signOut: SignOut,
+                                             val getCurrentUser: GetCurrentUser,
+                                             val register: Register) : LoginPresenter {
 
     var loginView: LoginView? = null
 
@@ -28,28 +31,28 @@ class LoginPresenterImpl @Inject constructor(val useCase: SessionUseCase) : Logi
     }
 
     override fun initialize() {
-        useCase.execute(SessionQuery.GetCurrentUser(), UserSubscriber())
+        getCurrentUser.execute(UserSubscriber())
     }
 
     override fun signIn(name: String, password: String) {
         loginView?.showSignInProgress()
         val email = name + "@gmail.com"
-        useCase.execute(SessionQuery.SignIn(email, password), SignInSubscriber())
+        signIn.execute(email, password, SignInSubscriber())
     }
 
     override fun register(name: String, password: String) {
         loginView?.showRegisterProgress()
         val email = name + "@gmail.com"
-        useCase.execute(SessionQuery.Register(email, name, password), RegisterSubscriber())
+        register.execute(email, name, password, RegisterSubscriber())
     }
 
     override fun signOut() {
-        useCase.execute(SessionQuery.SignOut(), SignOutSubscriber())
+        signOut.execute(SignOutSubscriber())
     }
 
     override fun onDestroy() {
         this.loginView = null
-        this.useCase.unsubscribe()
+//        this.useCase.unsubscribe()
     }
 
     private inner class UserSubscriber : Subscriber<User>() {

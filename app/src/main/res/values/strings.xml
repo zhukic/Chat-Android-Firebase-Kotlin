@@ -1,12 +1,12 @@
 <resources>
-    <string name="app_name">Chat</string>
+    <string name="app_name">FirebaseChat</string>
     <string name="title_activity_login1">Sign in</string>
 
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
     <string name="prompt_name">Name</string>
     <string name="action_sign_in">Sign in</string>
-    <string name="action_register_and_sign_in">Register and Sign in</string>
+    <string name="action_register_and_sign_in">Register &amp; Sign in</string>
     <string name="action_sign_out">Sign out</string>
     <string name="error_invalid_email">This email address is invalid</string>
     <string name="error_invalid_password">This password is too short</string>

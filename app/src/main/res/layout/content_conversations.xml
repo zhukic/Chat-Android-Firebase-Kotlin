@@ -11,6 +11,8 @@
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
         android:id="@+id/conversations_recyclerView"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 

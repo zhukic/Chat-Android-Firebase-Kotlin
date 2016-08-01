@@ -13,8 +13,8 @@ import rx.Observable
  */
 interface ChatDataSource {
 
-    @Handle(ChatQuery.GetChatMessages::class)
-    fun getChatMessages(query: ChatQuery.GetChatMessages): Observable<MessageResponse.Response>
+    @Handle(ChatQuery.GetConversationMessages::class)
+    fun getChatMessages(query: ChatQuery.GetConversationMessages): Observable<MessageResponse.Response>
 
     @Handle(ChatQuery.SendMessage::class)
     fun sendMessage(query: ChatQuery.SendMessage): Observable<FirebaseResponse>

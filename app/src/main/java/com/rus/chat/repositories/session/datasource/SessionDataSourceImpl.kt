@@ -1,4 +1,4 @@
-package com.rus.chat.repositories.login.datasource
+package com.rus.chat.repositories.session.datasource
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser

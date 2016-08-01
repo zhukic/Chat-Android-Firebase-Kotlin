@@ -1,14 +1,13 @@
-package com.rus.chat.repositories.login
+package com.rus.chat.repositories.session
 
 import com.google.firebase.auth.FirebaseUser
 import com.rus.chat.entity.query.BaseQuery
 import com.rus.chat.entity.query.session.SessionQuery
 import com.rus.chat.entity.query.Handle
 import com.rus.chat.repositories.BaseRepository
-import com.rus.chat.repositories.login.datasource.SessionDataSourceImpl
+import com.rus.chat.repositories.session.datasource.SessionDataSourceImpl
 import com.rus.chat.utils.HandleUtils
 import com.rus.chat.utils.Logger
-import com.trello.rxlifecycle.kotlin.bindToLifecycle
 import rx.Observable
 import rx.Subscriber
 import java.lang.reflect.InvocationTargetException
@@ -27,6 +26,6 @@ class SessionRepository(sessionDataSourceImpl: SessionDataSourceImpl) : BaseRepo
         HandleUtils.registerHandlers(this, sessionDataSourceImpl)
     }
 
-    override fun <T> query(baseQuery: BaseQuery): Observable<T> = getObservable(baseQuery)
+    fun <T> query(sessionQuery: SessionQuery.Query): Observable<T> = getObservable(sessionQuery)
 
 }

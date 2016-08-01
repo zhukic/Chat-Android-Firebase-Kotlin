@@ -8,9 +8,9 @@ import com.rus.chat.entity.query.BaseQuery
  */
 class ChatQuery {
 
-    data class GetChatMessages(val conversationId: String) : Query
+    data class GetConversationMessages(val conversationId: String) : Query
 
-    data class SendMessage(val message: Message) : Query
+    data class SendMessage(val conversationId: String, val text: String, val time: String) : Query
 
     interface Query : BaseQuery
 

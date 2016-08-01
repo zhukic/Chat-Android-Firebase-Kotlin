@@ -16,8 +16,6 @@ abstract class BaseRepository {
     protected fun <T> getObservable(query: BaseQuery): Observable<T> = queryHandlers[query.javaClass]?.handleQuery(query)
             ?: throw IllegalArgumentException("No handler is registered for query ${query.javaClass}")
 
-    abstract fun <T> query(baseQuery: BaseQuery): Observable<T>
-
     interface QueryHandler {
         fun <T> handleQuery(query: BaseQuery): Observable<T>
     }

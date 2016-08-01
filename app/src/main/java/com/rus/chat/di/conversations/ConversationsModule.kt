@@ -5,6 +5,8 @@ import com.rus.chat.di.firebase.FirebaseModule
 import com.rus.chat.di.net.NetModule
 import com.rus.chat.entity.conversation.ConversationEntity
 import com.rus.chat.interactors.conversations.ConversationsUseCase
+import com.rus.chat.interactors.conversations.CreateConversation
+import com.rus.chat.interactors.conversations.GetConversations
 import com.rus.chat.repositories.BaseRepository
 import com.rus.chat.repositories.conversations.ConversationsRepository
 import com.rus.chat.repositories.conversations.datasource.ConversationsDataSourceImpl
@@ -21,7 +23,11 @@ class ConversationsModule() {
 
     @Provides
     @Singleton
-    fun getConversationUseCase(conversationsRepository: ConversationsRepository): ConversationsUseCase = ConversationsUseCase(conversationsRepository)
+    fun getGetConversations(conversationsRepository: ConversationsRepository): GetConversations = GetConversations(conversationsRepository)
+
+    @Provides
+    @Singleton
+    fun getCreateConversation(conversationsRepository: ConversationsRepository): CreateConversation = CreateConversation(conversationsRepository)
 
     @Provides
     @Singleton

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -13,88 +13,102 @@
     android:focusable="true"
     android:orientation="vertical">
 
-    <LinearLayout
+    <ImageView
+        android:id="@+id/list_avatar"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:scaleType="centerCrop"
+        android:src="@mipmap/ic_launcher" />
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:orientation="vertical">
+        android:id="@+id/r1"
+        android:layout_toRightOf="@+id/list_avatar"
+        android:layout_toEndOf="@+id/list_avatar"
+        android:layout_marginLeft="16dp">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/conversation_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_toLeftOf="@+id/conversation_last_message_time"
-                android:textColor="@color/primaryTextColor"
-                android:textSize="16sp"
-                android:ellipsize="end"
-                android:maxLines="1"
-                tools:text="Brunch this weekend?" />
-
-            <TextView
-                android:id="@+id/conversation_last_message_time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"
-                android:layout_marginLeft="8dp"
-                android:textColor="@color/secondaryTextColor"
-                android:textSize="14sp"
-                tools:text="Yesterday" />
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/conversation_name"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical">
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_toLeftOf="@+id/conversation_last_message_time"
+            android:textColor="@color/primaryTextColor"
+            android:textSize="16sp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textAppearance="?attr/textAppearanceListItem"
+            tools:text="Brunch this weekend?" />
 
-            <TextView
-                android:id="@+id/conversation_last_message_user"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/primaryTextColor"
-                android:textSize="14sp"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:text="user"
-                tools:text="Ali Connors"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true" />
+        <TextView
+            android:id="@+id/conversation_last_message_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginLeft="8dp"
+            android:textColor="@color/secondaryTextColor"
+            android:textSize="14sp"
+            android:textAppearance="?attr/textAppearanceListItem"
+            tools:text="Yesterday" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/secondaryTextColor"
-                android:textSize="14sp"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:text="@string/dash"
-                android:layout_alignParentTop="true"
-                android:layout_toRightOf="@+id/conversation_last_message_user"
-                android:layout_toEndOf="@+id/conversation_last_message_user"
-                android:id="@+id/conversation_dash" />
+    </RelativeLayout>
 
-            <TextView
-                android:id="@+id/conversation_last_message"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/secondaryTextColor"
-                android:textSize="14sp"
-                android:ellipsize="end"
-                android:maxLines="1"
-                tools:text="This is some last message from the chat, there is loads of interesting stuff in here"
-                android:layout_alignBaseline="@+id/conversation_dash"
-                android:layout_alignBottom="@+id/conversation_dash"
-                android:layout_toRightOf="@+id/conversation_dash"
-                android:layout_toEndOf="@+id/conversation_dash" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/r1"
+        android:layout_marginLeft="16dp"
+        android:layout_toRightOf="@+id/list_avatar"
+        android:layout_toEndOf="@+id/list_avatar"
+        android:layout_gravity="center_vertical">
 
-        </RelativeLayout>
-    </LinearLayout>
-</LinearLayout>
+        <TextView
+            android:id="@+id/conversation_last_message_user"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/primaryTextColor"
+            android:textSize="14sp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="user"
+            tools:text="Ali Connors"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:textAppearance="?attr/textAppearanceListItem"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/secondaryTextColor"
+            android:textSize="14sp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="@string/dash"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/conversation_last_message_user"
+            android:layout_toEndOf="@+id/conversation_last_message_user"
+            android:id="@+id/conversation_dash"
+            android:textAppearance="?attr/textAppearanceListItem"/>
+
+        <TextView
+            android:id="@+id/conversation_last_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/secondaryTextColor"
+            android:textSize="14sp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:layout_alignBaseline="@+id/conversation_dash"
+            android:layout_alignBottom="@+id/conversation_dash"
+            android:layout_toRightOf="@+id/conversation_dash"
+            android:layout_toEndOf="@+id/conversation_dash"
+            android:textAppearance="?attr/textAppearanceListItem"
+            tools:text="This is some last message from the chat, there is loads of interesting stuff in here"/>
+
+    </RelativeLayout>
+
+</RelativeLayout>

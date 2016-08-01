@@ -19,7 +19,7 @@ interface ConversationsView : BaseView {
 
     fun removeConversation(conversationEntity: ConversationModel)
 
-    fun openChatActivity(chatId: String)
+    fun openChatActivity(conversationModel: ConversationModel)
 
     fun showProgress()
 

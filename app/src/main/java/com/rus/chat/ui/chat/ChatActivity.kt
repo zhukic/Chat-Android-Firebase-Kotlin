@@ -7,6 +7,7 @@ import com.rus.chat.App
 import com.rus.chat.R
 import com.rus.chat.entity.chat.Message
 import com.rus.chat.entity.conversation.ConversationEntity
+import com.rus.chat.entity.conversation.ConversationModel
 import com.rus.chat.presenters.chat.ChatPresenter
 import com.rus.chat.presenters.chat.ChatPresenterImpl
 import com.rus.chat.presenters.chat.ChatPresenterImpl_Factory
@@ -36,11 +37,14 @@ class ChatActivity : AppCompatActivity(), ChatView, ChatAdapter.OnItemClickListe
         chatAdapter = ChatAdapter(this, mutableListOf<Message>())
         messages_recycler.adapter = chatAdapter
 
+        val conversation = intent.extras.getSerializable(ConversationsActivity.EXTRA_CONVERSATION) as ConversationModel
+        supportActionBar?.title = conversation.name
+
         messages_recycler.layoutManager = LinearLayoutManager(this)
         button_send.setOnClickListener { chatPresenter.sendMessage(edit_message.text.toString()) }
 
         chatPresenter.attachView(this)
-        chatPresenter.initialize(intent.extras.getString(ConversationsActivity.EXTRA_CHAT_ID))
+        chatPresenter.initialize(conversation.id)
 
     }
 

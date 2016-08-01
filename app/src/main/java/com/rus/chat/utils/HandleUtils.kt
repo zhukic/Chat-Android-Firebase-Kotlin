@@ -5,9 +5,9 @@ import com.rus.chat.entity.query.BaseQuery
 import com.rus.chat.entity.query.Handle
 import com.rus.chat.entity.query.session.SessionQuery
 import com.rus.chat.repositories.BaseRepository
-import com.rus.chat.repositories.login.SessionRepository
-import com.rus.chat.repositories.login.datasource.SessionDataSource
-import com.rus.chat.repositories.login.datasource.SessionDataSourceImpl
+import com.rus.chat.repositories.session.SessionRepository
+import com.rus.chat.repositories.session.datasource.SessionDataSource
+import com.rus.chat.repositories.session.datasource.SessionDataSourceImpl
 import rx.Observable
 
 /**
