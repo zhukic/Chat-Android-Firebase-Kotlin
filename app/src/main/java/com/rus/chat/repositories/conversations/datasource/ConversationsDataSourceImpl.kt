@@ -47,6 +47,7 @@ class ConversationsDataSourceImpl(val retrofit: Retrofit, val firebaseDatabase: 
                         if(dataSnapshot != null) {
                             val conversation = dataSnapshot.getValue(ConversationEntity::class.java)
                             conversation.id = dataSnapshot.key
+                            Logger.log("changed ${conversation.name}")
                             subscriber.onNext(ConversationResponse(conversation, ConversationResponse.Type.CHANGED))
                         }
                     }
@@ -55,7 +56,7 @@ class ConversationsDataSourceImpl(val retrofit: Retrofit, val firebaseDatabase: 
                         if(dataSnapshot != null) {
                             val conversation = dataSnapshot.getValue(ConversationEntity::class.java)
                             conversation.id = dataSnapshot.key
-                            Logger.log(conversation.name)
+                            Logger.log("added ${conversation.name}")
                             subscriber.onNext(ConversationResponse(conversation, ConversationResponse.Type.ADDED))
                         }
                     }

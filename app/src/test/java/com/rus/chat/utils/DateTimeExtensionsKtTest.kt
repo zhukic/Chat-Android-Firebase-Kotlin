@@ -18,6 +18,14 @@ class DateTimeExtensionsKtTest {
         assertEquals(true, dateTime.isToday())
     }
 
+    @Test
+    fun testIsYesterday() {
+        var dateTime = DateTime.parse("2016-07-31T14:52:49.943Z")
+        assertEquals(false, dateTime.isYesterday())
+        dateTime = DateTime.parse("2016-08-01T14:52:49.943Z")
+        assertEquals(true, dateTime.isYesterday())
+    }
+
     companion object {
         val PATTERN: String = "dd:mm:yyyy"
     }

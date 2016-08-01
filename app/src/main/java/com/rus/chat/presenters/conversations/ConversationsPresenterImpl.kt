@@ -71,6 +71,7 @@ class ConversationsPresenterImpl @Inject constructor(val getConversations: GetCo
         override fun onCompleted() {}
 
         override fun onNext(response: ConversationResponse?) {
+            val a = 1
             when(response?.type) {
                 ConversationResponse.Type.ADDED -> conversationsView?.addConversation(response?.conversation as ConversationModel)
                 ConversationResponse.Type.CHANGED -> conversationsView?.changeConversation(response?.conversation as ConversationModel)

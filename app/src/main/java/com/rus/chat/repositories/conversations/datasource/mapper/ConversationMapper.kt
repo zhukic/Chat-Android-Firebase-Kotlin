@@ -5,6 +5,9 @@ import com.rus.chat.entity.conversation.BaseConversation
 import com.rus.chat.entity.conversation.ConversationEntity
 import com.rus.chat.entity.conversation.ConversationModel
 import com.rus.chat.entity.session.User
+import com.rus.chat.utils.isToday
+import com.rus.chat.utils.isYesterday
+import org.joda.time.DateTime
 
 /**
  * Created by RUS on 30.07.2016.
@@ -19,7 +22,14 @@ class ConversationMapper {
             conversationModel.name = baseConversation.name
             if(message != null) {
                 conversationModel.lastMessage = message.text
-                conversationModel.lastMessageTime = message.time
+                if(!message.time.equals("")) {
+                    val dateTime = DateTime.parse(message.time)
+                    if(dateTime.isToday())
+                        conversationModel.lastMessageTime = dateTime.toString("HH:mm")
+                    else if(dateTime.isYesterday())
+                        conversationModel.lastMessageTime = "Вчера"
+                    else conversationModel.lastMessageTime = dateTime.toString("dd MMM")
+                }
             }
             if(user != null) {
                 if(user.name != null)

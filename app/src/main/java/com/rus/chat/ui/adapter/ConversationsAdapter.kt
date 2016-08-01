@@ -32,15 +32,8 @@ class ConversationsAdapter(val onItemClickListener: OnItemClickListener, val ite
             this.conversationLastMessage.text = conversationModel.lastMessage
             this.conversationName.text = conversationModel.name
             this.conversationLastMessageUser.text = conversationModel.lastMessageUser
+            this.conversationLastMessageTime.text = conversationModel.lastMessageTime
 
-            if(!conversationModel.lastMessageTime.equals("")) {
-                val dateTime = DateTime.parse(conversationModel.lastMessageTime)
-                if(dateTime.isToday())
-                    this.conversationLastMessageTime.text = dateTime.toString("HH:mm")
-                else if(dateTime.isYesterday())
-                    this.conversationLastMessageTime.text = "Вчера"
-                else this.conversationLastMessageTime.text = dateTime.toString("dd mmm")
-            }
 
             this.itemView.setOnClickListener { onItemClickListener.onItemClicked(conversationModel) }
         }
