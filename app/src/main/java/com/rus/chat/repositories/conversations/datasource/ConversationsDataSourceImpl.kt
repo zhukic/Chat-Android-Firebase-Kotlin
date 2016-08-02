@@ -4,7 +4,7 @@ import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.rus.chat.App
-import com.rus.chat.entity.chat.Message
+import com.rus.chat.entity.chat.MessageEntity
 import com.rus.chat.entity.conversation.BaseConversation
 import com.rus.chat.entity.conversation.ConversationEntity
 import com.rus.chat.entity.conversation.ConversationModel
@@ -12,9 +12,8 @@ import com.rus.chat.repositories.conversations.datasource.mapper.ConversationMap
 import com.rus.chat.entity.session.User
 import com.rus.chat.entity.query.BaseQuery
 import com.rus.chat.entity.query.conversations.ConversationsQuery
-import com.rus.chat.entity.response.BaseResponse
-import com.rus.chat.entity.response.ConversationResponse
 import com.rus.chat.entity.response.FirebaseResponse
+import com.rus.chat.entity.response.ResponseType
 import com.rus.chat.net.FirebaseAPI
 import com.rus.chat.utils.Logger
 import retrofit2.Call
@@ -36,7 +35,7 @@ import javax.inject.Inject
  */
 class ConversationsDataSourceImpl(val retrofit: Retrofit, val firebaseDatabase: FirebaseDatabase) : ConversationsDataSource {
 
-    override fun initialize(query: ConversationsQuery.GetConversations): Observable<ConversationResponse> = Observable.create<ConversationResponse> { subscriber ->
+    override fun initialize(query: ConversationsQuery.GetConversations): Observable<Pair<ConversationModel, ResponseType>> = Observable.create<Pair<ConversationEntity, ResponseType>> { subscriber ->
         firebaseDatabase.reference
                 .child("conversations")
                 .addChildEventListener(object : ChildEventListener {
@@ -48,7 +47,7 @@ class ConversationsDataSourceImpl(val retrofit: Retrofit, val firebaseDatabase: 
                             val conversation = dataSnapshot.getValue(ConversationEntity::class.java)
                             conversation.id = dataSnapshot.key
                             Logger.log("changed ${conversation.name}")
-                            subscriber.onNext(ConversationResponse(conversation, ConversationResponse.Type.CHANGED))
+                            subscriber.onNext(conversation to ResponseType.CHANGED)
                         }
                     }
 
@@ -57,7 +56,7 @@ class ConversationsDataSourceImpl(val retrofit: Retrofit, val firebaseDatabase: 
                             val conversation = dataSnapshot.getValue(ConversationEntity::class.java)
                             conversation.id = dataSnapshot.key
                             Logger.log("added ${conversation.name}")
-                            subscriber.onNext(ConversationResponse(conversation, ConversationResponse.Type.ADDED))
+                            subscriber.onNext(conversation to ResponseType.ADDED)
                         }
                     }
 
@@ -65,7 +64,7 @@ class ConversationsDataSourceImpl(val retrofit: Retrofit, val firebaseDatabase: 
                         if(dataSnapshot != null) {
                             val conversation = dataSnapshot.getValue(ConversationEntity::class.java)
                             conversation.id = dataSnapshot.key
-                            subscriber.onNext(ConversationResponse(conversation, ConversationResponse.Type.REMOVED))
+                            subscriber.onNext(conversation to ResponseType.REMOVED)
                         }
                     }
 
@@ -79,11 +78,10 @@ class ConversationsDataSourceImpl(val retrofit: Retrofit, val firebaseDatabase: 
     override fun createConversation(query: ConversationsQuery.CreateConversation): Observable<FirebaseResponse> = retrofit.create(FirebaseAPI::class.java)
             .createConversation(ConversationEntity(name = query.conversationName))
 
-    private fun convertToConversationModel(response: ConversationResponse): Observable<ConversationResponse> {
-        return getMessage((response.conversation as ConversationEntity).lastMessageId).concatMap { message ->
+    private fun convertToConversationModel(pair: Pair<ConversationEntity, ResponseType>): Observable<Pair<ConversationModel, ResponseType>> {
+        return getMessage((pair.first as ConversationEntity).lastMessageId).concatMap { message ->
             Observable.zip(Observable.just(message), getUserById(message?.userId), { message, user ->
-                response.conversation = ConversationMapper.createConversationWithMessageAndUser(response.conversation, message, user)
-                response
+                ConversationMapper.createConversationWithMessageAndUser(pair.first, message, user) to pair.second
             })
         }.subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread())
     }
@@ -93,7 +91,7 @@ class ConversationsDataSourceImpl(val retrofit: Retrofit, val firebaseDatabase: 
         return conversationEntity
     }
     
-    private fun getMessage(messageId: String?): Observable<Message> = retrofit.create(FirebaseAPI::class.java).getMessageById(messageId ?: "")
+    private fun getMessage(messageId: String?): Observable<MessageEntity> = retrofit.create(FirebaseAPI::class.java).getMessageById(messageId ?: "")
     
     private fun getUserById(userId: String?): Observable<User> = retrofit.create(FirebaseAPI::class.java).getUserById(userId ?: "")
 

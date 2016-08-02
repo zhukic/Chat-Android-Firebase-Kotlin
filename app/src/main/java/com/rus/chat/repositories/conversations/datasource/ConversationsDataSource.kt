@@ -7,8 +7,8 @@ import com.rus.chat.entity.session.User
 import com.rus.chat.entity.query.Handle
 import com.rus.chat.entity.query.BaseQuery
 import com.rus.chat.entity.query.conversations.ConversationsQuery
-import com.rus.chat.entity.response.ConversationResponse
 import com.rus.chat.entity.response.FirebaseResponse
+import com.rus.chat.entity.response.ResponseType
 import rx.Observable
 
 /**
@@ -17,7 +17,7 @@ import rx.Observable
 interface ConversationsDataSource {
 
     @Handle(ConversationsQuery.GetConversations::class)
-    fun initialize(query: ConversationsQuery.GetConversations): Observable<ConversationResponse>
+    fun initialize(query: ConversationsQuery.GetConversations): Observable<Pair<ConversationModel, ResponseType>>
 
     @Handle(ConversationsQuery.CreateConversation::class)
     fun createConversation(query: ConversationsQuery.CreateConversation): Observable<FirebaseResponse>

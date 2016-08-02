@@ -1,6 +1,6 @@
 package com.rus.chat.net
 
-import com.rus.chat.entity.chat.Message
+import com.rus.chat.entity.chat.MessageEntity
 import com.rus.chat.entity.conversation.ConversationEntity
 import com.rus.chat.entity.response.FirebaseResponse
 import com.rus.chat.entity.session.User
@@ -23,9 +23,9 @@ interface FirebaseAPI {
     fun createConversation(@Body conversationEntity: ConversationEntity): Observable<FirebaseResponse>
 
     @POST("messages.json")
-    fun sendMessage(@Body message: Message): Observable<FirebaseResponse>
+    fun sendMessage(@Body messageEntity: MessageEntity): Observable<FirebaseResponse>
 
     @GET("messages/{id}.json")
-    fun getMessageById(@Path("id") id: String): Observable<Message>
+    fun getMessageById(@Path("id") id: String): Observable<MessageEntity>
 
 }

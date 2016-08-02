@@ -7,8 +7,8 @@ import com.rus.chat.entity.conversation.ConversationEntity
 import com.rus.chat.entity.conversation.ConversationModel
 import com.rus.chat.entity.session.User
 import com.rus.chat.entity.query.conversations.ConversationsQuery
-import com.rus.chat.entity.response.ConversationResponse
 import com.rus.chat.entity.response.FirebaseResponse
+import com.rus.chat.entity.response.ResponseType
 import com.rus.chat.interactors.conversations.ConversationsUseCase
 import com.rus.chat.interactors.conversations.CreateConversation
 import com.rus.chat.interactors.conversations.GetConversations
@@ -61,7 +61,7 @@ class ConversationsPresenterImpl @Inject constructor(val getConversations: GetCo
 
     }
 
-    private inner class ConversationsSubscriber : Subscriber<ConversationResponse>() {
+    private inner class ConversationsSubscriber : Subscriber<Pair<ConversationModel, ResponseType>>() {
 
         override fun onError(throwable: Throwable?) {
             Logger.log("response: Error")
@@ -70,12 +70,11 @@ class ConversationsPresenterImpl @Inject constructor(val getConversations: GetCo
 
         override fun onCompleted() {}
 
-        override fun onNext(response: ConversationResponse?) {
-            val a = 1
-            when(response?.type) {
-                ConversationResponse.Type.ADDED -> conversationsView?.addConversation(response?.conversation as ConversationModel)
-                ConversationResponse.Type.CHANGED -> conversationsView?.changeConversation(response?.conversation as ConversationModel)
-                ConversationResponse.Type.REMOVED -> conversationsView?.removeConversation(response?.conversation as ConversationModel)
+        override fun onNext(pair: Pair<ConversationModel, ResponseType>?) {
+            when(pair?.second) {
+                ResponseType.ADDED -> conversationsView?.addConversation(pair?.first as ConversationModel)
+                ResponseType.CHANGED -> conversationsView?.changeConversation(pair?.first as ConversationModel)
+                ResponseType.REMOVED -> conversationsView?.removeConversation(pair?.first as ConversationModel)
             }
         }
 

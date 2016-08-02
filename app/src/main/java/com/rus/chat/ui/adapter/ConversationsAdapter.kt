@@ -1,5 +1,7 @@
 package com.rus.chat.ui.adapter
 
+import android.content.Context
+import android.graphics.Typeface
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -28,14 +30,27 @@ class ConversationsAdapter(val onItemClickListener: OnItemClickListener, val ite
                                val conversationLastMessage: TextView = v.conversation_last_message,
                                val conversationLastMessageUser: TextView = v.conversation_last_message_user) : RecyclerView.ViewHolder(v) {
 
+        init {
+            this.conversationName.typeface = MediumTypeface.getInstance(v.context)
+        }
+
         fun bind(conversationModel: ConversationModel) {
             this.conversationLastMessage.text = conversationModel.lastMessage
             this.conversationName.text = conversationModel.name
             this.conversationLastMessageUser.text = conversationModel.lastMessageUser
             this.conversationLastMessageTime.text = conversationModel.lastMessageTime
 
-
             this.itemView.setOnClickListener { onItemClickListener.onItemClicked(conversationModel) }
+        }
+
+        object MediumTypeface {
+            private var typeface: Typeface? = null
+
+            fun getInstance(context: Context): Typeface {
+                if(typeface == null)
+                    return Typeface.createFromAsset(context.assets, "Roboto-Medium.ttf")
+                else return typeface as Typeface
+            }
         }
     }
 

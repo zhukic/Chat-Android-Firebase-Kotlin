@@ -73,12 +73,11 @@
             android:textSize="14sp"
             android:ellipsize="end"
             android:maxLines="1"
-            android:text="user"
-            tools:text="Ali Connors"
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:textAppearance="?attr/textAppearanceListItem"/>
+            android:textAppearance="?attr/textAppearanceListItem"
+            tools:text="Ali Connors"/>
 
         <TextView
             android:layout_width="wrap_content"

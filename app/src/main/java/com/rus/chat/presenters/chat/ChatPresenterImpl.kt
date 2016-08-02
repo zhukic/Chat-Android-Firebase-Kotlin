@@ -1,9 +1,10 @@
 package com.rus.chat.presenters.chat
 
-import com.rus.chat.entity.chat.Message
+import com.rus.chat.entity.chat.MessageEntity
+import com.rus.chat.entity.chat.MessageModel
+import com.rus.chat.entity.response.ResponseType
 import com.rus.chat.entity.query.chat.ChatQuery
 import com.rus.chat.entity.response.FirebaseResponse
-import com.rus.chat.entity.response.MessageResponse
 import com.rus.chat.interactors.chat.ChatUseCase
 import com.rus.chat.interactors.chat.GetConversationMessages
 import com.rus.chat.interactors.chat.SendMessage
@@ -45,7 +46,7 @@ class ChatPresenterImpl @Inject constructor(val getConversationMessages: GetConv
         //this.chatUseCase.unsubscribe()
     }
 
-    private inner class MessageSubscriber : Subscriber<MessageResponse.Response>() {
+    private inner class MessageSubscriber : Subscriber<Pair<MessageModel, ResponseType>>() {
 
         override fun onCompleted() {
         }
@@ -54,11 +55,11 @@ class ChatPresenterImpl @Inject constructor(val getConversationMessages: GetConv
             chatView?.onError(throwable)
         }
 
-        override fun onNext(messageResponse: MessageResponse.Response?) {
-            when(messageResponse) {
-                is MessageResponse.MessageAdded -> chatView?.addMessage(messageResponse.body)
-                is MessageResponse.MessageChanged -> chatView?.changeMessage(messageResponse.body)
-                is MessageResponse.MessageRemoved -> chatView?.removeMessage(messageResponse.body)
+        override fun onNext(pair: Pair<MessageModel, ResponseType>) {
+            when(pair.second) {
+                ResponseType.ADDED -> chatView?.addMessage(pair.first)
+                ResponseType.CHANGED -> chatView?.changeMessage(pair.first)
+                ResponseType.REMOVED -> chatView?.removeMessage(pair.first)
             }
         }
 

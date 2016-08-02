@@ -1,6 +1,6 @@
 package com.rus.chat.ui.chat
 
-import com.rus.chat.entity.chat.Message
+import com.rus.chat.entity.chat.MessageModel
 import com.rus.chat.ui.BaseView
 
 /**
@@ -8,12 +8,12 @@ import com.rus.chat.ui.BaseView
  */
 interface ChatView : BaseView {
 
-    fun setMessages(messages: List<Message>)
+    fun setMessages(messageEntities: List<MessageModel>)
 
-    fun addMessage(message: Message)
+    fun addMessage(messageEntity: MessageModel)
 
-    fun changeMessage(message: Message)
+    fun changeMessage(messageEntity: MessageModel)
 
-    fun removeMessage(message: Message)
+    fun removeMessage(messageEntity: MessageModel)
 
 }

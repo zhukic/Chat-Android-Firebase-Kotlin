@@ -1,13 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp"
+    android:orientation="vertical">
 
     <TextView
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/message_text"
-        android:textSize="16sp" />
+        android:layout_gravity="center_horizontal"
+        android:id="@+id/message_user_and_time"
+        android:textColor="@color/secondaryTextColor"
+        android:textSize="14sp"
+        tools:text="User, Jul 12"/>
 
-</RelativeLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:background="@drawable/message_box"
+        android:id="@+id/message_text"
+        android:textColor="@color/primaryTextColor"
+        android:textSize="16sp"
+        tools:text="Hello World!!!" />
+
+</LinearLayout>
