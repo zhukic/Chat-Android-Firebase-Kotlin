@@ -2,6 +2,9 @@ package com.rus.chat
 
 import android.app.Application
 import com.google.firebase.auth.FirebaseAuth
+import com.rus.chat.di.app.AppComponent
+import com.rus.chat.di.app.AppModule
+import com.rus.chat.di.app.DaggerAppComponent
 import com.rus.chat.di.chat.ChatComponent
 import com.rus.chat.di.chat.ChatModule
 import com.rus.chat.di.chat.DaggerChatComponent
@@ -10,7 +13,6 @@ import com.rus.chat.di.conversations.ConversationsModule
 import com.rus.chat.di.conversations.DaggerConversationsComponent
 import com.rus.chat.di.firebase.FirebaseModule
 import com.rus.chat.di.net.DaggerNetComponent
-import com.rus.chat.di.net.NetComponent
 import com.rus.chat.di.net.NetModule
 import com.rus.chat.di.session.DaggerSessionComponent
 import com.rus.chat.di.session.SessionComponent
@@ -27,49 +29,54 @@ import com.rus.chat.utils.Logger
  */
 class App : Application() {
 
-    lateinit var netComponent: NetComponent
-    lateinit var sessionComponent: SessionComponent
-    lateinit var conversationsComponent: ConversationsComponent
-    lateinit var chatComponent: ChatComponent
+    lateinit var appComponent: AppComponent
+    private var sessionComponent: SessionComponent? = null
+    private var conversationsComponent: ConversationsComponent? = null
+    private var chatComponent: ChatComponent? = null
 
     override fun onCreate() {
         super.onCreate()
 
         createAppComponent()
-        createNetComponent()
-        createSessionComponent()
-        createConversationsComponent()
-        createChatComponent()
     }
 
-    private fun createAppComponent() {
-        /*appComponent = DaggerAppComponent.builder()
+    fun createAppComponent() {
+        appComponent = DaggerAppComponent.builder()
                 .appModule(AppModule(this))
-                .build()*/
-    }
-
-    private fun createNetComponent() {
-        netComponent = DaggerNetComponent.builder()
-                .netModule(NetModule())
                 .build()
     }
 
-    private fun createSessionComponent() {
-        sessionComponent = DaggerSessionComponent.builder()
-                .sessionModule(SessionModule())
-                .build()
+    fun addSessionComponent(): SessionComponent {
+        if(sessionComponent == null) {
+            sessionComponent = appComponent.addSessionComponent(SessionModule())
+        }
+        return sessionComponent as SessionComponent
     }
 
-    private fun createConversationsComponent() {
-        conversationsComponent = DaggerConversationsComponent.builder()
-                .conversationsModule(ConversationsModule())
-                .build()
+    fun addConversationsComponent(): ConversationsComponent {
+        if(conversationsComponent == null) {
+            conversationsComponent = appComponent.addConversationsComponent(ConversationsModule())
+        }
+        return conversationsComponent as ConversationsComponent
     }
 
-    private fun createChatComponent() {
-        chatComponent = DaggerChatComponent.builder()
-                .chatModule(ChatModule())
-                .build()
+    fun addChatComponent(): ChatComponent {
+        if(chatComponent == null) {
+            chatComponent = appComponent.addChatComponent(ChatModule())
+        }
+        return chatComponent as ChatComponent
+    }
+
+    fun clearSessionComponent() {
+        sessionComponent = null
+    }
+
+    fun clearConversationsComponent() {
+        conversationsComponent = null
+    }
+
+    fun clearChatComponent() {
+        chatComponent = null
     }
 
 }

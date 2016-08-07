@@ -33,9 +33,10 @@ import javax.inject.Inject
 /**
  * Created by RUS on 17.07.2016.
  */
-class ConversationsDataSourceImpl(val retrofit: Retrofit, val firebaseDatabase: FirebaseDatabase) : ConversationsDataSource {
+class ConversationsDataSourceImpl @Inject constructor(val retrofit: Retrofit, val firebaseDatabase: FirebaseDatabase) : ConversationsDataSource {
 
-    override fun initialize(query: ConversationsQuery.GetConversations): Observable<Pair<ConversationModel, ResponseType>> = Observable.create<Pair<ConversationEntity, ResponseType>> { subscriber ->
+    override fun initialize(query: ConversationsQuery.GetConversations): Observable<Pair<ConversationModel, ResponseType>>
+            = Observable.create<Pair<ConversationEntity, ResponseType>> { subscriber ->
         firebaseDatabase.reference
                 .child("conversations")
                 .addChildEventListener(object : ChildEventListener {
@@ -73,13 +74,15 @@ class ConversationsDataSourceImpl(val retrofit: Retrofit, val firebaseDatabase: 
                     }
 
                 })
-    }.flatMap { response -> convertToConversationModel(response)  }
+    }
+            .flatMap { response -> convertToConversationModel(response)  }
     
-    override fun createConversation(query: ConversationsQuery.CreateConversation): Observable<FirebaseResponse> = retrofit.create(FirebaseAPI::class.java)
+    override fun createConversation(query: ConversationsQuery.CreateConversation): Observable<FirebaseResponse>
+            = retrofit.create(FirebaseAPI::class.java)
             .createConversation(ConversationEntity(name = query.conversationName))
 
     private fun convertToConversationModel(pair: Pair<ConversationEntity, ResponseType>): Observable<Pair<ConversationModel, ResponseType>> {
-        return getMessage((pair.first as ConversationEntity).lastMessageId).concatMap { message ->
+        return getLastMessage((pair.first).lastMessageId).concatMap { message ->
             Observable.zip(Observable.just(message), getUserById(message?.userId), { message, user ->
                 ConversationMapper.createConversationWithMessageAndUser(pair.first, message, user) to pair.second
             })
@@ -91,7 +94,7 @@ class ConversationsDataSourceImpl(val retrofit: Retrofit, val firebaseDatabase: 
         return conversationEntity
     }
     
-    private fun getMessage(messageId: String?): Observable<MessageEntity> = retrofit.create(FirebaseAPI::class.java).getMessageById(messageId ?: "")
+    private fun getLastMessage(messageId: String?): Observable<MessageEntity> = retrofit.create(FirebaseAPI::class.java).getMessageById(messageId ?: "")
     
     private fun getUserById(userId: String?): Observable<User> = retrofit.create(FirebaseAPI::class.java).getUserById(userId ?: "")
 

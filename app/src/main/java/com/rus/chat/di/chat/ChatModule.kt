@@ -21,23 +21,23 @@ import javax.inject.Singleton
 /**
  * Created by RUS on 23.07.2016.
  */
-@Module(includes = arrayOf(NetModule::class, FirebaseModule::class))
+@Module
 class ChatModule {
 
     @Provides
-    @Singleton
+    @ChatScope
     fun getGetConversationMessages(chatRepository: ChatRepository): GetConversationMessages = GetConversationMessages(chatRepository)
 
     @Provides
-    @Singleton
+    @ChatScope
     fun getSendMessage(chatRepository: ChatRepository): SendMessage = SendMessage(chatRepository)
 
     @Provides
-    @Singleton
+    @ChatScope
     fun getChatRepository(chatDataSourceImpl: ChatDataSourceImpl): BaseRepository = ChatRepository(chatDataSourceImpl)
 
     @Provides
-    @Singleton
+    @ChatScope
     fun getChatDataSourceImpl(retrofit: Retrofit, firebaseDatabase: FirebaseDatabase, firebaseAuth: FirebaseAuth): ChatDataSourceImpl
             = ChatDataSourceImpl(retrofit, firebaseDatabase, firebaseAuth)
 

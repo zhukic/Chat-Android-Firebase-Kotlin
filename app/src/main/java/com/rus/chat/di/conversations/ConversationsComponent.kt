@@ -5,13 +5,14 @@ import com.rus.chat.interactors.conversations.ConversationsUseCase
 import com.rus.chat.interactors.session.SessionUseCase
 import com.rus.chat.ui.conversations.ConversationsActivity
 import dagger.Component
+import dagger.Subcomponent
 import javax.inject.Singleton
 
 /**
  * Created by RUS on 20.07.2016.
  */
-@Component(modules = arrayOf(ConversationsModule::class))
-@Singleton
+@Subcomponent(modules = arrayOf(ConversationsModule::class))
+@ConversationsScope
 interface ConversationsComponent {
 
     fun inject(conversationsActivity: ConversationsActivity)

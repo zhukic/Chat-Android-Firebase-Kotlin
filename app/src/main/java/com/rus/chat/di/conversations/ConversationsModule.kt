@@ -18,23 +18,23 @@ import javax.inject.Singleton
 /**
  * Created by RUS on 20.07.2016.
  */
-@Module(includes = arrayOf(NetModule::class, FirebaseModule::class))
+@Module
 class ConversationsModule() {
 
     @Provides
-    @Singleton
+    @ConversationsScope
     fun getGetConversations(conversationsRepository: ConversationsRepository): GetConversations = GetConversations(conversationsRepository)
 
     @Provides
-    @Singleton
+    @ConversationsScope
     fun getCreateConversation(conversationsRepository: ConversationsRepository): CreateConversation = CreateConversation(conversationsRepository)
 
     @Provides
-    @Singleton
-    fun getConversationRepository(conversationsDataSourceImpl: ConversationsDataSourceImpl): BaseRepository = ConversationsRepository(conversationsDataSourceImpl)
+    @ConversationsScope
+    fun getConversationRepository(conversationsDataSourceImpl: ConversationsDataSourceImpl): ConversationsRepository = ConversationsRepository(conversationsDataSourceImpl)
 
     @Provides
-    @Singleton
+    @ConversationsScope
     fun getConversationDataSourceImplementation(retrofit: Retrofit, firebaseDatabase: FirebaseDatabase): ConversationsDataSourceImpl = ConversationsDataSourceImpl(retrofit, firebaseDatabase)
 
 }

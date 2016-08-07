@@ -25,7 +25,7 @@ class LoginActivity : AppCompatActivity(), LoginView {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        (application as App).sessionComponent.inject(this)
+        (application as App).addSessionComponent().inject(this)
 
         loginPresenter.attachView(this)
 
@@ -71,6 +71,7 @@ class LoginActivity : AppCompatActivity(), LoginView {
 
     override fun onDestroy() {
         super.onDestroy()
+        (application as App).clearSessionComponent()
         this.loginPresenter.onDestroy()
     }
 

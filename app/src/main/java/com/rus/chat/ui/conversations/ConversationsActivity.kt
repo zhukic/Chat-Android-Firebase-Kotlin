@@ -48,7 +48,7 @@ class ConversationsActivity : AppCompatActivity(), ConversationsView, Conversati
         setContentView(R.layout.activity_conversations)
         setSupportActionBar(toolbar)
 
-        (application as App).conversationsComponent.inject(this)
+        (application as App).addConversationsComponent().inject(this)
         conversationsAdapter = ConversationsAdapter(this, mutableListOf<ConversationModel>())
         conversations_recyclerView.adapter = conversationsAdapter
 
@@ -130,6 +130,12 @@ class ConversationsActivity : AppCompatActivity(), ConversationsView, Conversati
         intent.putExtra(EXTRA_SIGN_OUT, true)
         startActivity(intent)
         finish()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        (application as App).clearConversationsComponent()
+        conversationsPresenter.onDestroy()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

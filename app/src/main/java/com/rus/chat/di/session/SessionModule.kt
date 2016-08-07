@@ -15,31 +15,31 @@ import javax.inject.Singleton
 /**
  * Created by RUS on 20.07.2016.
  */
-@Module(includes = arrayOf(FirebaseModule::class, NetModule::class))
+@Module
 class SessionModule() {
 
     @Provides
-    @Singleton
+    @SessionScope
     fun getSignIn(sessionRepository: SessionRepository): SignIn = SignIn(sessionRepository)
 
     @Provides
-    @Singleton
+    @SessionScope
     fun getSignOut(sessionRepository: SessionRepository): SignOut = SignOut(sessionRepository)
 
     @Provides
-    @Singleton
+    @SessionScope
     fun getRegister(sessionRepository: SessionRepository): Register = Register(sessionRepository)
 
     @Provides
-    @Singleton
+    @SessionScope
     fun getCurrentUser(sessionRepository: SessionRepository): GetCurrentUser = GetCurrentUser(sessionRepository)
 
     @Provides
-    @Singleton
+    @SessionScope
     fun getSessionRepository(sessionDataSourceImpl: SessionDataSourceImpl): SessionRepository = SessionRepository(sessionDataSourceImpl)
 
     @Provides
-    @Singleton
+    @SessionScope
     fun getSessionDataSourceImpl(retrofit: Retrofit, firebaseAuth: FirebaseAuth): SessionDataSourceImpl = SessionDataSourceImpl(retrofit, firebaseAuth)
 
 }

@@ -33,7 +33,7 @@ class ChatActivity : AppCompatActivity(), ChatView, ChatAdapter.OnItemClickListe
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat)
 
-        (application as App).chatComponent.inject(this)
+        (application as App).addChatComponent().inject(this)
 
         chatAdapter = ChatAdapter(this, mutableListOf<MessageModel>())
         messages_recycler.adapter = chatAdapter
@@ -94,6 +94,7 @@ class ChatActivity : AppCompatActivity(), ChatView, ChatAdapter.OnItemClickListe
 
     override fun onDestroy() {
         super.onDestroy()
+        (application as App).clearChatComponent()
         chatPresenter.onDestroy()
     }
 }
