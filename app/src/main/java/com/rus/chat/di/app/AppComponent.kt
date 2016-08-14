@@ -8,6 +8,7 @@ import com.rus.chat.di.firebase.FirebaseModule
 import com.rus.chat.di.net.NetModule
 import com.rus.chat.di.session.SessionComponent
 import com.rus.chat.di.session.SessionModule
+import com.rus.chat.ui.MainActivity
 import dagger.Component
 import javax.inject.Singleton
 
@@ -20,4 +21,6 @@ interface AppComponent {
     fun addChatComponent(chatModule: ChatModule): ChatComponent
     fun addSessionComponent(sessionModule: SessionModule): SessionComponent
     fun addConversationsComponent(conversationModule: ConversationsModule): ConversationsComponent
+
+    fun inject(mainActivity: MainActivity)
 }

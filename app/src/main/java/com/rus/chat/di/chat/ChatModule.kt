@@ -34,7 +34,7 @@ class ChatModule {
 
     @Provides
     @ChatScope
-    fun getChatRepository(chatDataSourceImpl: ChatDataSourceImpl): BaseRepository = ChatRepository(chatDataSourceImpl)
+    fun getChatRepository(chatDataSourceImpl: ChatDataSourceImpl): ChatRepository = ChatRepository(chatDataSourceImpl)
 
     @Provides
     @ChatScope

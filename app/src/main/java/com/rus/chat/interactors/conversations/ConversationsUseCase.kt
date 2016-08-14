@@ -23,7 +23,7 @@ import javax.inject.Inject
  */
 abstract class ConversationsUseCase(val conversationsRepository: ConversationsRepository) : BaseUseCase() {
 
-    protected fun <T> execute(query: ConversationsQuery.Query, subscriber: Subscriber<T> = Subscribers.empty()) {
+    protected fun <T> execute(query: ConversationsQuery, subscriber: Subscriber<T> = Subscribers.empty()) {
         this.subscription = conversationsRepository.query<T>(query)
                 .onBackpressureBuffer(10000)
                 .subscribeOn(Schedulers.newThread())

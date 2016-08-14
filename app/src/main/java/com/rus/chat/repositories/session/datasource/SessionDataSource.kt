@@ -12,9 +12,6 @@ import rx.Observable
  */
 interface SessionDataSource {
 
-    @Handle(SessionQuery.GetCurrentUser::class)
-    fun getCurrentUser(query: SessionQuery.GetCurrentUser): Observable<User>
-
     @Handle(SessionQuery.Register::class)
     fun register(query: SessionQuery.Register): Observable<User>
 

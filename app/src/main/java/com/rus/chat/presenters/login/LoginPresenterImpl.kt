@@ -21,17 +21,12 @@ import javax.inject.Inject
 
 class LoginPresenterImpl @Inject constructor(val signIn: SignIn,
                                              val signOut: SignOut,
-                                             val getCurrentUser: GetCurrentUser,
                                              val register: Register) : LoginPresenter {
 
     var loginView: LoginView? = null
 
     override fun attachView(loginView: LoginView) {
         this.loginView = loginView
-    }
-
-    override fun initialize() {
-        getCurrentUser.execute(UserSubscriber())
     }
 
     override fun signIn(name: String, password: String) {
@@ -53,20 +48,6 @@ class LoginPresenterImpl @Inject constructor(val signIn: SignIn,
     override fun onDestroy() {
         this.loginView = null
 //        this.useCase.unsubscribe()
-    }
-
-    private inner class UserSubscriber : Subscriber<User>() {
-
-        override fun onError(e: Throwable?) {
-        }
-
-        override fun onCompleted() {
-        }
-
-        override fun onNext(user: User?) {
-            if(user != null) loginView?.openConversationsActivity(user.uid)
-        }
-
     }
 
     private inner class SignInSubscriber : Subscriber<User>() {

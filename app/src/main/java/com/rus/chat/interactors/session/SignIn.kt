@@ -15,6 +15,7 @@ import javax.inject.Inject
 @UseCase
 class SignIn @Inject constructor(sessionRepository: SessionRepository) : SessionUseCase(sessionRepository) {
 
-    fun execute(email: String, password: String, subscriber: Subscriber<User>) = super.execute(SessionQuery.SignIn(email, password), subscriber)
+    fun execute(email: String, password: String, subscriber: Subscriber<User>)
+            = super.execute(SessionQuery.SignIn(email, password), subscriber)
 
 }

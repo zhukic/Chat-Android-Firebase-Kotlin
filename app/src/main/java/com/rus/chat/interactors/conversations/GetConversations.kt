@@ -14,6 +14,7 @@ import javax.inject.Inject
 @UseCase
 class GetConversations @Inject constructor(conversationsRepository: ConversationsRepository) : ConversationsUseCase(conversationsRepository) {
 
-    fun execute(subscriber: Subscriber<Pair<ConversationModel, ResponseType>>) = super.execute(ConversationsQuery.GetConversations(), subscriber)
+    fun execute(subscriber: Subscriber<Pair<ConversationModel, ResponseType>>)
+            = super.execute(ConversationsQuery.GetConversations(), subscriber)
 
 }

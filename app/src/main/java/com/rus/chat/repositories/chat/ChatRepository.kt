@@ -1,6 +1,7 @@
 package com.rus.chat.repositories.chat
 
 import com.rus.chat.entity.query.BaseQuery
+import com.rus.chat.entity.query.chat.ChatQuery
 import com.rus.chat.repositories.BaseRepository
 import com.rus.chat.repositories.chat.datasource.ChatDataSourceImpl
 import com.rus.chat.utils.HandleUtils
@@ -16,5 +17,5 @@ class ChatRepository @Inject constructor(dataSourceImpl: ChatDataSourceImpl) : B
         HandleUtils.registerHandlers(this, dataSourceImpl)
     }
 
-    fun <T> query(baseQuery: BaseQuery): Observable<T> = getObservable(baseQuery)
+    fun <T> query(chatQuery: ChatQuery): Observable<T> = getObservable(chatQuery)
 }

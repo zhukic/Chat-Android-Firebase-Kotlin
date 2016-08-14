@@ -32,10 +32,6 @@ class SessionModule() {
 
     @Provides
     @SessionScope
-    fun getCurrentUser(sessionRepository: SessionRepository): GetCurrentUser = GetCurrentUser(sessionRepository)
-
-    @Provides
-    @SessionScope
     fun getSessionRepository(sessionDataSourceImpl: SessionDataSourceImpl): SessionRepository = SessionRepository(sessionDataSourceImpl)
 
     @Provides

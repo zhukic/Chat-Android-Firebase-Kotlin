@@ -7,14 +7,10 @@ import com.rus.chat.di.app.AppModule
 import com.rus.chat.di.app.DaggerAppComponent
 import com.rus.chat.di.chat.ChatComponent
 import com.rus.chat.di.chat.ChatModule
-import com.rus.chat.di.chat.DaggerChatComponent
 import com.rus.chat.di.conversations.ConversationsComponent
 import com.rus.chat.di.conversations.ConversationsModule
-import com.rus.chat.di.conversations.DaggerConversationsComponent
 import com.rus.chat.di.firebase.FirebaseModule
-import com.rus.chat.di.net.DaggerNetComponent
 import com.rus.chat.di.net.NetModule
-import com.rus.chat.di.session.DaggerSessionComponent
 import com.rus.chat.di.session.SessionComponent
 import com.rus.chat.di.session.SessionModule
 import com.rus.chat.repositories.conversations.ConversationsRepository

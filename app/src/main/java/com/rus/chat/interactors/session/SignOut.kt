@@ -15,6 +15,7 @@ import javax.inject.Inject
 @UseCase
 class SignOut @Inject constructor(sessionRepository: SessionRepository) : SessionUseCase(sessionRepository) {
 
-    fun execute(subscriber: Subscriber<User>) = super.execute(SessionQuery.SignOut(), subscriber)
+    fun execute(subscriber: Subscriber<User>)
+            = super.execute(SessionQuery.SignOut(), subscriber)
 
 }

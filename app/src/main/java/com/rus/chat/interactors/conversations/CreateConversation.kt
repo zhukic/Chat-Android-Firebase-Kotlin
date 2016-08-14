@@ -13,6 +13,7 @@ import javax.inject.Inject
 @UseCase
 class CreateConversation @Inject constructor(conversationsRepository: ConversationsRepository) : ConversationsUseCase(conversationsRepository) {
 
-    fun execute(conversationName: String, subscriber: Subscriber<FirebaseResponse>) = super.execute(ConversationsQuery.CreateConversation(conversationName), subscriber)
+    fun execute(conversationName: String, subscriber: Subscriber<FirebaseResponse>)
+            = super.execute(ConversationsQuery.CreateConversation(conversationName), subscriber)
 
 }

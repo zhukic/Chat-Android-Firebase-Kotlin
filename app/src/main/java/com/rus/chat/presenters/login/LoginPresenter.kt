@@ -10,8 +10,6 @@ interface LoginPresenter : BasePresenter {
 
     fun attachView(loginView: LoginView)
 
-    fun initialize()
-
     fun signIn(email: String, password: String)
 
     fun register(name: String, password: String)

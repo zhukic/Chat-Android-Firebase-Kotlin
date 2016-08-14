@@ -14,7 +14,7 @@ import rx.schedulers.Schedulers
  */
 abstract class ChatUseCase(val chatRepository: ChatRepository) : BaseUseCase() {
 
-    fun <T> execute(query: ChatQuery.Query, subscriber: Subscriber<T> = Subscribers.empty())  {
+    fun <T> execute(query: ChatQuery, subscriber: Subscriber<T> = Subscribers.empty())  {
         this.subscription = chatRepository.query<T>(query)
                 .onBackpressureBuffer(10000)
                 .subscribeOn(Schedulers.newThread())

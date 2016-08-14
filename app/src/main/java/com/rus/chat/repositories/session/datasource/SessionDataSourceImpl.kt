@@ -23,9 +23,6 @@ import javax.inject.Inject
  */
 class SessionDataSourceImpl(val retrofit: Retrofit, val firebaseAuth: FirebaseAuth) : SessionDataSource {
 
-    override fun getCurrentUser(query: SessionQuery.GetCurrentUser): Observable<User> = Observable.just(firebaseAuth.currentUser)
-            .map { firebaseUser -> UserMapper.transformFromFirebaseUser(firebaseUser) }
-
     override fun register(query: SessionQuery.Register): Observable<User> = Observable.create<FirebaseUser> { subscriber ->
         firebaseAuth.createUserWithEmailAndPassword(query.email, query.password)
                 .addOnSuccessListener { task ->
@@ -51,7 +48,11 @@ class SessionDataSourceImpl(val retrofit: Retrofit, val firebaseAuth: FirebaseAu
 
     private fun addUserNameToDb(uid: String, name: String): Observable<User> = Observable.create { subscriber ->
         val user = User(uid, name)
-        FirebaseDatabase.getInstance().reference.child("users").child(uid).setValue(user)
+        FirebaseDatabase.getInstance()
+                .reference
+                .child("users")
+                .child(uid)
+                .setValue(user)
                 .addOnSuccessListener { subscriber.onNext(user)
                                         subscriber.onCompleted() }
                 .addOnFailureListener { exception -> subscriber.onError(exception) }

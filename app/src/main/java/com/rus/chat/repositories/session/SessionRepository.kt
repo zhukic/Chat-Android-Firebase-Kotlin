@@ -26,6 +26,6 @@ class SessionRepository(sessionDataSourceImpl: SessionDataSourceImpl) : BaseRepo
         HandleUtils.registerHandlers(this, sessionDataSourceImpl)
     }
 
-    fun <T> query(sessionQuery: SessionQuery.Query): Observable<T> = getObservable(sessionQuery)
+    fun <T> query(sessionQuery: SessionQuery): Observable<T> = getObservable(sessionQuery)
 
 }

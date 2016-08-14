@@ -3,6 +3,7 @@ package com.rus.chat.repositories.conversations
 import com.rus.chat.entity.conversation.ConversationEntity
 import com.rus.chat.entity.session.User
 import com.rus.chat.entity.query.BaseQuery
+import com.rus.chat.entity.query.conversations.ConversationsQuery
 import com.rus.chat.repositories.BaseRepository
 import com.rus.chat.repositories.conversations.datasource.ConversationsDataSource
 import com.rus.chat.repositories.conversations.datasource.ConversationsDataSourceImpl
@@ -23,6 +24,6 @@ class ConversationsRepository @Inject constructor(conversationsDataSourceImpl: C
         HandleUtils.registerHandlers(this, conversationsDataSourceImpl)
     }
 
-    fun <T> query(baseQuery: BaseQuery): Observable<T> = getObservable(baseQuery)
+    fun <T> query(conversationsQuery: ConversationsQuery): Observable<T> = getObservable(conversationsQuery)
 
 }

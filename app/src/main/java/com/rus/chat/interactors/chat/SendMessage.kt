@@ -13,5 +13,6 @@ import javax.inject.Inject
 @UseCase
 class SendMessage @Inject constructor(chatRepository: ChatRepository) : ChatUseCase(chatRepository) {
 
-    fun execute(conversationId: String, text: String, time: String, subscriber: Subscriber<FirebaseResponse>) = super.execute(ChatQuery.SendMessage(conversationId, text, time), subscriber)
+    fun execute(conversationId: String, text: String, time: String, subscriber: Subscriber<FirebaseResponse>)
+            = super.execute(ChatQuery.SendMessage(conversationId, text, time), subscriber)
 }

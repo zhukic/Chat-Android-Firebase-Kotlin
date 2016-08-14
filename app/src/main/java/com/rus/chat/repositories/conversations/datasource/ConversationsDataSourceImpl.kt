@@ -83,9 +83,8 @@ class ConversationsDataSourceImpl @Inject constructor(val retrofit: Retrofit, va
 
     private fun convertToConversationModel(pair: Pair<ConversationEntity, ResponseType>): Observable<Pair<ConversationModel, ResponseType>> {
         return getLastMessage((pair.first).lastMessageId).concatMap { message ->
-            Observable.zip(Observable.just(message), getUserById(message?.userId), { message, user ->
-                ConversationMapper.createConversationWithMessageAndUser(pair.first, message, user) to pair.second
-            })
+            Observable.zip(Observable.just(message), getUserById(message?.userId)) { message, user ->
+                ConversationMapper.createConversationWithMessageAndUser(pair.first, message, user) to pair.second }
         }.subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread())
     }
 

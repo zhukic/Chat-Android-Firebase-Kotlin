@@ -33,7 +33,6 @@ class LoginActivity : AppCompatActivity(), LoginView {
         registerButton.setOnClickListener { loginPresenter.register(name.text.toString(), password.text.toString()) }
 
         if(intent.extras?.getBoolean(ConversationsActivity.EXTRA_SIGN_OUT) ?: false) loginPresenter.signOut()
-        else loginPresenter.initialize()
     }
 
     override fun openConversationsActivity(uid: String) {

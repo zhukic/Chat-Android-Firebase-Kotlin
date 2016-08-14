@@ -54,7 +54,7 @@ class ConversationsActivity : AppCompatActivity(), ConversationsView, Conversati
 
         conversations_recyclerView.layoutManager = LinearLayoutManager(this)
 
-        fab.setOnClickListener { conversationsPresenter.onCreateConversationButtonClicked() }
+        add_conversation.setOnClickListener { conversationsPresenter.onCreateConversationButtonClicked() }
 
         conversationsPresenter.attachView(this)
         conversationsPresenter.initialize()

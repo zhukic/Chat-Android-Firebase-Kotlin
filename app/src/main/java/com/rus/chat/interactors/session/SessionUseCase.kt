@@ -21,7 +21,7 @@ import javax.inject.Inject
  */
 abstract class SessionUseCase (val sessionRepository: SessionRepository) : BaseUseCase(){
 
-    protected fun <T> execute(query: SessionQuery.Query, subscriber: Subscriber<T>)  {
+    protected fun <T> execute(query: SessionQuery, subscriber: Subscriber<T>)  {
         this.subscription = sessionRepository.query<T>(query)
                 .onBackpressureBuffer(10000)
                 .subscribeOn(Schedulers.newThread())
